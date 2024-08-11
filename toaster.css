@@ -1,0 +1,70 @@
+:root {
+    --toaster-info: #3b82f6;
+    --toaster-success: #22c55e;
+    --toaster-warning: #facc15;
+    --toaster-error: #ef4444;
+    --toaster-text: #fff;
+}
+
+.toaster {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    translate: 0 0;
+    width: 300px;
+    height: 25px;
+    font-size: 16px;
+    margin: 16px;
+    padding: 16px;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    color: var(--toaster-text);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.toaster-content {
+    width: full;
+    flex: 1;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.toaster-icon {
+    font-size: 35px;
+}
+
+.toaster-close-icon {
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.toaster-close-icon:hover {
+    opacity: 1;
+    scale: 1.1;
+}
+
+.toaster-info {
+    background-color: var(--toaster-info);
+}
+
+.toaster-success {
+    background-color: var(--toaster-success);
+}
+
+.toaster-warning {
+    background-color: var(--toaster-warning);
+}
+
+.toaster-error {
+    background-color: var(--toaster-error);
+}
