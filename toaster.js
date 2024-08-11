@@ -1,6 +1,7 @@
 function Toaster({
     type = 'info',
     text = '',
+    position = 'bottom-right',
     duration = 3000,
     animationDuration = 300,
     animationEase = 'ease-in-out',
@@ -25,6 +26,21 @@ function Toaster({
     `
 
 }) {
+    switch (position) {
+        case 'top-left':
+            break
+        case 'top':
+            break
+        case 'top-right':
+            break
+        case 'bottom-left':
+            break
+        case 'bottom':
+            break
+        case 'bottom-right':
+            break
+    }
+
     if (duration != 0 && duration < animationDuration) {
         animationDuration = duration
     }
