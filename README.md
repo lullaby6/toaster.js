@@ -83,6 +83,8 @@ Toaster({
 
 ### Icons option keys:
 - `closeIcon`
+- `defaultIcon`
+- `darkIcon`
 - `infoIcon`
 - `successIcon`
 - `warningIcon`
