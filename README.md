@@ -56,7 +56,7 @@ Toaster({
 | type | string | Type and styles of the toast (`default`, `dark`, `info`, `success`, `warning`, `error`) | "default" |
 | position | string | Position of the toast (`top-left`, `top`, `top-right`, `bottom-left`, `bottom`, `bottom-right`) | "bottom-right" |
 
-## Custom icons
+## Custom Icons
 
 You can provide custom icons for different toast types:
 
@@ -68,7 +68,7 @@ Toaster({
 })
 ```
 
-## Custom animations
+## Custom Animations
 
 The library supports both fade and scale animations. You can customize these or provide entirely custom animations:
 
