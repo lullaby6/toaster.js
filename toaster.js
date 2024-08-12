@@ -2,6 +2,9 @@ function Toaster({
     type = 'info',
     text = '',
     position = 'bottom-right',
+
+    clearPreviousToasts = true,
+
     duration = 3000,
     animationDuration = 300,
     animationEase = 'ease-in-out',
@@ -26,19 +29,8 @@ function Toaster({
     `
 
 }) {
-    switch (position) {
-        case 'top-left':
-            break
-        case 'top':
-            break
-        case 'top-right':
-            break
-        case 'bottom-left':
-            break
-        case 'bottom':
-            break
-        case 'bottom-right':
-            break
+    if (clearPreviousToasts) {
+        document.querySelectorAll('.toaster').forEach(toast => toast.remove())
     }
 
     if (duration != 0 && duration < animationDuration) {
@@ -76,6 +68,29 @@ function Toaster({
     document.body.append(div)
 
     const toast = document.querySelector(`.toaster-${uuid}`)
+
+    switch (position) {
+        case 'top-left':
+            toast.style.top = '0'
+            toast.style.left = '0'
+            break
+        case 'top':
+            break
+        case 'top-right':
+            toast.style.top = '0'
+            toast.style.right = '0'
+            break
+        case 'bottom-left':
+            toast.style.bottom = '0'
+            toast.style.left = '0'
+            break
+        case 'bottom':
+            break
+        case 'bottom-right':
+            toast.style.bottom = '0'
+            toast.style.right = '0'
+            break
+    }
 
     toast.animate([
         {
