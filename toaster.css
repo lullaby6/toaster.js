@@ -8,6 +8,10 @@
     --toaster-default-bg: #fafafa;
     --toaster-default-text: #262626;
     --toaster-default-border: #d4d4d4;
+
+    --toaster-dark-bg: #0a0a0a;
+    --toaster-dark-text: #fafafa;
+    --toaster-dark-border: #d4d4d4;
 }
 
 .toaster {
@@ -67,6 +71,12 @@
     border: 1px solid var(--toaster-default-border);
 }
 
+.toaster-dark {
+    background-color: var(--toaster-dark-bg);
+    color: var(--toaster-dark-text);
+    border: 1px solid var(--toaster-dark-border);
+}
+
 .toaster-info {
     background-color: var(--toaster-info);
 }
@@ -77,6 +87,7 @@
 
 .toaster-warning {
     background-color: var(--toaster-warning);
+    font-weight: 500;
 }
 
 .toaster-error {
