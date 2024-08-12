@@ -81,7 +81,7 @@ Toaster({
 })
 ```
 
-### Icon option key:
+### Icons option keys:
 - `closeIcon`
 - `infoIcon`
 - `successIcon`
