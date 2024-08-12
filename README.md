@@ -81,6 +81,13 @@ Toaster({
 })
 ```
 
+Icon option key:
+- closeIcon
+- infoIcon
+- successIcon
+- warningIcon
+- errorIcon
+
 ## Custom Animations
 
 The library supports both fade and scale animations. You can customize these or provide entirely custom animations:
