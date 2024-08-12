@@ -1,5 +1,7 @@
 # toaster.js
 
+A simple and light javascript library to create toasts in a simple way.
+
 ## Feactures
 
 - Multiple toast types
