@@ -2,18 +2,6 @@
 
 A simple and light javascript library to create toasts in a simple way.
 
-## Feactures
-
-- Multiple toast types
-- Toast duration
-- Toast position
-- Fade animation
-- Scale animation
-- Custom show and hide animations
-- Close on click
-- Toggle show icons
-- Customizable icons
-
 ## Installation
 
 ### CDN
