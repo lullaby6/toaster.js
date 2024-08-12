@@ -4,62 +4,10 @@
 // - Multiple Columns
 // - Toast Limit
 // - Slide Animation
-// - Close on Click
 // - Progress Bar
 // - Progress Bar Position
 // - Custom Styles
 // - Custom Classes
-
-class ToasterTimer {
-    constructor(callback, delay, autoStart = true) {
-        this.timerId = null;
-        this.startTime = null;
-        this.delay = delay;
-        this.remainingTime = delay;
-        this.callback = callback;
-        this.running = false;
-
-        if (autoStart) this.resume()
-    }
-
-    cancel() {
-        if (!this.timerId) return;
-
-        this.running = false;
-
-        clearTimeout(this.timerId);
-        this.timerId = null;
-    }
-
-    pause() {
-        if (!this.timerId) return;
-
-        this.running = false;
-
-        clearTimeout(this.timerId);
-        this.timerId = null;
-
-        this.remainingTime -= Date.now() - this.startTime;
-    }
-
-    resume() {
-        if (this.timerId) return;
-
-        this.running = true;
-
-        this.startTime = Date.now();
-        this.timerId = setTimeout(this.callback, this.remainingTime);
-    }
-
-    getTimeLeft() {
-        if (this.running) {
-            this.pause()
-            this.resume()
-        }
-
-        return this.remainingTime
-    }
-}
 
 function Toaster({
     type = 'info',
