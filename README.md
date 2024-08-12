@@ -23,6 +23,7 @@ Toaster({
 
 ## Reference
 
-| Key | type | Usage | Default |
+| Key | Type | Usage | Default |
 |-----------------|----------------------|----------------------------------------------------------------------------|-------------|
 | text | string | Text display | "" |
+| type | string | Type and styles of the toast (`default`, `dark`, `info`, `success`, `warning`, `error`) | "default" |
