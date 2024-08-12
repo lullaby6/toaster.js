@@ -68,6 +68,11 @@
         <input type="checkbox" id="toast-animation-scale">
     </div>
 
+    <div>
+        <label for="toast-pause-duration-on-hover">Pause Duration On Hover</label>
+        <input type="checkbox" id="toast-pause-duration-on-hover">
+    </div>
+
     <script>
         document.getElementById('show-toast-btn').addEventListener('click', () => {
             const text = document.getElementById('toast-text').value
@@ -79,6 +84,7 @@
             const onlyShowCloseIconOnHover = document.getElementById('toast-only-show-close-icon-on-hover').checked
             const animationFade = document.getElementById('toast-animation-fade').checked
             const animationScale = document.getElementById('toast-animation-scale').checked
+            const pauseDurationOnHover = document.getElementById('toast-pause-duration-on-hover').checked
 
             Toaster({
                 type,
@@ -92,6 +98,8 @@
 
                 animationFade,
                 animationScale,
+
+                pauseDurationOnHover,
 
                 // showAnimationFade: false,
                 // hideAnimationFade: true,
