@@ -8,6 +8,8 @@ function Toaster({
     duration = 3000,
     animationDuration = 300,
     animationEase = 'ease-in-out',
+    animationFade = true,
+    animationScale = false,
 
     showToastIcon = true,
     showCloseIcon = true,
@@ -45,6 +47,19 @@ function Toaster({
         error: errorIcon,
     }
 
+    const hiddenStyles = {}
+    const showedStyles = {}
+
+    if (animationFade) {
+        hiddenStyles.opacity = 0
+        showedStyles.opacity = 1
+    }
+
+    if (animationScale) {
+        hiddenStyles.scale = 0
+        showedStyles.scale = 1
+    }
+
     const uuid = crypto.randomUUID()
     const div = document.createElement('div')
 
@@ -76,6 +91,10 @@ function Toaster({
             toast.style.left = '0'
             break
         case 'top':
+            toast.style.top = '0'
+            toast.style.left = '50%'
+            toast.style.translate = '-50% 0'
+            // toast.style.transform = 'translateX(-50%)'
             break
         case 'top-right':
             toast.style.top = '0'
@@ -86,6 +105,9 @@ function Toaster({
             toast.style.left = '0'
             break
         case 'bottom':
+            toast.style.bottom = '0'
+            toast.style.left = '50%'
+            toast.style.translate = '-50% 0'
             break
         case 'bottom-right':
             toast.style.bottom = '0'
@@ -94,12 +116,8 @@ function Toaster({
     }
 
     toast.animate([
-        {
-            opacity: 0
-        },
-        {
-            opacity: 1
-        }
+        hiddenStyles,
+        showedStyles
     ], {
         duration: animationDuration,
         fill: 'forwards',
@@ -108,12 +126,8 @@ function Toaster({
 
     toast.ToasterHide = () => {
         toast.animate([
-            {
-                opacity: 1
-            },
-            {
-                opacity: 0
-            }
+            showedStyles,
+            hiddenStyles
         ], {
             duration: animationDuration,
             fill: 'forwards',
@@ -152,3 +166,7 @@ function Toaster({
         }, duration)
     }
 }
+
+// document.addEventListener('DOMContentLoaded', () => {
+    
+// })
