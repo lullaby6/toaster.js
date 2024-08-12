@@ -202,17 +202,17 @@ function Toaster({
         if (onlyShowCloseIconOnHover) {
             closeIcon.style.opacity = 0
 
-            toast.addEventListener('mouseenter', () => {
+            toast.addEventListener('mouseenter', () =>
                 closeIcon.style.opacity = 0.5
-            })
+            )
 
-            toast.addEventListener('mouseleave', () => {
+            toast.addEventListener('mouseleave', () =>
                 closeIcon.style.opacity = 0
-            })
+            )
 
-            closeIcon.addEventListener('mouseover', () => {
+            closeIcon.addEventListener('mouseover', () =>
                 closeIcon.style.opacity = 1
-            })
+            )
         }
     }
 
