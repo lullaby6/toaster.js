@@ -81,12 +81,12 @@ Toaster({
 })
 ```
 
-Icon option key:
-- closeIcon
-- infoIcon
-- successIcon
-- warningIcon
-- errorIcon
+### Icon option key:
+- `closeIcon`
+- `infoIcon`
+- `successIcon`
+- `warningIcon`
+- `errorIcon`
 
 ## Custom Animations
 
