@@ -14,6 +14,10 @@ A simple and lightweight JavaScript library for creating customizable toast noti
 - Pause duration on hover
 - Custom icons support
 
+## Live Demo
+
+[Demo](https://lullaby6.github.io/toaster.js/)
+
 ## Installation
 
 ### CDN
