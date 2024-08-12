@@ -50,9 +50,9 @@ Toaster({
 })
 ```
 
-## Reference
+## API Reference
 
-| Key | Type | Description | Default |
+| Attribute | Type | Description | Default |
 |-----------------|----------------------|----------------------------------------------------------------------------|-------------|
 | text | string | Text to display in the toast | "" |
 | type | string | Type and styles of the toast (`default`, `dark`, `info`, `success`, `warning`, `error`) | "default" |
