@@ -81,6 +81,8 @@ function Toaster({
     customShowAnimation = null,
     customHideAnimation = null,
 
+    closeOnClick = false,
+
     showToastIcon = true,
     showCloseIcon = true,
     onlyShowCloseIconOnHover = false,
@@ -288,5 +290,9 @@ function Toaster({
                 timeout = setTimeout(toast.ToasterHide, timeoutTimeLeft)
             })
         }
+    }
+
+    if (closeOnClick) {
+        toast.addEventListener('click', toast.ToasterHide)
     }
 }
