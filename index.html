@@ -9,44 +9,95 @@
 </head>
 <body>
     <button id="show-toast-btn">Show Toast</button>
-    <input id="text-toast-input" type="text" placeholder="Enter text" value="Hello World">
-    <select id="type-toast-select">
-        <option disabled selected value="info">Type</option>
-        <option value="info">Info</option>
-        <option value="success">Success</option>
-        <option value="warning">Warning</option>
-        <option value="error">Error</option>
-    </select>
-    <select id="position-toast-select">
-        <option disabled selected value="bottom-right">Position</option>
-        <option value="top-left">Top Left</option>
-        <option value="top">Top</option>
-        <option value="top-right">Top Right</option>
-        <option value="bottom-left">Bottom Left</option>
-        <option value="bottom">Bottom</option>
-        <option value="bottom-right">Bottom Right</option>
-    </select>
+    <div>
+        <label for="toast-text">Text</label>
+        <input id="toast-text" type="text" placeholder="Enter text" value="Hello World">
+    </div>
+
+    <div>
+        <label for="toast-type">Type</label>
+        <select id="toast-type">
+            <option disabled selected value="info">Type</option>
+            <option value="info">Info</option>
+            <option value="success">Success</option>
+            <option value="warning">Warning</option>
+            <option value="error">Error</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="toast-position">Position</label>
+        <select id="toast-position">
+            <option disabled selected value="bottom-right">Position</option>
+            <option value="top-left">Top Left</option>
+            <option value="top">Top</option>
+            <option value="top-right">Top Right</option>
+            <option value="bottom-left">Bottom Left</option>
+            <option value="bottom">Bottom</option>
+            <option value="bottom-right">Bottom Right</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="toast-duration">Duration</label>
+        <input type="number" id="toast-duration" value="3000">
+    </div>
+
+    <div>
+        <label for="toast-show-icon">Show Toast Icon</label>
+        <input type="checkbox" id="toast-show-icon" checked>
+    </div>
+
+    <div>
+        <label for="toast-show-close-icon">Show Close Icon</label>
+        <input type="checkbox" id="toast-show-close-icon" checked>
+    </div>
+
+    <div>
+        <label for="toast-only-show-close-icon-on-hover">Only Show Close Icon On Hover</label>
+        <input type="checkbox" id="toast-only-show-close-icon-on-hover">
+    </div>
+
+    <div>
+        <label for="toast-animation-fade">Animation Fade</label>
+        <input type="checkbox" id="toast-animation-fade" checked>
+    </div>
+
+    <div>
+        <label for="toast-animation-scale">Animation Scale</label>
+        <input type="checkbox" id="toast-animation-scale">
+    </div>
 
     <script>
         document.getElementById('show-toast-btn').addEventListener('click', () => {
-            const text = document.getElementById('text-toast-input').value
-            const type = document.getElementById('type-toast-select').value
-            const position = document.getElementById('position-toast-select').value
+            const text = document.getElementById('toast-text').value
+            const type = document.getElementById('toast-type').value
+            const position = document.getElementById('toast-position').value
+            const duration = document.getElementById('toast-duration').value
+            const showToastIcon = document.getElementById('toast-show-icon').checked
+            const showCloseIcon = document.getElementById('toast-show-close-icon').checked
+            const onlyShowCloseIconOnHover = document.getElementById('toast-only-show-close-icon-on-hover').checked
+            const animationFade = document.getElementById('toast-animation-fade').checked
+            const animationScale = document.getElementById('toast-animation-scale').checked
 
             Toaster({
                 type,
                 text,
                 position,
+                duration,
+
+                showToastIcon,
+                showCloseIcon,
+                onlyShowCloseIconOnHover,
+
+                animationFade,
+                animationScale,
+
                 // showAnimationFade: false,
                 // hideAnimationFade: true,
 
-                // animationScale: true,
                 // showAnimationScale: true,
                 // hideAnimationScale: false,
-
-                // onlyShowCloseIconOnHover: true,
-                // showToastIcon: false,
-                // showCloseIcon: false,
             })
         })
     </script>
