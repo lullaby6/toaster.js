@@ -4,6 +4,10 @@
     --toaster-warning: #facc15;
     --toaster-error: #ef4444;
     --toaster-text: #fff;
+
+    --toaster-default-bg: #fafafa;
+    --toaster-default-text: #262626;
+    --toaster-default-border: #d4d4d4;
 }
 
 .toaster {
@@ -55,6 +59,12 @@
 .toaster-close-icon:hover {
     opacity: 1;
     scale: 1.1;
+}
+
+.toaster-default {
+    background-color: var(--toaster-default-bg);
+    color: var(--toaster-default-text);
+    border: 1px solid var(--toaster-default-border);
 }
 
 .toaster-info {
