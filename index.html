@@ -9,14 +9,41 @@
 </head>
 <body>
     <button id="show-toast-btn">Show Toast</button>
+    <input id="text-toast-input" type="text" placeholder="Enter text" value="Hello World">
+    <select id="type-toast-select">
+        <option disabled selected value="info">Type</option>
+        <option value="info">Info</option>
+        <option value="success">Success</option>
+        <option value="warning">Warning</option>
+        <option value="error">Error</option>
+    </select>
+    <select id="position-toast-select">
+        <option disabled selected value="bottom-right">Position</option>
+        <option value="top-left">Top Left</option>
+        <option value="top">Top</option>
+        <option value="top-right">Top Right</option>
+        <option value="bottom-left">Bottom Left</option>
+        <option value="bottom">Bottom</option>
+        <option value="bottom-right">Bottom Right</option>
+    </select>
 
     <script>
         document.getElementById('show-toast-btn').addEventListener('click', () => {
+            const text = document.getElementById('text-toast-input').value
+            const type = document.getElementById('type-toast-select').value
+            const position = document.getElementById('position-toast-select').value
+
             Toaster({
-                type: 'info',
-                text: 'Hello World',
-                position: 'bottom',
-                animationScale: true
+                type,
+                text,
+                position,
+                // showAnimationFade: false,
+                // hideAnimationFade: true,
+
+                // animationScale: true,
+                // showAnimationScale: true,
+                // hideAnimationScale: false,
+
                 // onlyShowCloseIconOnHover: true,
                 // showToastIcon: false,
                 // showCloseIcon: false,

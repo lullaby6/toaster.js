@@ -1,3 +1,16 @@
+// ToDo:
+// - Action Button
+// - Title
+// - Multiple Columns
+// - Toast Limit
+// - Slide Animation
+// - Pause on Hover
+// - Close on Click
+// - Progress Bar
+// - Progress Bar Position
+// - Custom Styles
+// - Custom Classes
+
 function Toaster({
     type = 'info',
     text = '',
@@ -9,7 +22,13 @@ function Toaster({
     animationDuration = 300,
     animationEase = 'ease-in-out',
     animationFade = true,
+    showAnimationFade = null,
+    hideAnimationFade = null,
     animationScale = false,
+    showAnimationScale = null,
+    hideAnimationScale = null,
+    customShowAnimation = null,
+    customHideAnimation = null,
 
     showToastIcon = true,
     showCloseIcon = true,
@@ -47,17 +66,55 @@ function Toaster({
         error: errorIcon,
     }
 
-    const hiddenStyles = {}
-    const showedStyles = {}
+    const showAnimation = [{}, {}]
+    const hideAnimation = [{}, {}]
 
     if (animationFade) {
-        hiddenStyles.opacity = 0
-        showedStyles.opacity = 1
+        if (showAnimationFade === null) {
+            showAnimationFade = true
+        }
+
+        if (hideAnimationFade === null) {
+            hideAnimationFade = true
+        }
+
+        if (showAnimationFade) {
+            showAnimation[0].opacity = 0
+            showAnimation[1].opacity = 1
+        }
+
+        if (hideAnimationFade) {
+            hideAnimation[0].opacity = 1
+            hideAnimation[1].opacity = 0
+        }
     }
 
     if (animationScale) {
-        hiddenStyles.scale = 0
-        showedStyles.scale = 1
+        if (showAnimationScale === null) {
+            showAnimationScale = true
+        }
+
+        if (hideAnimationScale === null) {
+            hideAnimationScale = true
+        }
+
+        if (showAnimationScale) {
+            showAnimation[0].scale = 0
+            showAnimation[1].scale = 1
+        }
+
+        if (hideAnimationScale) {
+            hideAnimation[0].scale = 1
+            hideAnimation[1].scale = 0
+        }
+    }
+
+    if (customShowAnimation) {
+        showAnimation = customShowAnimation
+    }
+
+    if (customHideAnimation) {
+        hideAnimation = customHideAnimation
     }
 
     const uuid = crypto.randomUUID()
@@ -94,7 +151,6 @@ function Toaster({
             toast.style.top = '0'
             toast.style.left = '50%'
             toast.style.translate = '-50% 0'
-            // toast.style.transform = 'translateX(-50%)'
             break
         case 'top-right':
             toast.style.top = '0'
@@ -115,28 +171,28 @@ function Toaster({
             break
     }
 
-    toast.animate([
-        hiddenStyles,
-        showedStyles
-    ], {
-        duration: animationDuration,
-        fill: 'forwards',
-        easing: animationEase
-    })
-
-    toast.ToasterHide = () => {
-        toast.animate([
-            showedStyles,
-            hiddenStyles
-        ], {
+    if (Object.keys(showAnimation[0]).length > 0 && Object.keys(showAnimation[1]).length > 0) {
+        toast.animate(showAnimation, {
             duration: animationDuration,
             fill: 'forwards',
             easing: animationEase
         })
+    }
 
-        setTimeout(() => {
+    toast.ToasterHide = () => {
+        if (Object.keys(hideAnimation[0]).length > 0 && Object.keys(hideAnimation[1]).length > 0) {
+            toast.animate(hideAnimation, {
+                duration: animationDuration,
+                fill: 'forwards',
+                easing: animationEase
+            })
+
+            setTimeout(() => {
+                toast.remove()
+            }, animationDuration)
+        } else {
             toast.remove()
-        }, animationDuration)
+        }
     }
 
     if (showCloseIcon) {
@@ -166,7 +222,3 @@ function Toaster({
         }, duration)
     }
 }
-
-// document.addEventListener('DOMContentLoaded', () => {
-    
-// })
