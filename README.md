@@ -2,6 +2,8 @@
 
 A simple and lightweight JavaScript library for creating customizable toast notifications.
 
+[Demo](https://lullaby6.github.io/toaster.js/)
+
 ## Features
 
 - Easy to use
@@ -13,10 +15,6 @@ A simple and lightweight JavaScript library for creating customizable toast noti
 - Close on click or hover options
 - Pause duration on hover
 - Custom icons support
-
-## Live Demo
-
-[Demo](https://lullaby6.github.io/toaster.js/)
 
 ## Installation
 
@@ -54,11 +52,22 @@ Toaster({
 
 ## Reference
 
-| Key | Type | Usage | Default |
+| Key | Type | Description | Default |
 |-----------------|----------------------|----------------------------------------------------------------------------|-------------|
-| text | string | Text display | "" |
+| text | string | Text to display in the toast | "" |
 | type | string | Type and styles of the toast (`default`, `dark`, `info`, `success`, `warning`, `error`) | "default" |
 | position | string | Position of the toast (`top-left`, `top`, `top-right`, `bottom-left`, `bottom`, `bottom-right`) | "bottom-right" |
+| clearPreviousToasts | string | Whether to clear previous toasts when a new one is created | true |
+| duration | boolean | Duration in milliseconds before the toast auto-closes (0 for no auto-close) | 3000 |
+| pauseDurationOnHover | boolean | Pause the duration timer when hovering over the toast | false |
+| animationDuration | number | Duration of show/hide animations in milliseconds | 300 |
+| animationEase | number | CSS easing function for animations | "ease-in-out" |
+| animationFade | string | Enable fade animation | true |
+| animationScale | boolean | Enable scale animation | false |
+| closeOnClick | boolean | Close the toast when clicked | false |
+| showToastIcon | boolean | Show an icon based on the toast type | true |
+| showCloseIcon | boolean | Show a close icon | true |
+| onlyShowCloseIconOnHover | boolean | Only show the close icon when hovering over the toast | false |
 
 ## Custom Icons
 
