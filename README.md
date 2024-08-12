@@ -2,7 +2,9 @@
 
 A simple and lightweight JavaScript library for creating customizable toast notifications.
 
-[Demo](https://lullaby6.github.io/toaster.js/)
+## Demo
+
+[Click here](https://lullaby6.github.io/toaster.js/)
 
 ## Features
 
