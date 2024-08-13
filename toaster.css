@@ -14,14 +14,61 @@
     --toaster-dark-border: #d4d4d4;
 }
 
-.toaster {
+.toaster-position-container {
     position: fixed;
+    z-index: 9999;
+    /* background-color: red; */
+    pointer-events: none;
+    width: 100px;
+    height: 100px;
+
+    padding: 16px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.toaster-position-container[data-toaster-container-position="top-left"] {
+    top: 0;
+    left: 0;
+}
+
+.toaster-position-container[data-toaster-container-position="top"] {
+    top: 0;
+    left: 50%;
+    translate: -50% 0;
+}
+
+.toaster-position-container[data-toaster-container-position="top-right"] {
+    top: 0;
+    right: 0;
+}
+
+.toaster-position-container[data-toaster-container-position="bottom-left"] {
+    bottom: 0;
+    left: 0;
+}
+
+.toaster-position-container[data-toaster-container-position="bottom"] {
+    bottom: 0;
+    left: 50%;
+    translate: -50% 0;
+}
+
+.toaster-position-container[data-toaster-container-position="bottom-right"] {
+    bottom: 0;
+    right: 0;
+}
+
+.toaster {
+    position: relative;
+    pointer-events: all;
     z-index: 9999;
     translate: 0 0;
     width: 300px;
     height: 25px;
     font-size: 16px;
-    margin: 16px;
     padding: 16px;
     border-radius: 6px;
     -webkit-border-radius: 6px;

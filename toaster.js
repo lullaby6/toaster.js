@@ -14,7 +14,7 @@ function Toaster({
     text = '',
     position = 'bottom-right',
 
-    clearPreviousToasts = true,
+    clearPreviousToasts = false,
 
     pauseDurationOnHover = false,
     duration = 3000,
@@ -123,6 +123,7 @@ function Toaster({
 
     const uuid = crypto.randomUUID()
     const div = document.createElement('div')
+    div.classList.add('toaster-container')
 
     div.innerHTML = `
         <div class="toaster toaster-${type} toaster-${uuid}">
@@ -142,7 +143,7 @@ function Toaster({
         </div>
     `
 
-    document.body.append(div)
+    document.querySelector(`[data-toaster-container-position="${position}"]`).append(div)
 
     const toast = document.querySelector(`.toaster-${uuid}`)
 
@@ -192,10 +193,10 @@ function Toaster({
             })
 
             setTimeout(() => {
-                toast.remove()
+                toast.closest('.toaster-container').remove()
             }, animationDuration)
         } else {
-            toast.remove()
+            toast.closest('.toaster-container').remove()
         }
     }
 
@@ -248,3 +249,16 @@ function Toaster({
         toast.addEventListener('click', toast.ToasterHide)
     }
 }
+
+function ToasterLoadPositionContainers() {
+    const positions = ['top-left', 'top', 'top-right', 'bottom-left', 'bottom', 'bottom-right']
+
+    positions.forEach(position => {
+        const div = document.createElement('div')
+        div.classList.add('toaster-position-container')
+        div.setAttribute('data-toaster-container-position', position)
+        document.body.append(div)
+    })
+}
+
+window.addEventListener('DOMContentLoaded', ToasterLoadPositionContainers)
