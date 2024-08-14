@@ -1,11 +1,9 @@
 // ToDo:
-// - Action Button
 // - Toast Limit
 // - Slide Animation
 // - Progress Bar
 // - Progress Bar Position
 // - Custom Attributes
-// - Show and Hide Animation Durations
 
 function Toaster({
     type = 'default',
@@ -19,6 +17,8 @@ function Toaster({
     pauseDurationOnHover = false,
     duration = 3000,
     animationDuration = 300,
+    showAnimationDuration = null,
+    hideAnimationDuration = null,
     animationEase = 'ease-in-out',
     animationFade = true,
     showAnimationFade = null,
@@ -35,12 +35,22 @@ function Toaster({
     showCloseIcon = true,
     onlyShowCloseIconOnHover = false,
 
+    showButton = false,
+    showButtonIcon = true,
+    buttonText = '',
+    onButtonClick = null,
+    customButton = null,
+
     toastClassName = '',
     iconClassName = '',
     closeIconClassName = '',
     contentClassName = '',
+    contentTextClassName = '',
     titleClassName = '',
     textClassName = '',
+    buttonClassName = '',
+    buttonTextClassName = '',
+    buttonIconClassName = '',
 
     toastAttributes = null,
     toastIconAttributes = null,
@@ -49,6 +59,9 @@ function Toaster({
     onLoad = null,
     onHide = null,
 
+    buttonIcon = `
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-hand-click"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 13v-8.5a1.5 1.5 0 0 1 3 0v7.5" /><path d="M11 11.5v-2a1.5 1.5 0 0 1 3 0v2.5" /><path d="M14 10.5a1.5 1.5 0 0 1 3 0v1.5" /><path d="M17 11.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7l-.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47" /><path d="M5 3l-1 -1" /><path d="M4 7h-1" /><path d="M14 3l1 -1" /><path d="M15 6h1" /></svg>
+    `,
     defaultIcon = null,
     darkIcon,
     infoIcon = `
@@ -149,12 +162,26 @@ function Toaster({
                 </div>
             ` : ''}
             <div class="toaster-content ${contentClassName}">
-                ${title ? `
-                    <h1 class="toaster-title ${titleClassName}">${title}</h1>
+                <div class="toaster-text-content ${contentTextClassName}">
+                    ${title ? `
+                        <h1 class="toaster-title ${titleClassName}">${title}</h1>
+                    `: ''}
+                    <p class="toaster-text ${textClassName}">${text}</p>
+                </div>
+                ${customButton ? `
+                    ${customButton}
+                `: (showButton && buttonText.trim() != '') ? `
+                    <button class="toaster-button ${buttonClassName}">
+                        ${(showButtonIcon && buttonIcon) ? `
+                            <div class="toaster-button-icon ${buttonIconClassName}">
+                                ${buttonIcon}
+                            </div>
+                        ` : ''}
+                        <p class="toaster-button-text ${buttonTextClassName}">${buttonText}</p>
+                    </button>
                 `: ''}
-                <p class="toaster-text ${textClassName}">${text}</p>
             </div>
-            ${showCloseIcon ? `
+            ${(showCloseIcon && closeIcon) ? `
                 <div class="toaster-close-icon toaster-close-icon-${uuid} ${closeIconClassName}">
                     ${closeIcon}
                 </div>
@@ -201,17 +228,35 @@ function Toaster({
     }
 
     if (Object.keys(showAnimation[0]).length > 0 && Object.keys(showAnimation[1]).length > 0) {
+        if (showAnimationDuration === null) {
+            showAnimationDuration = animationDuration
+        }
+
         toast.animate(showAnimation, {
-            duration: animationDuration,
+            duration: showAnimationDuration,
             fill: 'forwards',
             easing: animationEase
         })
     }
 
     toast.ToasterHide = () => {
+        if (toast.ToasterHiding) {
+            return
+        }
+
+        toast.ToasterHiding = true
+
+        if (toast.ToasterTimeout) {
+            clearTimeout(toast.ToasterTimeout)
+        }
+
         if (Object.keys(hideAnimation[0]).length > 0 && Object.keys(hideAnimation[1]).length > 0) {
+            if (hideAnimationDuration === null) {
+                hideAnimationDuration = animationDuration
+            }
+
             toast.animate(hideAnimation, {
-                duration: animationDuration,
+                duration: hideAnimationDuration,
                 fill: 'forwards',
                 easing: animationEase
             })
@@ -222,7 +267,7 @@ function Toaster({
                 }
 
                 toast.closest('.toaster-container').remove()
-            }, animationDuration)
+            }, hideAnimationDuration)
         } else {
             if (onHide && typeof onHide === 'function') {
                 onHide(toast)
@@ -257,28 +302,38 @@ function Toaster({
         let timeoutStartTime = Date.now();
         let timeoutTimeLeft = duration
 
-        timeout = setTimeout(toast.ToasterHide, duration)
+        toast.ToasterTimeout = setTimeout(toast.ToasterHide, duration)
 
         if (pauseDurationOnHover) {
             toast.addEventListener('mouseenter', () => {
-                if (!timeout) return
+                if (!toast.ToasterTimeout) return
+                if (toast.ToasterHiding) return
 
-                clearTimeout(timeout)
-                timeout = null
+                clearTimeout(toast.ToasterTimeout)
+                toast.ToasterTimeout = null
                 timeoutTimeLeft -= Date.now() - timeoutStartTime;
             })
 
             toast.addEventListener('mouseleave', () => {
-                if (timeout) return
+                if (toast.ToasterTimeout) return
+                if (toast.ToasterHiding) return
 
                 startTime = Date.now();
-                timeout = setTimeout(toast.ToasterHide, timeoutTimeLeft)
+                toast.ToasterTimeout = setTimeout(toast.ToasterHide, timeoutTimeLeft)
             })
         }
     }
 
     if (closeOnClick) {
         toast.addEventListener('click', toast.ToasterHide)
+    }
+
+    if (onButtonClick && typeof onButtonClick === 'function') {
+        const button = toast.querySelector(`.toaster-button`)
+
+        if (button) {
+            button.addEventListener('click', event => onButtonClick(event, toast, button))
+        }
     }
 }
 

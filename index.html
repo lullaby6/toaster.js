@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Toaster.js</title>
     <link rel="stylesheet" href="./toaster.css">
     <script src="./toaster.js" defer></script>
 </head>
@@ -94,6 +94,21 @@
         <input type="checkbox" id="toast-on-top" checked>
     </div>
 
+    <div>
+        <label for="toast-show-button">Show Button</label>
+        <input type="checkbox" id="toast-show-button">
+    </div>
+
+    <div>
+        <label for="toast-button-text">Button Text</label>
+        <input id="toast-button-text" type="text" placeholder="Enter button text" value="Button">
+    </div>
+
+    <div>
+        <label for="toast-show-button-icon"> Show Button Icon</label>
+        <input type="checkbox" id="toast-show-button-icon">
+    </div>
+
     <script>
         document.getElementById('show-toast-btn').addEventListener('click', () => {
             const text = document.getElementById('toast-text').value
@@ -110,6 +125,10 @@
             const closeOnClick = document.getElementById('toast-close-on-click').checked
             const clearPreviousToasts = document.getElementById('toast-clear-previous-toasts').checked
             const onTop = document.getElementById('toast-on-top').checked
+
+            const showButton = document.getElementById('toast-show-button').checked
+            const buttonText = document.getElementById('toast-button-text').value
+            const showButtonIcon = document.getElementById('toast-show-button-icon').checked
 
             console.log(clearPreviousToasts);
 
@@ -132,6 +151,11 @@
 
                 pauseDurationOnHover,
                 closeOnClick,
+
+                showButton,
+                buttonText,
+                showButtonIcon,
+                onButtonClick: (event, toast, button) => console.log(event, toast, button),
 
                 // showAnimationFade: false,
                 // hideAnimationFade: true,
