@@ -19,7 +19,7 @@
     top: 0;
     left: 0;
     z-index: 9999;
-    background-color: rgba(255, 0, 0, 0.322);
+    /* background-color: rgba(255, 0, 0, 0.322); */
     pointer-events: none;
     width: 100vw;
     height: 100vh;
@@ -28,7 +28,7 @@
 .toaster-position-container {
     position: absolute;
     z-index: 9999;
-    background-color: rgba(255, 255, 0, 0.342);
+    /* background-color: rgba(255, 255, 0, 0.342); */
     pointer-events: none;
     min-width: 0px;
     min-height: 0px;

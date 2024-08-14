@@ -35,6 +35,19 @@ function Toaster({
     showCloseIcon = true,
     onlyShowCloseIconOnHover = false,
 
+    toastClassName = '',
+    iconClassName = '',
+    closeIconClassName = '',
+    contentClassName = '',
+    textClassName = '',
+
+    toastAttributes = null,
+    toastIconAttributes = null,
+    closeIconAttributes = null,
+
+    onLoad = null,
+    onHide = null,
+
     defaultIcon = null,
     darkIcon,
     infoIcon = `
@@ -128,17 +141,17 @@ function Toaster({
     div.classList.add('toaster-container')
 
     div.innerHTML = `
-        <div class="toaster toaster-${type} toaster-${uuid}">
+        <div class="toaster toaster-${type} toaster-${uuid} ${toastClassName}">
             ${(showToastIcon && icons[type]) ? `
-                <div class="toaster-icon">
+                <div class="toaster-icon ${iconClassName}">
                     ${icons[type]}
                 </div>
             ` : ''}
-            <div class="toaster-content">
-                <p>${text}</p>
+            <div class="toaster-content ${contentClassName}">
+                <p class="toaster-text ${textClassName}">${text}</p>
             </div>
             ${showCloseIcon ? `
-                <div class="toaster-close-icon toaster-close-icon-${uuid}">
+                <div class="toaster-close-icon toaster-close-icon-${uuid} ${closeIconClassName}">
                     ${closeIcon}
                 </div>
             ` : ''}
@@ -149,6 +162,10 @@ function Toaster({
     document.querySelector(`[data-toaster-position-container="${position}"]`)[method](div)
 
     const toast = document.querySelector(`.toaster-${uuid}`)
+
+    if (onLoad && typeof onLoad === 'function') {
+        onLoad(toast)
+    }
 
     switch (position) {
         case 'top-left':
@@ -196,9 +213,17 @@ function Toaster({
             })
 
             setTimeout(() => {
+                if (onHide && typeof onHide === 'function') {
+                    onHide(toast)
+                }
+
                 toast.closest('.toaster-container').remove()
             }, animationDuration)
         } else {
+            if (onHide && typeof onHide === 'function') {
+                onHide(toast)
+            }
+
             toast.closest('.toaster-container').remove()
         }
     }
