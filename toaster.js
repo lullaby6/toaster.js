@@ -5,6 +5,7 @@
 // - Progress Bar
 // - Progress Bar Position
 // - Custom Attributes
+// - Show and Hide Animation Durations
 
 function Toaster({
     type = 'default',
@@ -178,7 +179,7 @@ function Toaster({
         case 'top':
             toast.style.top = '0'
             toast.style.left = '50%'
-            // toast.style.translate = '-50% 0'
+            toast.style.translate = '-50% 0'
             break
         case 'top-right':
             toast.style.top = '0'
@@ -191,7 +192,7 @@ function Toaster({
         case 'bottom':
             toast.style.bottom = '0'
             toast.style.left = '50%'
-            // toast.style.translate = '-50% 0'
+            toast.style.translate = '-50% 0'
             break
         case 'bottom-right':
             toast.style.bottom = '0'
