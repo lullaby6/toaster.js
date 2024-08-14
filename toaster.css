@@ -78,7 +78,7 @@
     min-width: 300px;
     overflow: hidden;
     font-size: 16px;
-    padding: 16px;
+    padding: 12px 16px;
     border-radius: 6px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
@@ -88,7 +88,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -106,7 +106,7 @@
     max-width: 250px;
     word-wrap: break-word;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 18px;
     margin: 0;
     width: 100%;
     text-align: left;
@@ -164,7 +164,6 @@
 
 .toaster-warning {
     background-color: var(--toaster-warning);
-    font-weight: 500;
 }
 
 .toaster-error {
