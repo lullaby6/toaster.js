@@ -52,9 +52,16 @@ function Toaster({
     buttonTextClassName = '',
     buttonIconClassName = '',
 
-    toastAttributes = null,
-    toastIconAttributes = null,
-    closeIconAttributes = null,
+    toastAttributes = '',
+    iconAttributes = '',
+    closeIconAttributes = '',
+    contentAttributes = '',
+    contentTextAttributes = '',
+    titleAttributes = '',
+    textAttributes = '',
+    buttonAttributes = '',
+    buttonTextAttributes = '',
+    buttonIconAttributes = '',
 
     onLoad = null,
     onHide = null,
@@ -88,6 +95,14 @@ function Toaster({
 
     if (duration != 0 && duration < animationDuration) {
         animationDuration = duration
+    }
+
+    if (showAnimationDuration === null) {
+        showAnimationDuration = animationDuration
+    }
+
+    if (hideAnimationDuration === null) {
+        hideAnimationDuration = animationDuration
     }
 
     const icons = {
@@ -228,10 +243,6 @@ function Toaster({
     }
 
     if (Object.keys(showAnimation[0]).length > 0 && Object.keys(showAnimation[1]).length > 0) {
-        if (showAnimationDuration === null) {
-            showAnimationDuration = animationDuration
-        }
-
         toast.animate(showAnimation, {
             duration: showAnimationDuration,
             fill: 'forwards',
@@ -251,10 +262,6 @@ function Toaster({
         }
 
         if (Object.keys(hideAnimation[0]).length > 0 && Object.keys(hideAnimation[1]).length > 0) {
-            if (hideAnimationDuration === null) {
-                hideAnimationDuration = animationDuration
-            }
-
             toast.animate(hideAnimation, {
                 duration: hideAnimationDuration,
                 fill: 'forwards',
