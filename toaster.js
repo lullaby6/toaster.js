@@ -1,7 +1,6 @@
 // ToDo:
 // - Action Button
 // - Title
-// - Multiple Columns
 // - Toast Limit
 // - Slide Animation
 // - Progress Bar
@@ -15,6 +14,7 @@ function Toaster({
     position = 'bottom-right',
 
     clearPreviousToasts = false,
+    onTop = true,
 
     pauseDurationOnHover = false,
     duration = 3000,
@@ -53,6 +53,8 @@ function Toaster({
         <svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
     `
 }) {
+    console.log(`clearPreviousToasts: ${clearPreviousToasts}`);
+
     if (clearPreviousToasts) {
         document.querySelectorAll('.toaster').forEach(toast => toast.ToasterHide())
     }
@@ -143,7 +145,8 @@ function Toaster({
         </div>
     `
 
-    document.querySelector(`[data-toaster-container-position="${position}"]`).append(div)
+    let method = onTop ? (position.startsWith('top') ? 'prepend' : 'append') : (position.startsWith('top') ? 'append' : 'prepend')
+    document.querySelector(`[data-toaster-position-container="${position}"]`)[method](div)
 
     const toast = document.querySelector(`.toaster-${uuid}`)
 
@@ -155,7 +158,7 @@ function Toaster({
         case 'top':
             toast.style.top = '0'
             toast.style.left = '50%'
-            toast.style.translate = '-50% 0'
+            // toast.style.translate = '-50% 0'
             break
         case 'top-right':
             toast.style.top = '0'
@@ -168,7 +171,7 @@ function Toaster({
         case 'bottom':
             toast.style.bottom = '0'
             toast.style.left = '50%'
-            toast.style.translate = '-50% 0'
+            // toast.style.translate = '-50% 0'
             break
         case 'bottom-right':
             toast.style.bottom = '0'
@@ -253,11 +256,15 @@ function Toaster({
 function ToasterLoadPositionContainers() {
     const positions = ['top-left', 'top', 'top-right', 'bottom-left', 'bottom', 'bottom-right']
 
+    const mainContainer = document.createElement('div')
+    mainContainer.classList.add('toaster-position-container-main')
+    document.body.appendChild(mainContainer)
+
     positions.forEach(position => {
         const div = document.createElement('div')
         div.classList.add('toaster-position-container')
-        div.setAttribute('data-toaster-container-position', position)
-        document.body.append(div)
+        div.setAttribute('data-toaster-position-container', position)
+        mainContainer.appendChild(div)
     })
 }
 

@@ -14,13 +14,24 @@
     --toaster-dark-border: #d4d4d4;
 }
 
-.toaster-position-container {
+.toaster-position-container-main {
     position: fixed;
+    top: 0;
+    left: 0;
     z-index: 9999;
-    /* background-color: red; */
+    background-color: rgba(255, 0, 0, 0.322);
     pointer-events: none;
-    width: 100px;
-    height: 100px;
+    width: 100vw;
+    height: 100vh;
+}
+
+.toaster-position-container {
+    position: absolute;
+    z-index: 9999;
+    background-color: rgba(255, 255, 0, 0.342);
+    pointer-events: none;
+    min-width: 0px;
+    min-height: 0px;
 
     padding: 16px;
 
@@ -29,40 +40,41 @@
     gap: 8px;
 }
 
-.toaster-position-container[data-toaster-container-position="top-left"] {
+.toaster-position-container[data-toaster-position-container="top-left"] {
     top: 0;
     left: 0;
 }
 
-.toaster-position-container[data-toaster-container-position="top"] {
+.toaster-position-container[data-toaster-position-container="top"] {
     top: 0;
     left: 50%;
     translate: -50% 0;
 }
 
-.toaster-position-container[data-toaster-container-position="top-right"] {
+.toaster-position-container[data-toaster-position-container="top-right"] {
     top: 0;
     right: 0;
 }
 
-.toaster-position-container[data-toaster-container-position="bottom-left"] {
+.toaster-position-container[data-toaster-position-container="bottom-left"] {
     bottom: 0;
     left: 0;
 }
 
-.toaster-position-container[data-toaster-container-position="bottom"] {
+.toaster-position-container[data-toaster-position-container="bottom"] {
     bottom: 0;
     left: 50%;
     translate: -50% 0;
 }
 
-.toaster-position-container[data-toaster-container-position="bottom-right"] {
+.toaster-position-container[data-toaster-position-container="bottom-right"] {
     bottom: 0;
     right: 0;
 }
 
 .toaster {
-    position: relative;
+    /* position: relative; */
+    position: static;
     pointer-events: all;
     z-index: 9999;
     translate: 0 0;

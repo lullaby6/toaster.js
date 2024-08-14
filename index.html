@@ -78,6 +78,16 @@
         <input type="checkbox" id="toast-close-on-click">
     </div>
 
+    <div>
+        <label for="toast-clear-previous-toasts">Clear Previous Toasts</label>
+        <input type="checkbox" id="toast-clear-previous-toasts">
+    </div>
+
+    <div>
+        <label for="toast-on-top">On Top</label>
+        <input type="checkbox" id="toast-on-top" checked>
+    </div>
+
     <script>
         document.getElementById('show-toast-btn').addEventListener('click', () => {
             const text = document.getElementById('toast-text').value
@@ -91,12 +101,19 @@
             const animationScale = document.getElementById('toast-animation-scale').checked
             const pauseDurationOnHover = document.getElementById('toast-pause-duration-on-hover').checked
             const closeOnClick = document.getElementById('toast-close-on-click').checked
+            const clearPreviousToasts = document.getElementById('toast-clear-previous-toasts').checked
+            const onTop = document.getElementById('toast-on-top').checked
+
+            console.log(clearPreviousToasts);
 
             Toaster({
                 type,
-                text,
+                text: `${text} ${Date.now()}`,
                 position,
                 duration,
+
+                clearPreviousToasts,
+                onTop,
 
                 showToastIcon,
                 showCloseIcon,
