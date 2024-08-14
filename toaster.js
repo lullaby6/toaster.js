@@ -4,6 +4,7 @@
 // - Progress Bar
 // - Progress Bar Position
 // - Custom Attributes
+// - Inverted Layout
 
 function Toaster({
     type = 'default',
@@ -87,8 +88,6 @@ function Toaster({
         <svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
     `
 }) {
-    console.log(`clearPreviousToasts: ${clearPreviousToasts}`);
-
     if (clearPreviousToasts) {
         document.querySelectorAll('.toaster').forEach(toast => toast.ToasterHide())
     }
@@ -178,14 +177,16 @@ function Toaster({
             ` : ''}
             <div class="toaster-content ${contentClassName}">
                 <div class="toaster-text-content ${contentTextClassName}">
-                    ${title ? `
+                    ${(title && title.trim() != '') ? `
                         <h1 class="toaster-title ${titleClassName}">${title}</h1>
                     `: ''}
-                    <p class="toaster-text ${textClassName}">${text}</p>
+                    ${(text && text.trim() != '') ? `
+                        <p class="toaster-text ${textClassName}">${text}</p>
+                    ` : ''}
                 </div>
                 ${customButton ? `
                     ${customButton}
-                `: (showButton && buttonText.trim() != '') ? `
+                `: (showButton && (buttonText.trim() != '' || (showButtonIcon && buttonIcon))) ? `
                     <button class="toaster-button ${buttonClassName}">
                         ${(showButtonIcon && buttonIcon) ? `
                             <div class="toaster-button-icon ${buttonIconClassName}">
