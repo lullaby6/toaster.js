@@ -1,15 +1,14 @@
 // ToDo:
 // - Action Button
-// - Title
 // - Toast Limit
 // - Slide Animation
 // - Progress Bar
 // - Progress Bar Position
-// - Custom Styles
-// - Custom Classes
+// - Custom Attributes
 
 function Toaster({
     type = 'default',
+    title = null,
     text = '',
     position = 'bottom-right',
 
@@ -39,6 +38,7 @@ function Toaster({
     iconClassName = '',
     closeIconClassName = '',
     contentClassName = '',
+    titleClassName = '',
     textClassName = '',
 
     toastAttributes = null,
@@ -148,6 +148,9 @@ function Toaster({
                 </div>
             ` : ''}
             <div class="toaster-content ${contentClassName}">
+                ${title ? `
+                    <h1 class="toaster-title ${titleClassName}">${title}</h1>
+                `: ''}
                 <p class="toaster-text ${textClassName}">${text}</p>
             </div>
             ${showCloseIcon ? `

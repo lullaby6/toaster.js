@@ -9,6 +9,12 @@
 </head>
 <body>
     <button id="show-toast-btn">Show Toast</button>
+
+    <div>
+        <label for="toast-title">Title</label>
+        <input id="toast-title" type="text" placeholder="Enter title" value="Title">
+    </div>
+
     <div>
         <label for="toast-text">Text</label>
         <input id="toast-text" type="text" placeholder="Enter text" value="Hello World">
@@ -91,6 +97,7 @@
     <script>
         document.getElementById('show-toast-btn').addEventListener('click', () => {
             const text = document.getElementById('toast-text').value
+            const title = document.getElementById('toast-title').value
             const type = document.getElementById('toast-type').value
             const position = document.getElementById('toast-position').value
             const duration = document.getElementById('toast-duration').value
@@ -107,8 +114,9 @@
             console.log(clearPreviousToasts);
 
             Toaster({
+                title,
                 type,
-                text: `${text} ${Date.now()}`,
+                text,
                 position,
                 duration,
 
