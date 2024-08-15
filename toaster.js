@@ -9,6 +9,8 @@
 // - Promises Callback Pending, Success, Error
 // - Update Toast
 // - Theme Default, Dark, Light
+// - Smaller Icons
+// - Icon Buton On Top Right
 
 async function Toaster({
     id = null,
@@ -29,11 +31,11 @@ async function Toaster({
     hideAnimationDuration = null,
     animationEase = 'ease-in-out',
     animationFade = true,
-    showAnimationFade = null,
-    hideAnimationFade = null,
+    showAnimationFade = true,
+    hideAnimationFade = true,
     animationScale = false,
-    showAnimationScale = null,
-    hideAnimationScale = null,
+    showAnimationScale = true,
+    hideAnimationScale = true,
     customShowAnimation = null,
     customHideAnimation = null,
 
@@ -108,25 +110,15 @@ async function Toaster({
         return
     }
 
-    if (delay > 0) {
-        await new Promise((resolve) => setTimeout(resolve, delay))
-    }
+    if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay))
 
-    if (clearPreviousToasts) {
-        document.querySelectorAll('.toaster').forEach(toast => toast.ToasterHide())
-    }
+    if (clearPreviousToasts) document.querySelectorAll('.toaster').forEach(toast => toast.ToasterHide())
 
-    if (duration != 0 && duration < animationDuration) {
-        animationDuration = duration
-    }
+    if (duration != 0 && duration < animationDuration) animationDuration = duration
 
-    if (showAnimationDuration === null) {
-        showAnimationDuration = animationDuration
-    }
+    if (showAnimationDuration === null) showAnimationDuration = animationDuration
 
-    if (hideAnimationDuration === null) {
-        hideAnimationDuration = animationDuration
-    }
+    if (hideAnimationDuration === null) hideAnimationDuration = animationDuration
 
     const icons = {
         default: defaultIcon,
@@ -141,14 +133,6 @@ async function Toaster({
     const hideAnimation = [{}, {}]
 
     if (animationFade) {
-        if (showAnimationFade === null) {
-            showAnimationFade = true
-        }
-
-        if (hideAnimationFade === null) {
-            hideAnimationFade = true
-        }
-
         if (showAnimationFade) {
             showAnimation[0].opacity = 0
             showAnimation[1].opacity = 1
@@ -161,14 +145,6 @@ async function Toaster({
     }
 
     if (animationScale) {
-        if (showAnimationScale === null) {
-            showAnimationScale = true
-        }
-
-        if (hideAnimationScale === null) {
-            hideAnimationScale = true
-        }
-
         if (showAnimationScale) {
             showAnimation[0].scale = 0
             showAnimation[1].scale = 1
@@ -180,19 +156,14 @@ async function Toaster({
         }
     }
 
-    if (customShowAnimation) {
-        showAnimation = customShowAnimation
-    }
+    if (customShowAnimation) showAnimation = customShowAnimation
 
-    if (customHideAnimation) {
-        hideAnimation = customHideAnimation
-    }
+    if (customHideAnimation) hideAnimation = customHideAnimation
 
     let div = null;
 
-    if (toast) {
-        div = toast.closest('.toaster-container')
-    } else {
+    if (toast) div = toast.closest('.toaster-container')
+    else {
         div = document.createElement('div')
         div.classList.add('toaster-container')
     }
@@ -242,14 +213,8 @@ async function Toaster({
     toast = document.querySelector(`.toaster-${toastID}`)
 
     if (!toastByProps) {
-        if (onLoad && typeof onLoad === 'function') {
-            onLoad(toast)
-        }
-    } else {
-        if (onChange && typeof onChange === 'function') {
-            onChange(toast)
-        }
-    }
+        if (onLoad && typeof onLoad === 'function') onLoad(toast)
+    } else if (onChange && typeof onChange === 'function') onChange(toast)
 
     if (!toastByProps && Object.keys(showAnimation[0]).length > 0 && Object.keys(showAnimation[1]).length > 0) {
         toast.animate(showAnimation, {
@@ -266,9 +231,7 @@ async function Toaster({
 
         toast.ToasterHiding = true
 
-        if (toast.ToasterTimeout) {
-            clearTimeout(toast.ToasterTimeout)
-        }
+        if (toast.ToasterTimeout) clearTimeout(toast.ToasterTimeout)
 
         if (Object.keys(hideAnimation[0]).length > 0 && Object.keys(hideAnimation[1]).length > 0) {
             toast.animate(hideAnimation, {
@@ -278,9 +241,7 @@ async function Toaster({
             })
 
             setTimeout(() => {
-                if (onHide && typeof onHide === 'function') {
-                    onHide(toast)
-                }
+                if (onHide && typeof onHide === 'function') onHide(toast)
 
                 toast.closest('.toaster-container').remove()
             }, hideAnimationDuration)
@@ -300,17 +261,11 @@ async function Toaster({
         if (onlyShowCloseIconOnHover) {
             closeIcon.style.opacity = 0
 
-            toast.addEventListener('mouseenter', () =>
-                closeIcon.style.opacity = 0.5
-            )
+            toast.addEventListener('mouseenter', () => closeIcon.style.opacity = 0.5)
 
-            toast.addEventListener('mouseleave', () =>
-                closeIcon.style.opacity = 0
-            )
+            toast.addEventListener('mouseleave', () => closeIcon.style.opacity = 0)
 
-            closeIcon.addEventListener('mouseover', () =>
-                closeIcon.style.opacity = 1
-            )
+            closeIcon.addEventListener('mouseover', () =>closeIcon.style.opacity = 1)
         }
     }
 
@@ -347,9 +302,7 @@ async function Toaster({
     if (onButtonClick && typeof onButtonClick === 'function') {
         const button = toast.querySelector(`.toaster-button`)
 
-        if (button) {
-            button.addEventListener('click', event => onButtonClick(event, toast, button))
-        }
+        if (button) button.addEventListener('click', event => onButtonClick(event, toast, button))
     }
 }
 
