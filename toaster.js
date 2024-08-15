@@ -5,16 +5,14 @@
 // - Progress Bar Position
 // - Custom Attributes
 // - Inverted Layout
-// - Newest on Top
-// - Close Button Icon in right Top
-// - Small Toast Icon
 // - Right to Left Layout
 // - Promises Callback Pending, Success, Error
 // - Update Toast
-// - Theme Dark, Light
+// - Theme Default, Dark, Light
 
 async function Toaster({
     id = null,
+    toast = null,
     type = 'default',
     title = null,
     text = '',
@@ -97,13 +95,16 @@ async function Toaster({
         <svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
     `
 }) {
-    const toastID = id || crypto.randomUUID()
-    const existingToast = document.querySelector(`[data-toaster-id="${toastID}"]`)
+    let toastID = toast
+        ? toast.getAttribute('data-toaster-id')
+        : (id || crypto.randomUUID())
 
-    if (existingToast) {
+    const toastByProps = toast ? true : false
+
+    if (!toast && document.querySelector(`[data-toaster-id="${toastID}"]`)) {
         console.error(`Toaster ${toastID} already exists.`);
 
-        return existingToast
+        return
     }
 
     if (delay > 0) {
@@ -186,8 +187,14 @@ async function Toaster({
         hideAnimation = customHideAnimation
     }
 
-    const div = document.createElement('div')
-    div.classList.add('toaster-container')
+    let div = null;
+
+    if (toast) {
+        div = toast.closest('.toaster-container')
+    } else {
+        div = document.createElement('div')
+        div.classList.add('toaster-container')
+    }
 
     div.innerHTML = `
         <div class="toaster toaster-${type} toaster-${toastID} ${toastClassName}" data-toaster-id="${toastID}" data-toaster-date="${Date.now()}">
@@ -226,45 +233,18 @@ async function Toaster({
         </div>
     `
 
-    let method = onTop ? (position.startsWith('top') ? 'prepend' : 'append') : (position.startsWith('top') ? 'append' : 'prepend')
-    document.querySelector(`[data-toaster-position-container="${position}"]`)[method](div)
+    if (!toast) {
+        let method = onTop ? (position.startsWith('top') ? 'prepend' : 'append') : (position.startsWith('top') ? 'append' : 'prepend')
+        document.querySelector(`[data-toaster-position-container="${position}"]`)[method](div)
+    }
 
-    const toast = document.querySelector(`.toaster-${toastID}`)
+    toast = document.querySelector(`.toaster-${toastID}`)
 
     if (onLoad && typeof onLoad === 'function') {
         onLoad(toast)
     }
 
-    switch (position) {
-        case 'top-left':
-            toast.style.top = '0'
-            toast.style.left = '0'
-            break
-        case 'top':
-            toast.style.top = '0'
-            toast.style.left = '50%'
-            toast.style.translate = '-50% 0'
-            break
-        case 'top-right':
-            toast.style.top = '0'
-            toast.style.right = '0'
-            break
-        case 'bottom-left':
-            toast.style.bottom = '0'
-            toast.style.left = '0'
-            break
-        case 'bottom':
-            toast.style.bottom = '0'
-            toast.style.left = '50%'
-            toast.style.translate = '-50% 0'
-            break
-        case 'bottom-right':
-            toast.style.bottom = '0'
-            toast.style.right = '0'
-            break
-    }
-
-    if (Object.keys(showAnimation[0]).length > 0 && Object.keys(showAnimation[1]).length > 0) {
+    if (!toastByProps && Object.keys(showAnimation[0]).length > 0 && Object.keys(showAnimation[1]).length > 0) {
         toast.animate(showAnimation, {
             duration: showAnimationDuration,
             fill: 'forwards',
