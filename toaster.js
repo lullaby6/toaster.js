@@ -5,8 +5,16 @@
 // - Progress Bar Position
 // - Custom Attributes
 // - Inverted Layout
+// - Newest on Top
+// - Close Button Icon in right Top
+// - Small Toast Icon
+// - Right to Left Layout
+// - Promises Callback Pending, Success, Error
+// - Update Toast
+// - Theme Dark, Light
 
-function Toaster({
+async function Toaster({
+    id = null,
     type = 'default',
     title = null,
     text = '',
@@ -15,6 +23,7 @@ function Toaster({
     clearPreviousToasts = false,
     onTop = true,
 
+    delay = 0,
     pauseDurationOnHover = false,
     duration = 3000,
     animationDuration = 300,
@@ -88,6 +97,19 @@ function Toaster({
         <svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
     `
 }) {
+    const toastID = id || crypto.randomUUID()
+    const existingToast = document.querySelector(`[data-toaster-id="${toastID}"]`)
+
+    if (existingToast) {
+        console.error(`Toaster ${toastID} already exists.`);
+
+        return existingToast
+    }
+
+    if (delay > 0) {
+        await new Promise((resolve) => setTimeout(resolve, delay))
+    }
+
     if (clearPreviousToasts) {
         document.querySelectorAll('.toaster').forEach(toast => toast.ToasterHide())
     }
@@ -164,12 +186,11 @@ function Toaster({
         hideAnimation = customHideAnimation
     }
 
-    const uuid = crypto.randomUUID()
     const div = document.createElement('div')
     div.classList.add('toaster-container')
 
     div.innerHTML = `
-        <div class="toaster toaster-${type} toaster-${uuid} ${toastClassName}">
+        <div class="toaster toaster-${type} toaster-${toastID} ${toastClassName}" data-toaster-id="${toastID}" data-toaster-date="${Date.now()}">
             ${(showToastIcon && icons[type]) ? `
                 <div class="toaster-icon ${iconClassName}">
                     ${icons[type]}
@@ -198,7 +219,7 @@ function Toaster({
                 `: ''}
             </div>
             ${(showCloseIcon && closeIcon) ? `
-                <div class="toaster-close-icon toaster-close-icon-${uuid} ${closeIconClassName}">
+                <div class="toaster-close-icon toaster-close-icon-${toastID} ${closeIconClassName}">
                     ${closeIcon}
                 </div>
             ` : ''}
@@ -208,7 +229,7 @@ function Toaster({
     let method = onTop ? (position.startsWith('top') ? 'prepend' : 'append') : (position.startsWith('top') ? 'append' : 'prepend')
     document.querySelector(`[data-toaster-position-container="${position}"]`)[method](div)
 
-    const toast = document.querySelector(`.toaster-${uuid}`)
+    const toast = document.querySelector(`.toaster-${toastID}`)
 
     if (onLoad && typeof onLoad === 'function') {
         onLoad(toast)
@@ -286,7 +307,7 @@ function Toaster({
     }
 
     if (showCloseIcon) {
-        const closeIcon = document.querySelector(`.toaster-close-icon-${uuid}`)
+        const closeIcon = document.querySelector(`.toaster-close-icon-${toastID}`)
         closeIcon.addEventListener('click', toast.ToasterHide)
 
         if (onlyShowCloseIconOnHover) {
@@ -358,6 +379,12 @@ function ToasterLoadPositionContainers() {
         div.setAttribute('data-toaster-position-container', position)
         mainContainer.appendChild(div)
     })
+}
+
+function ToasterHideAll() {
+    const toasts = document.querySelectorAll('.toaster')
+
+    toasts.forEach(toast => toast.ToasterHide())
 }
 
 window.addEventListener('DOMContentLoaded', ToasterLoadPositionContainers)
