@@ -105,9 +105,7 @@ async function Toaster({
         : (id || crypto.randomUUID())
 
     if (!toastByProps && document.querySelector(`[data-toaster-id="${toastID}"]`)) {
-        console.error(`Toaster ${toastID} already exists.`);
-
-        return
+        return console.error(`Toaster ${toastID} already exists.`);
     }
 
     if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay))
@@ -225,10 +223,7 @@ async function Toaster({
     }
 
     toast.ToasterHide = () => {
-        if (toast.ToasterHiding) {
-            return
-        }
-
+        if (toast.ToasterHiding) return
         toast.ToasterHiding = true
 
         if (toast.ToasterTimeout) clearTimeout(toast.ToasterTimeout)
@@ -246,9 +241,7 @@ async function Toaster({
                 toast.closest('.toaster-container').remove()
             }, hideAnimationDuration)
         } else {
-            if (onHide && typeof onHide === 'function') {
-                onHide(toast)
-            }
+            if (onHide && typeof onHide === 'function') onHide(toast)
 
             toast.closest('.toaster-container').remove()
         }
@@ -277,8 +270,7 @@ async function Toaster({
 
         if (pauseDurationOnHover) {
             toast.addEventListener('mouseenter', () => {
-                if (!toast.ToasterTimeout) return
-                if (toast.ToasterHiding) return
+                if (!toast.ToasterTimeout || toast.ToasterHiding) return
 
                 clearTimeout(toast.ToasterTimeout)
                 toast.ToasterTimeout = null
@@ -286,8 +278,7 @@ async function Toaster({
             })
 
             toast.addEventListener('mouseleave', () => {
-                if (toast.ToasterTimeout) return
-                if (toast.ToasterHiding) return
+                if (toast.ToasterTimeout || toast.ToasterHiding) return
 
                 startTime = Date.now();
                 toast.ToasterTimeout = setTimeout(toast.ToasterHide, timeoutTimeLeft)
@@ -295,9 +286,7 @@ async function Toaster({
         }
     }
 
-    if (closeOnClick) {
-        toast.addEventListener('click', toast.ToasterHide)
-    }
+    if (closeOnClick) toast.addEventListener('click', toast.ToasterHide)
 
     if (onButtonClick && typeof onButtonClick === 'function') {
         const button = toast.querySelector(`.toaster-button`)
