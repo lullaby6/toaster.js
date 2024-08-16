@@ -1,11 +1,8 @@
 // ToDo:
 // - Toast Limit
 // - Slide Animation
-// - Progress Bar
-// - Progress Bar Position
 // - Custom Attributes
 // - Inverted Layout
-// - Right to Left Layout
 // - Promises Callback Pending, Success, Error
 // - Update Toast
 // - Theme Default, Dark, Light
@@ -53,7 +50,7 @@ async function Toaster({
     customButton = null,
 
     showProgressBar = false,
-    progressOnTop = false,
+    progressBarOnTop = false,
 
     toastClassName = '',
     iconClassName = '',
@@ -65,6 +62,7 @@ async function Toaster({
     buttonClassName = '',
     buttonTextClassName = '',
     buttonIconClassName = '',
+    progressBarClassName = '',
 
     toastAttributes = '',
     iconAttributes = '',
@@ -205,7 +203,7 @@ async function Toaster({
                 </div>
             ` : ''}
             ${showProgressBar ? `
-                <span class='toaster-progress-bar'></span>
+                <span class='toaster-progress-bar ${progressBarOnTop ? 'toaster-progress-bar-top' : ''} ${progressBarClassName}'></span>
             ` : ''}
         </div>
     `

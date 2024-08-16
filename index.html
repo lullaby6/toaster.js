@@ -124,6 +124,11 @@
         <input type="checkbox" id="toast-show-progress-bar">
     </div>
 
+    <div>
+        <label for="toast-progress-bar-on-top">Progress Bar On Top</label>
+        <input type="checkbox" id="toast-progress-bar-on-top">
+    </div>
+
     <script>
         document.getElementById('show-toast-btn').addEventListener('click', () => {
             const text = document.getElementById('toast-text').value
@@ -148,6 +153,7 @@
 
             const closeIconOnTopRight = document.getElementById('toast-close-icon-on-top-right').checked
             const showProgressBar = document.getElementById('toast-show-progress-bar').checked
+            const progressBarOnTop = document.getElementById('toast-progress-bar-on-top').checked
 
             console.log(clearPreviousToasts);
 
@@ -181,6 +187,7 @@
                 closeIconOnTopRight,
 
                 showProgressBar,
+                progressBarOnTop,
 
                 // showAnimationFade: false,
                 // hideAnimationFade: true,

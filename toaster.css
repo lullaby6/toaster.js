@@ -10,7 +10,7 @@
     --toaster-default-bg: #fff;
     --toaster-default-text: #262626;
     --toaster-default-border: #d4d4d4;
-    --toaster-default-progress-bar: #262626;
+    --toaster-default-progress-bar: #0f0f0f;
 
     --toaster-dark-bg: #0a0a0a;
     --toaster-dark-text: #fafafa;
@@ -205,6 +205,11 @@
     -moz-transition: all 100 ease-in-out;
     -ms-transition: all 100 ease-in-out;
     -o-transition: all 100 ease-in-out;
+}
+
+.toaster-progress-bar-top {
+    top: 0;
+    bottom: auto;
 }
 
 .toaster-icon {
