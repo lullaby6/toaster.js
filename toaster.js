@@ -10,8 +10,6 @@
 // - Update Toast
 // - Theme Default, Dark, Light
 // - Smaller Icons
-// - Icon Buton On Top Right
-// - Mobile Adaptation
 
 async function Toaster({
     id = null,
@@ -45,6 +43,7 @@ async function Toaster({
     showToastIcon = true,
     showCloseIcon = true,
     onlyShowCloseIconOnHover = false,
+    closeIconOnTopRight = false,
 
     showButton = false,
     showButtonIcon = true,
@@ -197,7 +196,7 @@ async function Toaster({
                 `: ''}
             </div>
             ${(showCloseIcon && closeIcon) ? `
-                <div class="toaster-close-icon toaster-close-icon-${toastID} ${closeIconClassName}">
+                <div class="toaster-close-icon toaster-close-icon-${toastID} ${closeIconClassName} ${closeIconOnTopRight ? 'toaster-close-icon-top-right' : ''}">
                     ${closeIcon}
                 </div>
             ` : ''}

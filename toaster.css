@@ -210,6 +210,13 @@
     scale: 1.1;
 }
 
+.toaster-close-icon-top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 2.5px 5px;
+}
+
 .toaster-default {
     background-color: var(--toaster-default-bg);
     color: var(--toaster-default-text);

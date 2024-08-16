@@ -114,6 +114,11 @@
         <input type="checkbox" id="toast-show-button-icon">
     </div>
 
+    <div>
+        <label for="toast-close-icon-on-top-right">Close Icon On Top Right</label>
+        <input type="checkbox" id="toast-close-icon-on-top-right">
+    </div>
+
     <script>
         document.getElementById('show-toast-btn').addEventListener('click', () => {
             const text = document.getElementById('toast-text').value
@@ -135,6 +140,8 @@
             const showButton = document.getElementById('toast-show-button').checked
             const buttonText = document.getElementById('toast-button-text').value
             const showButtonIcon = document.getElementById('toast-show-button-icon').checked
+
+            const closeIconOnTopRight = document.getElementById('toast-close-icon-on-top-right').checked
 
             console.log(clearPreviousToasts);
 
@@ -164,6 +171,8 @@
                 buttonText,
                 showButtonIcon,
                 onButtonClick: (event, toast, button) => console.log(event, toast, button),
+
+                closeIconOnTopRight,
 
                 // showAnimationFade: false,
                 // hideAnimationFade: true,
