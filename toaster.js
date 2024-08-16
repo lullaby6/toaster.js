@@ -11,6 +11,7 @@
 // - Theme Default, Dark, Light
 // - Smaller Icons
 // - Icon Buton On Top Right
+// - Mobile Adaptation
 
 async function Toaster({
     id = null,
@@ -305,6 +306,8 @@ function ToasterLoadPositionContainers() {
     positions.forEach(position => {
         const div = document.createElement('div')
         div.classList.add('toaster-position-container')
+        if (position.startsWith('top')) div.classList.add('toaster-position-container-top')
+        else if (position.startsWith('bottom')) div.classList.add('toaster-position-container-bottom')
         div.setAttribute('data-toaster-position-container', position)
         mainContainer.appendChild(div)
     })
