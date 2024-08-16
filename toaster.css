@@ -5,9 +5,12 @@
     --toaster-error: #ef4444;
     --toaster-text: #fff;
 
+    --toaster-progress-bar: #fff;
+
     --toaster-default-bg: #fff;
     --toaster-default-text: #262626;
     --toaster-default-border: #d4d4d4;
+    --toaster-default-progress-bar: #262626;
 
     --toaster-dark-bg: #0a0a0a;
     --toaster-dark-text: #fafafa;
@@ -189,6 +192,21 @@
     text-align: left;
 }
 
+.toaster-progress-bar {
+    background-color: var(--toaster-progress-bar);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 7.5%;
+    opacity: 0.375;
+    transition: all 100 ease-in-out;
+    -webkit-transition: all 100 ease-in-out;
+    -moz-transition: all 100 ease-in-out;
+    -ms-transition: all 100 ease-in-out;
+    -o-transition: all 100 ease-in-out;
+}
+
 .toaster-icon {
     margin-top: 5px;
     font-size: 35px;
@@ -226,6 +244,10 @@
 .toaster-default .toaster-button {
     color: var(--toaster-default-text);
     border: 1px solid var(--toaster-default-border);
+}
+
+.toaster-default .toaster-progress-bar {
+    background-color: var(--toaster-default-progress-bar);
 }
 
 .toaster-dark {

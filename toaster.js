@@ -14,6 +14,7 @@
 async function Toaster({
     id = null,
     toast = null,
+
     type = 'default',
     title = null,
     text = '',
@@ -50,6 +51,9 @@ async function Toaster({
     buttonText = '',
     onButtonClick = null,
     customButton = null,
+
+    showProgressBar = false,
+    progressOnTop = false,
 
     toastClassName = '',
     iconClassName = '',
@@ -200,6 +204,9 @@ async function Toaster({
                     ${closeIcon}
                 </div>
             ` : ''}
+            ${showProgressBar ? `
+                <span class='toaster-progress-bar'></span>
+            ` : ''}
         </div>
     `
 
@@ -226,7 +233,15 @@ async function Toaster({
         if (toast.ToasterHiding) return
         toast.ToasterHiding = true
 
-        if (toast.ToasterTimeout) clearTimeout(toast.ToasterTimeout)
+        if (toast.ToasterTimeout) {
+            clearTimeout(toast.ToasterTimeout)
+            toast.ToasterTimeout = null
+        }
+
+        if (toast.ToasterInterval) {
+            clearInterval(toast.ToasterInterval)
+            toast.ToasterInterval = null
+        }
 
         if (Object.keys(hideAnimation[0]).length > 0 && Object.keys(hideAnimation[1]).length > 0) {
             toast.animate(hideAnimation, {
@@ -263,10 +278,23 @@ async function Toaster({
     }
 
     if (duration > 0) {
-        let timeoutStartTime = Date.now();
-        let timeoutTimeLeft = duration
+        toast.ToasterTimeoutStartTime = Date.now();
+        toast.ToasterTimeoutResumeTime = Date.now();
+        toast.ToasterTimeoutTimeLeft = duration
 
         toast.ToasterTimeout = setTimeout(toast.ToasterHide, duration)
+
+        toast.ToasterInvervalMiliseconds = 0
+
+        if (showProgressBar) {
+            const progressBar = toast.querySelector(`.toaster-progress-bar`)
+
+            toast.ToasterInterval = setInterval(() => {
+                const durationPercentage = ((Date.now() - toast.ToasterTimeoutStartTime) * 100) / duration
+
+                progressBar.style.width = `${durationPercentage}%`
+            }, 1)
+        }
 
         if (pauseDurationOnHover) {
             toast.addEventListener('mouseenter', () => {
@@ -274,15 +302,37 @@ async function Toaster({
 
                 clearTimeout(toast.ToasterTimeout)
                 toast.ToasterTimeout = null
-                timeoutTimeLeft -= Date.now() - timeoutStartTime;
+
+                if (toast.ToasterInterval) {
+                    clearInterval(toast.ToasterInterval)
+                    toast.ToasterInterval = null
+                }
+
+                toast.ToasterTimeoutTimeLeft -= Date.now() - toast.ToasterTimeoutResumeTime;
             })
 
             toast.addEventListener('mouseleave', () => {
-                if (toast.ToasterTimeout || toast.ToasterHiding) return
+                if (toast.ToasterTimeout || toast.ToasterHiding) return;
 
-                startTime = Date.now();
-                toast.ToasterTimeout = setTimeout(toast.ToasterHide, timeoutTimeLeft)
-            })
+                toast.ToasterTimeoutResumeTime = Date.now();
+                toast.ToasterTimeout = setTimeout(toast.ToasterHide, toast.ToasterTimeoutTimeLeft);
+
+                if (showProgressBar) {
+                    const progressBar = toast.querySelector(`.toaster-progress-bar`);
+
+                    const currentProgressPercentage = parseFloat(window.getComputedStyle(progressBar).width) / progressBar.parentElement.clientWidth * 100;
+
+                    const remainingPercentage = (toast.ToasterTimeoutTimeLeft / duration) * 100;
+                    // const newProgressWidth = currentProgressPercentage + remainingPercentage * (Date.now() - toast.ToasterTimeoutResumeTime) / toast.ToasterTimeoutTimeLeft;
+
+                    toast.ToasterInterval = setInterval(() => {
+                        const elapsed = Date.now() - toast.ToasterTimeoutResumeTime;
+                        const percentage = (elapsed / toast.ToasterTimeoutTimeLeft) * remainingPercentage;
+
+                        progressBar.style.width = `${currentProgressPercentage + percentage}%`;
+                    }, 1);
+                }
+            });
         }
     }
 

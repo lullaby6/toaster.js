@@ -12,7 +12,7 @@
 
     <div>
         <label for="toast-title">Title</label>
-        <input id="toast-title" type="text" placeholder="Enter title" value="Title">
+        <input id="toast-title" type="text" placeholder="Enter title" value="">
     </div>
 
     <div>
@@ -119,6 +119,11 @@
         <input type="checkbox" id="toast-close-icon-on-top-right">
     </div>
 
+    <div>
+        <label for="toast-show-progress-bar">Show Progress Bar</label>
+        <input type="checkbox" id="toast-show-progress-bar">
+    </div>
+
     <script>
         document.getElementById('show-toast-btn').addEventListener('click', () => {
             const text = document.getElementById('toast-text').value
@@ -142,6 +147,7 @@
             const showButtonIcon = document.getElementById('toast-show-button-icon').checked
 
             const closeIconOnTopRight = document.getElementById('toast-close-icon-on-top-right').checked
+            const showProgressBar = document.getElementById('toast-show-progress-bar').checked
 
             console.log(clearPreviousToasts);
 
@@ -173,6 +179,8 @@
                 onButtonClick: (event, toast, button) => console.log(event, toast, button),
 
                 closeIconOnTopRight,
+
+                showProgressBar,
 
                 // showAnimationFade: false,
                 // hideAnimationFade: true,
