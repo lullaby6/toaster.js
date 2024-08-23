@@ -7,6 +7,7 @@
 // - Update Toast
 // - Theme Default, Dark, Light
 // - Smaller Icons
+// - Font Family
 
 async function Toaster({
     id = null,
@@ -51,6 +52,9 @@ async function Toaster({
 
     showProgressBar = false,
     progressBarOnTop = false,
+
+    backgroundColor = null,
+    textColor = null,
 
     toastClassName = '',
     iconClassName = '',
@@ -169,19 +173,24 @@ async function Toaster({
     }
 
     div.innerHTML = `
-        <div class="toaster toaster-${type} toaster-${toastID} ${toastClassName}" data-toaster-id="${toastID}" data-toaster-date="${Date.now()}">
+        <div
+            class="toaster toaster-${type} toaster-${toastID} ${toastClassName}"
+            data-toaster-id="${toastID}"
+            data-toaster-date="${Date.now()}"
+            ${backgroundColor ? `style="background-color: ${backgroundColor};"` : ''}
+        >
             ${(showToastIcon && icons[type]) ? `
-                <div class="toaster-icon ${iconClassName}">
+                <div class="toaster-icon ${iconClassName}" ${textColor ? `style="color: ${textColor};"` : ''}>
                     ${icons[type]}
                 </div>
             ` : ''}
             <div class="toaster-content ${contentClassName}">
                 <div class="toaster-text-content ${contentTextClassName}">
                     ${(title && title.trim() != '') ? `
-                        <h1 class="toaster-title ${titleClassName}">${title}</h1>
+                        <h1 class="toaster-title ${titleClassName}" ${textColor ? `style="color: ${textColor};"` : ''}>${title}</h1>
                     `: ''}
                     ${(text && text.trim() != '') ? `
-                        <p class="toaster-text ${textClassName}">${text}</p>
+                        <p class="toaster-text ${textClassName}" ${textColor ? `style="color: ${textColor};"` : ''}>${text}</p>
                     ` : ''}
                 </div>
                 ${customButton ? `
@@ -198,7 +207,7 @@ async function Toaster({
                 `: ''}
             </div>
             ${(showCloseIcon && closeIcon) ? `
-                <div class="toaster-close-icon toaster-close-icon-${toastID} ${closeIconClassName} ${closeIconOnTopRight ? 'toaster-close-icon-top-right' : ''}">
+                <div class="toaster-close-icon toaster-close-icon-${toastID} ${closeIconClassName} ${closeIconOnTopRight ? 'toaster-close-icon-top-right' : ''}" ${textColor ? `style="color: ${textColor};"` : ''}>
                     ${closeIcon}
                 </div>
             ` : ''}

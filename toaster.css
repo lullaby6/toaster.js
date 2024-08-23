@@ -10,7 +10,7 @@
     --toaster-default-bg: #fff;
     --toaster-default-text: #262626;
     --toaster-default-border: #d4d4d4;
-    --toaster-default-progress-bar: #0f0f0f;
+    --toaster-default-progress-bar: #262626;
 
     --toaster-dark-bg: #0a0a0a;
     --toaster-dark-text: #fafafa;
@@ -252,6 +252,7 @@
 }
 
 .toaster-default .toaster-progress-bar {
+    opacity: 0.675;
     background-color: var(--toaster-default-progress-bar);
 }
 
