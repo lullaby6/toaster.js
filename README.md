@@ -22,7 +22,7 @@ Call the function `Toaster` to invoke a toast
 ```js
 Toaster({
     text: "Hello World!"
-})
+});
 ```
 
 Another example:
@@ -37,8 +37,8 @@ Toaster({
     closeOnClick: true,
     animationFade: true,
     animationScale: true,
-    showProgressBar: true,
-})
+    showProgressBar: true
+});
 ```
 
 ## API Reference
@@ -94,7 +94,21 @@ The library supports both fade and scale animations. You can customize these or 
 ```js
 Toaster({
     text: 'Custom animation example',
-    customShowAnimation: [{ opacity: 0, translateY: '-20px' }, { opacity: 1, translateY: '0px' }],
-    customHideAnimation: [{ opacity: 1, translateY: '0px' }, { opacity: 0, translateY: '20px' }]
-})
+    customShowAnimation: [
+    {
+        opacity: 0,
+        translateY: '-20px'
+    }, {
+        opacity: 1,
+        translateY: '0px'
+    }],
+    customHideAnimation: [
+    {
+        opacity: 1,
+        translateY: '0px'
+    }, {
+        opacity: 0,
+        translateY: '20px'
+    }]
+});
 ```
