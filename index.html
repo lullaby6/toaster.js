@@ -97,6 +97,11 @@
     </div>
 
     <div>
+        <label for="toast-toasts-limit">Toasts Limit</label>
+        <input type="number" id="toast-toasts-limit" value="5">
+    </div>
+
+    <div>
         <label for="toast-on-top">On Top</label>
         <input type="checkbox" id="toast-on-top" checked>
     </div>
@@ -147,6 +152,7 @@
             const pauseDurationOnHover = document.getElementById('toast-pause-duration-on-hover').checked
             const closeOnClick = document.getElementById('toast-close-on-click').checked
             const clearPreviousToasts = document.getElementById('toast-clear-previous-toasts').checked
+            const toastsLimit = document.getElementById('toast-toasts-limit').value
             const onTop = document.getElementById('toast-on-top').checked
 
             const showButton = document.getElementById('toast-show-button').checked
@@ -170,6 +176,7 @@
 
                 clearPreviousToasts,
                 onTop,
+                toastsLimit,
 
                 showToastIcon,
                 showCloseIcon,
@@ -197,35 +204,35 @@
                 // showAnimationScale: true,
                 // hideAnimationScale: false,
 
-                // promiseLoadingShowAbortButtonIcon: true,
-                promiseLoadingToaster: {
-                    title: 'Loading...',
-                    text: 'Please wait'
-                },
-                promiseThenToaster: {
-                    title: 'Success',
-                    text: 'Done!'
-                },
-                promiseCatchToaster: {
-                    title: 'Error',
-                    text: 'Something went wrong'
-                },
-                promiseCallback: () => new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                        resolve('Done waiting for 2 seconds');
-                        // reject('Something went wrong');
-                    }, 2000);
-                }),
-                promiseThenCallback: (result) => {
-                    return {
-                        text: result
-                    }
-                },
-                promiseCatchCallback: (error) => {
-                    return {
-                        text: error
-                    }
-                }
+                // smallerIcon: true,
+
+                // title: 'Loading...',
+                // text: 'Please wait',
+
+                // promiseThenToaster: {
+                //     title: 'Success',
+                //     text: 'Done!'
+                // },
+                // promiseCatchToaster: {
+                //     title: 'Error',
+                //     text: 'Something went wrong'
+                // },
+                // promiseCallback: () => new Promise((resolve, reject) => {
+                //     setTimeout(() => {
+                //         resolve('Done waiting for 2 seconds');
+                //         // reject('Something went wrong in 2 seconds');
+                //     }, 2000);
+                // }),
+                // promiseThenCallback: (result) => {
+                //     return {
+                //         text: result
+                //     }
+                // },
+                // promiseCatchCallback: (error) => {
+                //     return {
+                //         text: error
+                //     }
+                // }
             })
         })
     </script>

@@ -1,10 +1,7 @@
 // ToDo:
-// - Toast Limit
-// - Slide Animation
 // - Custom Attributes
 // - Inverted Layout
 // - Theme Default, Dark, Light
-// - Smaller Icons
 
 async function Toaster({
     id = null,
@@ -16,6 +13,7 @@ async function Toaster({
     position = 'bottom-right',
 
     clearPreviousToasts = false,
+    toastsLimit = null,
     onTop = true,
 
     delay = 0,
@@ -54,6 +52,10 @@ async function Toaster({
     textColor = null,
     fontFamily = null,
 
+    iconFontSize,
+    titleFontSize,
+    textFontSize,
+
     toastClassName = '',
     iconClassName = '',
     closeIconClassName = '',
@@ -66,16 +68,16 @@ async function Toaster({
     buttonIconClassName = '',
     progressBarClassName = '',
 
-    toastAttributes = '',
-    iconAttributes = '',
-    closeIconAttributes = '',
-    contentAttributes = '',
-    contentTextAttributes = '',
-    titleAttributes = '',
-    textAttributes = '',
-    buttonAttributes = '',
-    buttonTextAttributes = '',
-    buttonIconAttributes = '',
+    // toastAttributes = '',
+    // iconAttributes = '',
+    // closeIconAttributes = '',
+    // contentAttributes = '',
+    // contentTextAttributes = '',
+    // titleAttributes = '',
+    // textAttributes = '',
+    // buttonAttributes = '',
+    // buttonTextAttributes = '',
+    // buttonIconAttributes = '',
 
     onLoad = null,
     onHide = null,
@@ -89,13 +91,15 @@ async function Toaster({
     promiseAnimationDuration = 300,
     promiseAnimationEasing = 'ease-in-out',
 
-    promiseLoadingToaster = null,
+    // promiseLoadingToaster = null,
 
     promiseThenCallback = null,
     promiseThenToaster = null,
 
     promiseCatchCallback = null,
     promiseCatchToaster = null,
+
+    smallerToastIcon = false,
 
     buttonIcon = `
         <svg  xmlns="http://www.w3.org/2000/svg"  width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-hand-click"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 13v-8.5a1.5 1.5 0 0 1 3 0v7.5" /><path d="M11 11.5v-2a1.5 1.5 0 0 1 3 0v2.5" /><path d="M14 10.5a1.5 1.5 0 0 1 3 0v1.5" /><path d="M17 11.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7l-.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47" /><path d="M5 3l-1 -1" /><path d="M4 7h-1" /><path d="M14 3l1 -1" /><path d="M15 6h1" /></svg>
@@ -136,7 +140,25 @@ async function Toaster({
 
     if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay))
 
-    if (clearPreviousToasts) document.querySelectorAll('.toaster').forEach(toast => toast.ToasterHide())
+    if (clearPreviousToasts) ToasterHideAll()
+
+    if (toastsLimit) {
+        const toasts = Array.from(document.querySelectorAll('[data-toaster-id]'))
+            .filter(toast => toast.getAttribute('data-toaster-hiding') !== 'true')
+            .map(toast => ({
+                id: toast.getAttribute('data-toaster-id'),
+                date: toast.getAttribute('data-toaster-date'),
+            }))
+            .sort((a, b) => a.date - b.date)
+
+        if (toasts.length > toastsLimit) {
+            const toastDiff = toasts.length - toastsLimit
+
+            for (let i = 0; i < toastDiff; i++) {
+                document.querySelector(`[data-toaster-id="${toasts[i].id}"]`).ToasterHide()
+            }
+        }
+    }
 
     if (duration != 0 && duration < animationDuration) animationDuration = duration
 
@@ -200,23 +222,23 @@ async function Toaster({
 
     div.innerHTML = `
         <div
-            class="toaster toaster-${type} toaster-${toastID} ${toastClassName} ${fontFamily ? `style="font-family: ${fontFamily};"` : ''}"
+            class="toaster toaster-${type} toaster-${toastID} ${toastClassName}"
             data-toaster-id="${toastID}"
             data-toaster-date="${Date.now()}"
-            ${backgroundColor ? `style="background-color: ${backgroundColor};"` : ''}
+            style="${fontFamily ? `font-family: ${fontFamily};"` : ''}; ${backgroundColor ? `background-color: ${backgroundColor};"` : ''}"
         >
             ${(showToastIcon && icons[type]) ? `
-                <div class="toaster-icon ${iconClassName}" ${textColor ? `style="color: ${textColor};"` : ''}>
+                <div class="toaster-icon ${iconClassName} ${smallerToastIcon ? 'toaster-icon-small' : ''}" style="${textColor ? `color: ${textColor};` : ''}${iconFontSize ? `font-size: ${iconFontSize};` : ''}"}>
                     ${icons[type]}
                 </div>
             ` : ''}
             <div class="toaster-content ${contentClassName}">
                 <div class="toaster-text-content ${contentTextClassName}">
                     ${(title && title.trim() != '') ? `
-                        <h1 class="toaster-title ${titleClassName}" ${textColor ? `style="color: ${textColor};"` : ''}>${title}</h1>
+                        <h1 class="toaster-title ${titleClassName}" style="${textColor ? `color: ${textColor};` : ''}${titleFontSize ? `font-size: ${titleFontSize};` : ''}">${title}</h1>
                     `: ''}
                     ${(text && text.trim() != '') ? `
-                        <p class="toaster-text ${textClassName}" ${textColor ? `style="color: ${textColor};"` : ''}>${text}</p>
+                        <p class="toaster-text ${textClassName}" style="${textColor ? `color: ${textColor};` : ''}${textFontSize ? `font-size: ${textFontSize};` : ''}">${text}</p>
                     ` : ''}
                 </div>
                 ${customButton ? `
@@ -264,7 +286,7 @@ async function Toaster({
             .then(result => {
                 let promiseThenToasterCallbackResult = {}
 
-                if (promiseThenCallback) promiseThenToasterCallbackResult = promiseThenCallback(result, toast)
+                if (promiseThenCallback) promiseThenToasterCallbackResult = promiseThenCallback(result, toast, arguments[0])
 
                 if (promiseAnimation) {
                     div.animate(promiseAnimation, {
@@ -286,7 +308,7 @@ async function Toaster({
             .catch(error => {
                 let promiseCatchToasterCallbackResult = {}
 
-                if (promiseCatchCallback) promiseCatchToasterCallbackResult = promiseCatchCallback(error, toast)
+                if (promiseCatchCallback) promiseCatchToasterCallbackResult = promiseCatchCallback(error, toast, arguments[0])
 
                 if (promiseAnimation) {
                     div.animate(promiseAnimation, {
@@ -308,7 +330,7 @@ async function Toaster({
         } catch (error) {
             let promiseCatchToasterCallbackResult = {}
 
-            if (promiseCatchCallback) promiseCatchToasterCallbackResult = promiseCatchCallback(error, toast)
+            if (promiseCatchCallback) promiseCatchToasterCallbackResult = promiseCatchCallback(error, toast, arguments[0])
 
             if (promiseAnimation) {
                 div.animate(promiseAnimation, {
@@ -344,6 +366,8 @@ async function Toaster({
     toast.ToasterHide = () => {
         if (toast.ToasterHiding) return
         toast.ToasterHiding = true
+
+        toast.setAttribute('data-toaster-hiding', 'true')
 
         if (toast.ToasterTimeout) {
             clearTimeout(toast.ToasterTimeout)

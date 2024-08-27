@@ -222,6 +222,10 @@
     font-size: 35px;
 }
 
+.toaster-icon-small {
+    font-size: 30px;
+}
+
 .toaster-close-icon {
     font-size: 20px;
     cursor: pointer;
