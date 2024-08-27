@@ -217,11 +217,11 @@
                     title: 'Error',
                     text: 'Something went wrong'
                 },
-                promiseTimeout: 1000,
+                // promiseTimeout: 1000,
                 promiseCallback: () => new Promise((resolve, reject) => {
                     // throw new Error('Error in 2 seconds');
                     setTimeout(() => {
-                        console.log('XD')
+                        // console.log('XD')
                         resolve('Done waiting for 2 seconds');
                         // reject('Something went wrong in 2 seconds');
                         // throw new Error('Error in 2 seconds');
@@ -234,7 +234,7 @@
                 },
                 promiseCatchCallback: (error) => {
                     return {
-                        text: error.message
+                        text: error
                     }
                 }
             })

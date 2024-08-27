@@ -17,7 +17,7 @@ async function Toaster({
     animationDuration = 300,
     showAnimationDuration = null,
     hideAnimationDuration = null,
-    animationEase = 'ease-in-out',
+    animationEasing = 'ease-in-out',
     animationFade = true,
     showAnimationFade = true,
     hideAnimationFade = true,
@@ -267,7 +267,7 @@ async function Toaster({
         toast.animate(showAnimation, {
             duration: showAnimationDuration,
             fill: 'forwards',
-            easing: animationEase
+            easing: animationEasing
         })
     }
 
@@ -291,7 +291,7 @@ async function Toaster({
             toast.animate(hideAnimation, {
                 duration: hideAnimationDuration,
                 fill: 'forwards',
-                easing: animationEase
+                easing: animationEasing
             })
 
             setTimeout(() => {
@@ -408,7 +408,6 @@ async function Toaster({
             } else {
                 result = await promiseCallback()
             }
-
 
             let promiseThenToasterCallbackResult = {}
 
