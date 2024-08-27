@@ -150,9 +150,10 @@ async function Toaster({
                 date: toast.getAttribute('data-toaster-date'),
             }))
             .sort((a, b) => a.date - b.date)
+        const toastsLength = toasts.length + 1
 
-        if (toasts.length > toastsLimit) {
-            const toastDiff = toasts.length - toastsLimit
+        if (toastsLength > toastsLimit) {
+            const toastDiff = toastsLength - toastsLimit
 
             for (let i = 0; i < toastDiff; i++) {
                 document.querySelector(`[data-toaster-id="${toasts[i].id}"]`).ToasterHide()
