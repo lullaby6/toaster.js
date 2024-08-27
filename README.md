@@ -6,18 +6,6 @@ A simple and lightweight JavaScript library for creating customizable toast noti
 
 [Click here](https://lullaby6.github.io/toaster.js/)
 
-## Features
-
-- Easy to use
-- Customizable appearance and behavior
-- Multiple toast types (default, dark, info, success, warning, error)
-- Flexible positioning
-- Animations and transitions
-- Duration control
-- Close on click or hover options
-- Pause duration on hover
-- Custom icons support
-
 ## Installation
 
 ### CDN
@@ -60,7 +48,9 @@ Toaster({
 | type | string | Type and styles of the toast (`default`, `dark`, `info`, `success`, `warning`, `error`) | "default" |
 | position | string | Position of the toast (`top-left`, `top`, `top-right`, `bottom-left`, `bottom`, `bottom-right`) | "bottom-right" |
 | clearPreviousToasts | string | Whether to clear previous toasts when a new one is created | true |
-| duration | boolean | Duration in milliseconds before the toast auto-closes (0 for no auto-close) | 3000 |
+| toastsLimit | number | Max of toasts can be displayed | null |
+| duration | number | Duration in milliseconds before the toast auto-closes (0 for no auto-close) | 3000 |
+| delay | number | Delay in milliseconds to show the toast | null |
 | pauseDurationOnHover | boolean | Pause the duration timer when hovering over the toast | false |
 | animationDuration | number | Duration of show/hide animations in milliseconds | 300 |
 | animationEase | number | CSS easing function for animations | "ease-in-out" |
@@ -70,6 +60,7 @@ Toaster({
 | showToastIcon | boolean | Show an icon based on the toast type | true |
 | showCloseIcon | boolean | Show a close icon | true |
 | onlyShowCloseIconOnHover | boolean | Only show the close icon when hovering over the toast | false |
+| closeIconOnTopRight | boolean | Show the close icon in the top right of the toast | false |
 
 ## Custom Icons
 
@@ -91,6 +82,7 @@ Toaster({
 - `successIcon`
 - `warningIcon`
 - `errorIcon`
+- `loadingIcon`
 
 ## Custom Animations
 

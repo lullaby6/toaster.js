@@ -11,7 +11,7 @@ async function Toaster({
     toastsLimit = null,
     onTop = true,
 
-    delay = 0,
+    delay = null,
     pauseDurationOnHover = false,
     duration = 3000,
     animationDuration = 300,
@@ -124,7 +124,7 @@ async function Toaster({
         return console.error(`Toaster ${toastID} already exists.`);
     }
 
-    if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay))
+    if (delay && delay > 0) await new Promise((resolve) => setTimeout(resolve, delay))
 
     if (clearPreviousToasts) ToasterHideAll()
 
