@@ -37,6 +37,7 @@ Toaster({
     closeOnClick: true,
     animationFade: true,
     animationScale: true,
+    pauseDurationOnHover: true,
     showProgressBar: true
 });
 ```
