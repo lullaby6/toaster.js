@@ -30,7 +30,6 @@
             <option value="success">Success</option>
             <option value="warning">Warning</option>
             <option value="error">Error</option>
-            <!-- <option value="loading">Loading</option> -->
         </select>
     </div>
 
@@ -208,7 +207,6 @@
 
                 title: 'Loading...',
                 text: 'Please wait',
-
                 promiseThenToaster: {
                     title: 'Success',
                     text: 'Done!'
@@ -219,12 +217,10 @@
                 },
                 // promiseTimeout: 1000,
                 promiseCallback: () => new Promise((resolve, reject) => {
-                    // throw new Error('Error in 2 seconds');
+                    // throw new Error('Error in promise');
                     setTimeout(() => {
-                        // console.log('XD')
                         resolve('Done waiting for 2 seconds');
                         // reject('Something went wrong in 2 seconds');
-                        // throw new Error('Error in 2 seconds');
                     }, 2000);
                 }),
                 promiseThenCallback: (result) => {

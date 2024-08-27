@@ -430,6 +430,8 @@ async function Toaster({
                 ...promiseThenToasterCallbackResult
             })
         } catch (error) {
+            if (error.message) error = error.message
+
             let promiseCatchToasterCallbackResult = {}
 
             if (promiseCatchCallback) promiseCatchToasterCallbackResult = promiseCatchCallback(error, toast, arguments[0])
