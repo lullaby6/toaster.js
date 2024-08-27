@@ -47,7 +47,7 @@ Toaster({
 | text | string | Text to display in the toast | "" |
 | type | string | Type and styles of the toast (`default`, `dark`, `info`, `success`, `warning`, `error`) | "default" |
 | position | string | Position of the toast (`top-left`, `top`, `top-right`, `bottom-left`, `bottom`, `bottom-right`) | "bottom-right" |
-| clearPreviousToasts | string | Whether to clear previous toasts when a new one is created | true |
+| clearPreviousToasts | boolean | Whether to clear previous toasts when a new one is created | false |
 | toastsLimit | number | Max of toasts can be displayed | null |
 | duration | number | Duration in milliseconds before the toast auto-closes (0 for no auto-close) | 3000 |
 | delay | number | Delay in milliseconds to show the toast | null |
