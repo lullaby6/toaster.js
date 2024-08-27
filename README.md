@@ -94,16 +94,14 @@ The library supports both fade and scale animations. You can customize these or 
 ```js
 Toaster({
     text: 'Custom animation example',
-    customShowAnimation: [
-    {
+    customShowAnimation: [{
         opacity: 0,
         translateY: '-20px'
     }, {
         opacity: 1,
         translateY: '0px'
     }],
-    customHideAnimation: [
-    {
+    customHideAnimation: [{
         opacity: 1,
         translateY: '0px'
     }, {
