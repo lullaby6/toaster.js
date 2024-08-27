@@ -30,6 +30,7 @@ Another example:
 ```js
 Toaster({
     type: 'success',
+    title: 'Success'
     text: 'Operation completed successfully!',
     position: 'top-right',
     duration: 5000,
