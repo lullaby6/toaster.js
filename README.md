@@ -2,6 +2,10 @@
 
 A simple and lightweight JavaScript library for creating customizable toast notifications.
 
+## Demo
+
+[Click here](https://lullaby6.github.io/toaster.js/)
+
 ## Installation
 
 ### CDN
@@ -10,10 +14,6 @@ A simple and lightweight JavaScript library for creating customizable toast noti
 <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/lullaby6/toaster.js/toaster.css'>
 <script src='https://cdn.jsdelivr.net/gh/lullaby6/toaster.js/toaster.js'></script>
 ```
-
-## Demo
-
-[Click here](https://lullaby6.github.io/toaster.js/)
 
 ## Usage
 
