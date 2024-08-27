@@ -35,9 +35,9 @@ Toaster({
     position: 'top-right',
     duration: 5000,
     closeOnClick: true,
-    showToastIcon: true,
     animationFade: true,
-    animationScale: true
+    animationScale: true,
+    showProgressBar: true,
 })
 ```
 
