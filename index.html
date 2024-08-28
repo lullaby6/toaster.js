@@ -6,235 +6,143 @@
     <title>Toaster.js</title>
     <link rel="stylesheet" href="./toaster.css">
     <script src="./toaster.js" defer></script>
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <style>
+        .gradient-background {
+            background: linear-gradient(300deg,#dcc48e,#eaefd3,#b3c0a4);
+            background-size: 180% 180%;
+            animation: gradient-animation 18s ease infinite;
+        }
+
+        @keyframes gradient-animation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
 </head>
-<body>
-    <button id="show-toast-btn">Show Toast</button>
+<body class="gradient-background bg-neutral-100 text-neutral-800 p-10 h-[100vh]">
+    <div class="flex h-full w-full">
+        <div class="w-[60%] pr-4">
+            <div class="flex flex-col gap-4 bg-black rounded bg-opacity-50 h-full p-6">
+                <div class="flex flex-col gap-2">
+                    <h1 class="text-3xl text-white">Toaster.js</h1>
+                    <div class="flex gap-2 justify-start items-center">
+                        <button id="btn-show-toast" class="bg-stone-700 hover:bg-stone-600 transition-colors rounded-full text-neutral-100 px-4 py-1.5">Show toast</button>
+                        <button id="btn-clear-toasts" class="bg-stone-600 hover:bg-stone-500 transition-colors rounded-full text-neutral-100 px-4 py-1.5">Clear all toasts</button>
+                    </div>
+                </div>
 
-    <div>
-        <label for="toast-title">Title</label>
-        <input id="toast-title" type="text" placeholder="Enter title" value="">
-    </div>
+                <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
+                    <div class="flex gap-3 w-full justify-between items-center">
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-default" value="default" checked>
+                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-default">Default</label>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-dark" value="dark">
+                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-dark">Dark</label>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-info" value="info">
+                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-info">Info</label>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-warning" value="warning">
+                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-warning">Warning</label>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-error" value="error">
+                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-error">Error</label>
+                        </div>
+                    </div>
+                </div>
 
-    <div>
-        <label for="toast-text">Text</label>
-        <input id="toast-text" type="text" placeholder="Enter text" value="Hello World">
-    </div>
+                <div class="w-full flex gap-3">
+                    <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
+                        <input type="text" id="input-title" placeholder="Title" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
+                    </div>
+                    <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
+                        <input value="Hello World!" type="text" id="input-text" placeholder="Text" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
+                    </div>
+                </div>
 
-    <div>
-        <label for="toast-type">Type</label>
-        <select id="toast-type">
-            <option value="default" selected>Default</option>
-            <option value="dark">Dark</option>
-            <option value="info">Info</option>
-            <option value="success">Success</option>
-            <option value="warning">Warning</option>
-            <option value="error">Error</option>
-        </select>
-    </div>
-
-    <div>
-        <label for="toast-position">Position</label>
-        <select id="toast-position">
-            <option value="top-left">Top Left</option>
-            <option value="top">Top</option>
-            <option value="top-right">Top Right</option>
-            <option value="bottom-left">Bottom Left</option>
-            <option value="bottom">Bottom</option>
-            <option value="bottom-right" selected>Bottom Right</option>
-        </select>
-    </div>
-
-    <div>
-        <label for="toast-duration">Duration</label>
-        <input type="number" id="toast-duration" value="3000">
-    </div>
-
-    <div>
-        <label for="toast-delay">Delay</label>
-        <input type="number" id="toast-delay" value="0">
-    </div>
-
-    <div>
-        <label for="toast-show-icon">Show Toast Icon</label>
-        <input type="checkbox" id="toast-show-icon" checked>
-    </div>
-
-    <div>
-        <label for="toast-show-close-icon">Show Close Icon</label>
-        <input type="checkbox" id="toast-show-close-icon" checked>
-    </div>
-
-    <div>
-        <label for="toast-only-show-close-icon-on-hover">Only Show Close Icon On Hover</label>
-        <input type="checkbox" id="toast-only-show-close-icon-on-hover">
-    </div>
-
-    <div>
-        <label for="toast-animation-fade">Animation Fade</label>
-        <input type="checkbox" id="toast-animation-fade" checked>
-    </div>
-
-    <div>
-        <label for="toast-animation-scale">Animation Scale</label>
-        <input type="checkbox" id="toast-animation-scale">
-    </div>
-
-    <div>
-        <label for="toast-pause-duration-on-hover">Pause Duration On Hover</label>
-        <input type="checkbox" id="toast-pause-duration-on-hover">
-    </div>
-
-    <div>
-        <label for="toast-close-on-click">Close On Click</label>
-        <input type="checkbox" id="toast-close-on-click">
-    </div>
-
-    <div>
-        <label for="toast-clear-previous-toasts">Clear Previous Toasts</label>
-        <input type="checkbox" id="toast-clear-previous-toasts">
-    </div>
-
-    <div>
-        <label for="toast-toasts-limit">Toasts Limit</label>
-        <input type="number" id="toast-toasts-limit" value="5">
-    </div>
-
-    <div>
-        <label for="toast-on-top">On Top</label>
-        <input type="checkbox" id="toast-on-top" checked>
-    </div>
-
-    <div>
-        <label for="toast-show-button">Show Button</label>
-        <input type="checkbox" id="toast-show-button">
-    </div>
-
-    <div>
-        <label for="toast-button-text">Button Text</label>
-        <input id="toast-button-text" type="text" placeholder="Enter button text" value="Button">
-    </div>
-
-    <div>
-        <label for="toast-show-button-icon"> Show Button Icon</label>
-        <input type="checkbox" id="toast-show-button-icon">
-    </div>
-
-    <div>
-        <label for="toast-close-icon-on-top-right">Close Icon On Top Right</label>
-        <input type="checkbox" id="toast-close-icon-on-top-right">
-    </div>
-
-    <div>
-        <label for="toast-show-progress-bar">Show Progress Bar</label>
-        <input type="checkbox" id="toast-show-progress-bar">
-    </div>
-
-    <div>
-        <label for="toast-progress-bar-on-top">Progress Bar On Top</label>
-        <input type="checkbox" id="toast-progress-bar-on-top">
+                <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
+                    <div class="flex gap-3 w-full justify-between items-center">
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-top-left" value="top-left">
+                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-top-left">Top Left</label>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-top" value="top">
+                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-top">Top</label>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-top-right" value="top-right" checked>
+                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-top-right">Top Right</label>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-bottom-left" value="bottom-left">
+                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-bottom-left">Bottom Left</label>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-bottom" value="bottom">
+                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-bottom">Bottom</label>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-bottom-right" value="bottom-right">
+                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-bottom-right">Bottom Right</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-[40%] flex justify-center items-center h-full">
+            <div class="bg-black bg-opacity-50 p-6 rounded h-full w-full">
+                <div class="rounded overflow-hidden">
+                    <pre><code class="language-js">
+                    </code></pre>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        document.getElementById('show-toast-btn').addEventListener('click', () => {
-            const text = document.getElementById('toast-text').value
-            const title = document.getElementById('toast-title').value
-            const type = document.getElementById('toast-type').value
-            const position = document.getElementById('toast-position').value
-            const duration = document.getElementById('toast-duration').value
-            const delay = document.getElementById('toast-delay').value
-            const showToastIcon = document.getElementById('toast-show-icon').checked
-            const showCloseIcon = document.getElementById('toast-show-close-icon').checked
-            const onlyShowCloseIconOnHover = document.getElementById('toast-only-show-close-icon-on-hover').checked
-            const animationFade = document.getElementById('toast-animation-fade').checked
-            const animationScale = document.getElementById('toast-animation-scale').checked
-            const pauseDurationOnHover = document.getElementById('toast-pause-duration-on-hover').checked
-            const closeOnClick = document.getElementById('toast-close-on-click').checked
-            const clearPreviousToasts = document.getElementById('toast-clear-previous-toasts').checked
-            const toastsLimit = document.getElementById('toast-toasts-limit').value
-            const onTop = document.getElementById('toast-on-top').checked
+        function get() {
+            return {
+                type: document.querySelector('input[name="type"]:checked') ? document.querySelector('input[name="type"]:checked').value : 'default',
+                title: document.getElementById('input-title').value,
+                text: document.getElementById('input-text').value,
+                position: document.querySelector('input[name="position"]:checked') ? document.querySelector('input[name="position"]:checked').value : 'top-right',
+            }
+        }
 
-            const showButton = document.getElementById('toast-show-button').checked
-            const buttonText = document.getElementById('toast-button-text').value
-            const showButtonIcon = document.getElementById('toast-show-button-icon').checked
+        const $code = document.querySelector('code')
+        $code.textContent = `Toaster(${JSON.stringify(get(), null, 2)});`
+        hljs.highlightElement($code);
 
-            const closeIconOnTopRight = document.getElementById('toast-close-icon-on-top-right').checked
-            const showProgressBar = document.getElementById('toast-show-progress-bar').checked
-            const progressBarOnTop = document.getElementById('toast-progress-bar-on-top').checked
-
-            console.log(clearPreviousToasts);
-
-            Toaster({
-                // id: 1,
-                title,
-                type,
-                text,
-                position,
-                duration,
-                delay,
-
-                clearPreviousToasts,
-                onTop,
-                toastsLimit,
-
-                showToastIcon,
-                showCloseIcon,
-                onlyShowCloseIconOnHover,
-
-                animationFade,
-                animationScale,
-
-                pauseDurationOnHover,
-                closeOnClick,
-
-                showButton,
-                buttonText,
-                showButtonIcon,
-                onButtonClick: (event, toast, button) => console.log(event, toast, button),
-
-                closeIconOnTopRight,
-
-                showProgressBar,
-                progressBarOnTop,
-
-                // showAnimationFade: false,
-                // hideAnimationFade: true,
-
-                // showAnimationScale: true,
-                // hideAnimationScale: false,
-
-                // smallerIcon: true,
-
-                title: 'Loading...',
-                text: 'Please wait',
-                promiseThenToaster: {
-                    title: 'Success',
-                    text: 'Done!'
-                },
-                promiseCatchToaster: {
-                    title: 'Error',
-                    text: 'Something went wrong'
-                },
-                // promiseTimeout: 1000,
-                promiseCallback: () => new Promise((resolve, reject) => {
-                    // throw new Error('Error in promise');
-                    setTimeout(() => {
-                        resolve('Done waiting for 2 seconds');
-                        // reject('Something went wrong in 2 seconds');
-                    }, 2000);
-                }),
-                promiseThenCallback: (result) => {
-                    return {
-                        text: result
-                    }
-                },
-                promiseCatchCallback: (error) => {
-                    return {
-                        text: error
-                    }
-                }
+        document.querySelectorAll('input').forEach(input => {
+            ['change', 'input'].forEach(event => {
+                input.addEventListener(event, () => {
+                    $code.removeAttribute('data-highlighted')
+                    $code.textContent = `Toaster(${JSON.stringify(get(), null, 2)});`
+                    hljs.highlightElement($code);
+                })
             })
         })
+
+        document.querySelector('#btn-show-toast').addEventListener('click', () => Toaster(get()))
+        document.querySelector('#btn-clear-toasts').addEventListener('click', () => ToasterHideAll())
     </script>
 </body>
 </html>

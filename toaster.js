@@ -1,3 +1,9 @@
+// Wait for previous to dismiss before showing new
+// Hide last
+// Custom Toast
+// Rounded
+// Border Color
+
 async function Toaster({
     id = null,
     toast = null,
@@ -5,7 +11,7 @@ async function Toaster({
     type = 'default',
     title = null,
     text = '',
-    position = 'bottom-right',
+    position = 'top-right',
 
     clearPreviousToasts = false,
     toastsLimit = null,
