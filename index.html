@@ -33,88 +33,91 @@
 </head>
 <body class="gradient-background bg-neutral-100 text-neutral-800 p-10 h-[100vh]">
     <div class="flex h-full w-full">
+
         <div class="w-[60%] pr-4">
-            <div class="flex flex-col gap-4 bg-black rounded bg-opacity-50 h-full p-6">
-                <div class="flex flex-col gap-2">
-                    <h1 class="text-3xl text-white">Toaster.js</h1>
+            <div class="flex flex-col gap-6 bg-black rounded bg-opacity-50 h-full p-6 shadow">
+
+                <div class="flex gap-2 items-center justify-between">
+                    <h1 class="text-4xl text-white">Toaster.js</h1>
                     <div class="flex gap-2 justify-start items-center">
-                        <button id="btn-show-toast" class="bg-stone-700 hover:bg-stone-600 transition-colors rounded-full text-neutral-100 px-4 py-1.5">Show toast</button>
-                        <button id="btn-clear-toasts" class="bg-stone-600 hover:bg-stone-500 transition-colors rounded-full text-neutral-100 px-4 py-1.5">Clear all toasts</button>
+                        <button id="btn-show-toast" class="bg-stone-700 shadow hover:bg-stone-600 transition-colors rounded-full text-neutral-100 px-4 py-1.5">Show toast</button>
+                        <button id="btn-clear-toasts" class="bg-stone-600 shadow hover:bg-stone-500 transition-colors rounded-full text-neutral-100 px-4 py-1.5">Clear all toasts</button>
                     </div>
                 </div>
 
-                <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
-                    <div class="flex gap-3 w-full justify-between items-center">
+                <div class="w-full h-full flex flex-col gap-4">
+                    <div class="bg-black bg-opacity-25 w-full rounded p-4 flex justify-between shadow">
                         <div class="flex gap-1.5">
                             <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-default" value="default" checked>
-                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-default">Default</label>
+                            <label class='cursor-pointer transition-colors peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-default">Default</label>
                         </div>
                         <div class="flex gap-1.5">
                             <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-dark" value="dark">
-                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-dark">Dark</label>
+                            <label class='cursor-pointer transition-colors peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-dark">Dark</label>
                         </div>
                         <div class="flex gap-1.5">
                             <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-info" value="info">
-                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-info">Info</label>
+                            <label class='cursor-pointer transition-colors peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-info">Info</label>
                         </div>
                         <div class="flex gap-1.5">
                             <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-warning" value="warning">
-                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-warning">Warning</label>
+                            <label class='cursor-pointer transition-colors peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-warning">Warning</label>
                         </div>
                         <div class="flex gap-1.5">
                             <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-error" value="error">
-                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-error">Error</label>
+                            <label class='cursor-pointer transition-colors peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-type-error">Error</label>
                         </div>
                     </div>
-                </div>
 
-                <div class="w-full flex gap-3">
-                    <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
-                        <input type="text" id="input-title" placeholder="Title" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
+                    <div class="w-full flex gap-3">
+                        <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2 shadow">
+                            <input type="text" id="input-title" placeholder="Title" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
+                        </div>
+                        <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
+                            <input value="Hello World!" type="text" id="input-text" placeholder="Text" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
+                        </div>
                     </div>
-                    <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
-                        <input value="Hello World!" type="text" id="input-text" placeholder="Text" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
-                    </div>
-                </div>
 
-                <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
-                    <div class="flex gap-3 w-full justify-between items-center">
+                    <div class="bg-black bg-opacity-25 w-full rounded p-4 flex gap-2 items-center justify-between shadow">
                         <div class="flex gap-1.5">
                             <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-top-left" value="top-left">
-                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-top-left">Top Left</label>
+                            <label class='cursor-pointer transition-colors peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-top-left">Top Left</label>
                         </div>
                         <div class="flex gap-1.5">
                             <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-top" value="top">
-                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-top">Top</label>
+                            <label class='cursor-pointer transition-colors peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-top">Top</label>
                         </div>
                         <div class="flex gap-1.5">
                             <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-top-right" value="top-right" checked>
-                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-top-right">Top Right</label>
+                            <label class='cursor-pointer transition-colors peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-top-right">Top Right</label>
                         </div>
                         <div class="flex gap-1.5">
                             <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-bottom-left" value="bottom-left">
-                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-bottom-left">Bottom Left</label>
+                            <label class='cursor-pointer transition-colors peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-bottom-left">Bottom Left</label>
                         </div>
                         <div class="flex gap-1.5">
                             <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-bottom" value="bottom">
-                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-bottom">Bottom</label>
+                            <label class='cursor-pointer transition-colors peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-bottom">Bottom</label>
                         </div>
                         <div class="flex gap-1.5">
                             <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-bottom-right" value="bottom-right">
-                            <label class='cursor-pointer peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-bottom-right">Bottom Right</label>
+                            <label class='cursor-pointer transition-colors peer-checked:bg-stone-300 peer-checked:bg-opacity-25 px-2 py-0.5 rounded text-neutral-200' for="input-position-bottom-right">Bottom Right</label>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
+
         <div class="w-[40%] flex justify-center items-center h-full">
-            <div class="bg-black bg-opacity-50 p-6 rounded h-full w-full">
-                <div class="rounded overflow-hidden">
+            <div class="bg-black bg-opacity-50 p-6 rounded h-full w-full shadow">
+                <div class="rounded overflow-hidden shadow">
                     <pre><code class="language-js">
                     </code></pre>
                 </div>
             </div>
         </div>
+
     </div>
 
     <script>
@@ -127,16 +130,19 @@
             }
         }
 
-        const $code = document.querySelector('code')
-        $code.textContent = `Toaster(${JSON.stringify(get(), null, 2)});`
-        hljs.highlightElement($code);
+        function update() {
+            const $code = document.querySelector('code')
+            $code.removeAttribute('data-highlighted')
+            $code.textContent = `Toaster(${JSON.stringify(get(), null, 2)});`
+            hljs.highlightElement($code);
+        }
+
+        update()
 
         document.querySelectorAll('input').forEach(input => {
             ['change', 'input'].forEach(event => {
                 input.addEventListener(event, () => {
-                    $code.removeAttribute('data-highlighted')
-                    $code.textContent = `Toaster(${JSON.stringify(get(), null, 2)});`
-                    hljs.highlightElement($code);
+                    update()
                 })
             })
         })
