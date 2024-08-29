@@ -35,6 +35,8 @@ async function Toaster({
 
     closeOnClick = false,
 
+    showBorder = false,
+
     showToastIcon = true,
     showCloseIcon = true,
     onlyShowCloseIconOnHover = false,
@@ -218,7 +220,7 @@ async function Toaster({
             class="toaster toaster-${type} toaster-${toastID} ${toastClassName}"
             data-toaster-id="${toastID}"
             data-toaster-date="${Date.now()}"
-            style="${fontFamily ? `font-family: ${fontFamily};"` : ''}; ${backgroundColor ? `background-color: ${backgroundColor};"` : ''}"
+            style="${fontFamily ? `font-family: ${fontFamily};"` : ''}; ${backgroundColor ? `background-color: ${backgroundColor};"` : ''}; ${showBorder ? '' : 'border: none;'}"
         >
             ${(showToastIcon && icons[type]) ? `
                 <div class="toaster-icon ${iconClassName} ${smallerToastIcon ? 'toaster-icon-small' : ''}" style="${textColor ? `color: ${textColor};` : ''}${iconFontSize ? `font-size: ${iconFontSize};` : ''}"}>
