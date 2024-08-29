@@ -33,7 +33,7 @@
         }
     </style>
 </head>
-<body class="gradient-background bg-neutral-100 text-neutral-800 p-10 h-[100vh]">
+<body class="gradient-background bg-neutral-100 text-neutral-800 p-4 min-h-[100vh]">
     <div class="flex h-full w-full">
 
         <div class="w-[60%] pr-4">
@@ -110,6 +110,77 @@
                             <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-position-bottom-right">Bottom Right</label>
                         </div>
                     </div>
+
+                    <div class="w-full flex gap-3">
+                        <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2 shadow">
+                            <input type="text" id="input-duration" placeholder="Duracion" value="3000" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 transition-colors focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
+                        </div>
+                        <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
+                            <input type="text" id="input-delay" placeholder="Delay" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 transition-colors focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
+                        </div>
+                    </div>
+
+                    <div class="bg-black bg-opacity-25 w-full rounded p-4 grid grid-cols-4 gap-2 items-center justify-between shadow">
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-animation-fade" id="input-animation-fade" checked>
+                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-animation-fade">Animation Fade</label>
+                        </div>
+
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-animation-scale" id="input-animation-scale">
+                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-animation-scale">Animation Scale</label>
+                        </div>
+
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-close-on-click" id="input-close-on-click">
+                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-close-on-click">Close On Click</label>
+                        </div>
+
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-show-toast-icon" id="input-show-toast-icon" checked>
+                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-show-toast-icon">Show Toast Icon</label>
+                        </div>
+
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-show-close-icon" id="input-show-close-icon" checked>
+                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-show-close-icon">Show Close Icon</label>
+                        </div>
+
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-progress-bar" id="input-progress-bar">
+                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-progress-bar">Show Progress Bar</label>
+                        </div>
+
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-pause-duration-on-hover" id="input-pause-duration-on-hover">
+                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-pause-duration-on-hover">Pause Duration</label>
+                        </div>
+
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-smaller-toast-icon" id="input-smaller-toast-icon">
+                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-smaller-toast-icon">Smaller Toast Icon</label>
+                        </div>
+
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-show-border" id="input-show-border">
+                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-show-border">Show Border</label>
+                        </div>
+
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-only-show-close-icon-on-hover" id="input-only-show-close-icon-on-hover">
+                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-only-show-close-icon-on-hover">Close Icon On Hover</label>
+                        </div>
+
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-on-top" id="input-on-top" checked>
+                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-on-top">On Top</label>
+                        </div>
+
+                        <div class="flex gap-1.5">
+                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-progress-bar-on-top" id="input-progress-bar-on-top">
+                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-progress-bar-on-top">Progress Bar On Top</label>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -133,6 +204,20 @@
                 title: document.getElementById('input-title').value,
                 text: document.getElementById('input-text').value,
                 position: document.querySelector('input[name="position"]:checked') ? document.querySelector('input[name="position"]:checked').value : 'top-right',
+                duration: document.getElementById('input-duration').value,
+                delay: document.getElementById('input-delay').value,
+                animationFade: document.querySelector('input[name="input-animation-fade"]:checked') ? true : false,
+                animationScale: document.querySelector('input[name="input-animation-scale"]:checked') ? true : false,
+                closeOnClick: document.querySelector('input[name="input-close-on-click"]:checked') ? true : false,
+                showToastIcon: document.querySelector('input[name="input-show-toast-icon"]:checked') ? true : false,
+                showCloseIcon: document.querySelector('input[name="input-show-close-icon"]:checked') ? true : false,
+                showProgressBar: document.querySelector('input[name="input-progress-bar"]:checked') ? true : false,
+                pauseDurationOnHover: document.querySelector('input[name="input-pause-duration-on-hover"]:checked') ? true : false,
+                smallerToastIcon: document.querySelector('input[name="input-smaller-toast-icon"]:checked') ? true : false,
+                showBorder: document.querySelector('input[name="input-show-border"]:checked') ? true : false,
+                onlyShowCloseIconOnHover: document.querySelector('input[name="input-only-show-close-icon-on-hover"]:checked') ? true : false,
+                onTop: document.querySelector('input[name="input-on-top"]:checked') ? true : false,
+                progressBarOnTop: document.querySelector('input[name="input-progress-bar-on-top"]:checked') ? true : false,
             }
         }
 
@@ -146,7 +231,7 @@
         update()
 
         document.querySelectorAll('input').forEach(input => {
-            ['change', 'input'].forEach(event => {
+            ['change', 'input', 'click'].forEach(event => {
                 input.addEventListener(event, () => {
                     update()
                 })
