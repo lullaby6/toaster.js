@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toaster.js</title>
-
+<!-- 
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/lullaby6/toaster.js/toaster.css'>
-    <script src='https://cdn.jsdelivr.net/gh/lullaby6/toaster.js/toaster.js'></script>
+    <script src='https://cdn.jsdelivr.net/gh/lullaby6/toaster.js/toaster.js'></script> -->
+
+    <link rel='stylesheet' href='./toaster.css'>
+    <script src='./toaster.js'></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -34,170 +37,283 @@
     </style>
 </head>
 <body class="gradient-background bg-neutral-100 text-neutral-800 p-4 min-h-[100vh]">
-    <div class="flex h-full w-full">
+    <div class="flex flex-col gap-6">
 
-        <div class="w-[60%] pr-4">
-            <div class="flex flex-col gap-6 bg-black rounded bg-opacity-50 h-full p-6 shadow">
+        <div class="flex h-full w-full">
 
-                <div class="flex gap-2 items-center justify-between">
-                    <h1 class="text-4xl text-white">Toaster.js</h1>
-                    <div class="flex gap-2 justify-start items-center">
-                        <button id="btn-show-toast" class="bg-stone-700 shadow shadow-stone-400 hover:bg-stone-600 transition-colors rounded-full text-neutral-100 px-4 py-1.5">Show toast</button>
-                        <button id="btn-clear-toasts" class="bg-stone-600 shadow shadow-stone-400 hover:bg-stone-500 transition-colors rounded-full text-neutral-100 px-4 py-1.5">Clear all toasts</button>
-                        <a href="https://github.com/lullaby6/toaster.js" target="_blank" class="bg-neutral-700 flex items-center justify-center gap-0.5 shadow shadow-stone-400 hover:bg-neutral-600 transition-colors rounded-full text-neutral-100 px-4 py-1.5">
-                            <svg class="text-lg" xmlns="http://www.w3.org/2000/svg"  width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-github"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
-                            Github
-                        </a>
+            <div class="w-[60%] pr-4 h-full">
+                <div class="flex flex-col gap-6 bg-black rounded bg-opacity-50 h-full p-6 shadow">
+
+                    <div class="flex gap-2 items-center justify-between">
+                        <h1 class="text-4xl text-white">Toaster.js</h1>
+                        <div class="flex gap-2 justify-start items-center">
+                            <button id="btn-show-toast" class="bg-stone-700 shadow shadow-stone-400 hover:bg-stone-600 transition-colors rounded-full text-neutral-100 px-4 py-1.5">Show toast</button>
+                            <button id="btn-clear-toasts" class="bg-stone-600 shadow shadow-stone-400 hover:bg-stone-500 transition-colors rounded-full text-neutral-100 px-4 py-1.5">Clear all toasts</button>
+                            <a href="https://github.com/lullaby6/toaster.js" target="_blank" class="bg-neutral-700 flex items-center justify-center gap-0.5 shadow shadow-stone-400 hover:bg-neutral-600 transition-colors rounded-full text-neutral-100 px-4 py-1.5">
+                                <svg class="text-lg" xmlns="http://www.w3.org/2000/svg"  width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-github"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
+                                Github
+                            </a>
+                        </div>
                     </div>
+
+                    <div class="w-full h-full flex flex-col gap-4">
+                        <div class="bg-black bg-opacity-25 w-full rounded p-4 flex justify-between shadow">
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-default" value="default" checked>
+                                <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-type-default">Default</label>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-dark" value="dark">
+                                <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-type-dark">Dark</label>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-info" value="info">
+                                <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-type-info">Info</label>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-warning" value="warning">
+                                <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-type-warning">Warning</label>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-error" value="error">
+                                <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-type-error">Error</label>
+                            </div>
+                        </div>
+
+                        <div class="w-full flex gap-3">
+                            <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2 shadow">
+                                <input type="text" id="input-title" placeholder="Title" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 transition-colors focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
+                            </div>
+                            <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
+                                <input value="Hello World!" type="text" id="input-text" placeholder="Text" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 transition-colors focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
+                            </div>
+                        </div>
+
+                        <div class="bg-black bg-opacity-25 w-full rounded p-4 flex gap-2 items-center justify-between shadow">
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-top-left" value="top-left">
+                                <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-position-top-left">Top Left</label>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-top" value="top">
+                                <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-position-top">Top</label>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-top-right" value="top-right" checked>
+                                <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-position-top-right">Top Right</label>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-bottom-left" value="bottom-left">
+                                <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-position-bottom-left">Bottom Left</label>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-bottom" value="bottom">
+                                <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-position-bottom">Bottom</label>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-bottom-right" value="bottom-right">
+                                <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-position-bottom-right">Bottom Right</label>
+                            </div>
+                        </div>
+
+                        <div class="w-full flex gap-3">
+                            <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2 shadow">
+                                <input type="text" id="input-duration" placeholder="Duracion" value="3000" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 transition-colors focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
+                            </div>
+                            <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
+                                <input type="text" id="input-delay" placeholder="Delay" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 transition-colors focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
+                            </div>
+                        </div>
+
+                        <div class="bg-black bg-opacity-25 w-full rounded p-4 grid grid-cols-4 gap-2 items-center justify-between shadow">
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="checkbox" name="input-animation-fade" id="input-animation-fade" checked>
+                                <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-animation-fade">Animation Fade</label>
+                            </div>
+
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="checkbox" name="input-animation-scale" id="input-animation-scale">
+                                <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-animation-scale">Animation Scale</label>
+                            </div>
+
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="checkbox" name="input-close-on-click" id="input-close-on-click">
+                                <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-close-on-click">Close On Click</label>
+                            </div>
+
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="checkbox" name="input-show-toast-icon" id="input-show-toast-icon" checked>
+                                <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-show-toast-icon">Show Toast Icon</label>
+                            </div>
+
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="checkbox" name="input-show-close-icon" id="input-show-close-icon" checked>
+                                <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-show-close-icon">Show Close Icon</label>
+                            </div>
+
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="checkbox" name="input-progress-bar" id="input-progress-bar">
+                                <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-progress-bar">Show Progress Bar</label>
+                            </div>
+
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="checkbox" name="input-pause-duration-on-hover" id="input-pause-duration-on-hover">
+                                <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-pause-duration-on-hover">Pause Duration</label>
+                            </div>
+
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="checkbox" name="input-smaller-toast-icon" id="input-smaller-toast-icon">
+                                <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-smaller-toast-icon">Smaller Toast Icon</label>
+                            </div>
+
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="checkbox" name="input-show-border" id="input-show-border">
+                                <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-show-border">Show Border</label>
+                            </div>
+
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="checkbox" name="input-only-show-close-icon-on-hover" id="input-only-show-close-icon-on-hover">
+                                <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-only-show-close-icon-on-hover">Close Icon On Hover</label>
+                            </div>
+
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="checkbox" name="input-on-top" id="input-on-top" checked>
+                                <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-on-top">On Top</label>
+                            </div>
+
+                            <div class="flex gap-1.5">
+                                <input class="cursor-pointer peer hidden" type="checkbox" name="input-progress-bar-on-top" id="input-progress-bar-on-top">
+                                <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-progress-bar-on-top">Progress Bar On Top</label>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-
-                <div class="w-full h-full flex flex-col gap-4">
-                    <div class="bg-black bg-opacity-25 w-full rounded p-4 flex justify-between shadow">
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-default" value="default" checked>
-                            <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-type-default">Default</label>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-dark" value="dark">
-                            <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-type-dark">Dark</label>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-info" value="info">
-                            <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-type-info">Info</label>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-warning" value="warning">
-                            <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-type-warning">Warning</label>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="radio" name="type" id="input-type-error" value="error">
-                            <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-type-error">Error</label>
-                        </div>
-                    </div>
-
-                    <div class="w-full flex gap-3">
-                        <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2 shadow">
-                            <input type="text" id="input-title" placeholder="Title" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 transition-colors focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
-                        </div>
-                        <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
-                            <input value="Hello World!" type="text" id="input-text" placeholder="Text" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 transition-colors focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
-                        </div>
-                    </div>
-
-                    <div class="bg-black bg-opacity-25 w-full rounded p-4 flex gap-2 items-center justify-between shadow">
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-top-left" value="top-left">
-                            <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-position-top-left">Top Left</label>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-top" value="top">
-                            <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-position-top">Top</label>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-top-right" value="top-right" checked>
-                            <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-position-top-right">Top Right</label>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-bottom-left" value="bottom-left">
-                            <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-position-bottom-left">Bottom Left</label>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-bottom" value="bottom">
-                            <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-position-bottom">Bottom</label>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="radio" name="position" id="input-position-bottom-right" value="bottom-right">
-                            <label class='cursor-pointer transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-position-bottom-right">Bottom Right</label>
-                        </div>
-                    </div>
-
-                    <div class="w-full flex gap-3">
-                        <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2 shadow">
-                            <input type="text" id="input-duration" placeholder="Duracion" value="3000" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 transition-colors focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
-                        </div>
-                        <div class="bg-black bg-opacity-25 w-full rounded p-4 flex flex-col gap-2">
-                            <input type="text" id="input-delay" placeholder="Delay" class="bg-transparent w-full border-b border-neutral-100 text-neutral-100 transition-colors focus:outline-none focus:bg-black focus:bg-opacity-25 px-2 py-1 rounded-t placeholder:italic" spellcheck="false" autocomplete="none">
-                        </div>
-                    </div>
-
-                    <div class="bg-black bg-opacity-25 w-full rounded p-4 grid grid-cols-4 gap-2 items-center justify-between shadow">
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-animation-fade" id="input-animation-fade" checked>
-                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-animation-fade">Animation Fade</label>
-                        </div>
-
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-animation-scale" id="input-animation-scale">
-                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-animation-scale">Animation Scale</label>
-                        </div>
-
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-close-on-click" id="input-close-on-click">
-                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-close-on-click">Close On Click</label>
-                        </div>
-
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-show-toast-icon" id="input-show-toast-icon" checked>
-                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-show-toast-icon">Show Toast Icon</label>
-                        </div>
-
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-show-close-icon" id="input-show-close-icon" checked>
-                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-show-close-icon">Show Close Icon</label>
-                        </div>
-
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-progress-bar" id="input-progress-bar">
-                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-progress-bar">Show Progress Bar</label>
-                        </div>
-
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-pause-duration-on-hover" id="input-pause-duration-on-hover">
-                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-pause-duration-on-hover">Pause Duration</label>
-                        </div>
-
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-smaller-toast-icon" id="input-smaller-toast-icon">
-                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-smaller-toast-icon">Smaller Toast Icon</label>
-                        </div>
-
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-show-border" id="input-show-border">
-                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-show-border">Show Border</label>
-                        </div>
-
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-only-show-close-icon-on-hover" id="input-only-show-close-icon-on-hover">
-                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-only-show-close-icon-on-hover">Close Icon On Hover</label>
-                        </div>
-
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-on-top" id="input-on-top" checked>
-                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-on-top">On Top</label>
-                        </div>
-
-                        <div class="flex gap-1.5">
-                            <input class="cursor-pointer peer hidden" type="checkbox" name="input-progress-bar-on-top" id="input-progress-bar-on-top">
-                            <label class='cursor-pointer text-nowrap text-center w-full transition-colors hover:bg-black hover:bg-opacity-25 peer-checked:bg-stone-300 peer-checked:bg-opacity-25 peer-checked:shadow px-3 py-1 rounded text-neutral-200' for="input-progress-bar-on-top">Progress Bar On Top</label>
-                        </div>
-                    </div>
-                </div>
-
             </div>
-        </div>
 
-        <div class="w-[40%] flex justify-center items-center h-full">
-            <div class="bg-black bg-opacity-50 p-6 rounded h-full w-full shadow">
-                <div class="rounded overflow-hidden shadow">
-                    <pre><code class="language-js">
+            <div class="w-[40%] h-full flex-1 flex justify-center items-center bg-black bg-opacity-50 p-6 rounded h-full w-full shadow">
+                <div class="w-full h-full rounded overflow-hidden shadow">
+                    <pre><code id="code-toast" class="language-js">
                     </code></pre>
                 </div>
             </div>
+
+        </div>
+
+        <div class="w-full flex flex-col lg:flex-row gap-6">
+
+            <div class="w-full h-fit lg:w-1/2 bg-black bg-opacity-50 p-6 rounded flex flex-col gap-4">
+                <button id="btn-show-btn-toast" class="bg-stone-700 shadow shadow-stone-400 hover:bg-stone-600 transition-colors rounded-full text-neutral-100 px-4 py-1.5">Show button toast</button>
+                <div class="bg-black bg-opacity-50 p-6 rounded h-full w-full shadow">
+                    <div class="rounded overflow-hidden shadow">
+                        <pre><code id="code-btn-toast" class="language-js">
+Toaster({
+    type: 'info',
+
+    title: 'Info Toast',
+    text: 'This is a button toast',
+
+    position: 'bottom-left',
+    duration: 5000,
+
+    showCloseIcon: false,
+
+    showProgressBar: true,
+    pauseDurationOnHover: true,
+
+    showButton: true,
+    buttonText: 'Ok',
+    showButtonIcon: true,
+
+    onButtonClick: (event, toast) => {
+        toast.ToasterHide()
+    }
+})
+                        </code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full h-fit lg:w-1/2 bg-black bg-opacity-50 p-6 rounded flex flex-col gap-4">
+                <button id="btn-show-promise-toast" class="bg-stone-700 shadow shadow-stone-400 hover:bg-stone-600 transition-colors rounded-full text-neutral-100 px-4 py-1.5">Show promise toast</button>
+                <div class="bg-black bg-opacity-50 p-6 rounded h-full w-full shadow">
+                    <div class="rounded overflow-hidden shadow">
+                        <pre><code id="code-promise-toast" class="language-js">
+Toaster({
+    title: 'Loading',
+    text: 'Please wait...',
+
+    position: 'top-right',
+
+    promiseCallback: () => new Promise((resolve, reject) =>
+        setTimeout(() => {
+            const randomBoolean = Math.random() < 0.5;
+
+            if (randomBoolean) {
+                resolve('The promise was resolved')
+            } else {
+                reject('The promise was rejected')
+            }
+        }, 1000)
+    )
+
+    promiseThenToast: {
+        title: 'Success',
+        text: 'The promise was resolved',
+
+        position: 'top-right',
+        duration: 5000,
+
+        pauseDurationOnHover: true,
+
+        showCloseIcon: true,
+        showProgressBar: true,
+    },
+    promiseThenCallback: result => {
+        return {
+            text: result
+        }
+    },
+
+    promiseCatchToast: {
+        title: 'Error',
+        text: 'The promise was rejected',
+
+        position: 'top-right',
+        duration: 5000,
+
+        pauseDurationOnHover: true,
+
+        showCloseIcon: true,
+        showProgressBar: true,
+
+        showButton: true,
+        buttonText: 'Retry',
+        showButtonIcon: true,
+
+        onButtonClick: (event, toast) => {
+            toast.ToasterHide()
+            document.querySelector('#btn-show-promise-toast').click()
+        }
+    },
+    promiseCatchCallback: error => {
+        return {
+            text: error
+        }
+    }
+})
+                        </code></pre>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
 
     <script>
+        hljs.highlightAll()
+
         function get() {
             return {
                 type: document.querySelector('input[name="type"]:checked') ? document.querySelector('input[name="type"]:checked').value : 'default',
@@ -222,7 +338,7 @@
         }
 
         function update() {
-            const $code = document.querySelector('code')
+            const $code = document.getElementById('code-toast')
             $code.removeAttribute('data-highlighted')
             $code.textContent = `Toaster(${JSON.stringify(get(), null, 2)});`
             hljs.highlightElement($code);
@@ -240,6 +356,95 @@
 
         document.querySelector('#btn-show-toast').addEventListener('click', () => Toaster(get()))
         document.querySelector('#btn-clear-toasts').addEventListener('click', () => ToasterHideAll())
+
+        document.querySelector('#btn-show-btn-toast').addEventListener('click',() => {
+            Toaster({
+                type: 'info',
+
+                title: 'Info Toast',
+                text: 'This is a button toast',
+
+                position: 'bottom-left',
+                duration: 5000,
+
+                showCloseIcon: false,
+
+                showProgressBar: true,
+                pauseDurationOnHover: true,
+
+                showButton: true,
+                buttonText: 'Ok',
+                showButtonIcon: true,
+
+                onButtonClick: (event, toast) => {
+                    toast.ToasterHide()
+                }
+            })
+        })
+
+        document.querySelector('#btn-show-promise-toast').addEventListener('click',() => {
+            Toaster({
+                title: 'Loading',
+                text: 'Please wait...',
+
+                position: 'top-right',
+
+                promiseCallback: () => new Promise((resolve, reject) =>
+                    setTimeout(() => {
+                        const randomBoolean = Math.random() < 0.5;
+
+                        if (randomBoolean) {
+                            resolve('The promise was resolved')
+                        } else {
+                            reject('The promise was rejected')
+                        }
+                    }, 1000)
+                ),
+
+                promiseThenToast: {
+                    title: 'Success',
+
+                    position: 'top-right',
+                    duration: 5000,
+
+                    pauseDurationOnHover: true,
+
+                    showCloseIcon: true,
+                    showProgressBar: true,
+                },
+                promiseThenCallback: result => {
+                    return {
+                        text: result
+                    }
+                },
+
+                promiseCatchToast: {
+                    title: 'Error',
+
+                    position: 'top-right',
+                    duration: 5000,
+
+                    pauseDurationOnHover: true,
+
+                    showCloseIcon: true,
+                    showProgressBar: true,
+
+                    showButton: true,
+                    buttonText: 'Retry',
+                    showButtonIcon: true,
+
+                    onButtonClick: (event, toast) => {
+                        toast.ToasterHide()
+                        document.querySelector('#btn-show-promise-toast').click()
+                    }
+                },
+                promiseCatchCallback: error => {
+                    return {
+                        text: error
+                    }
+                }
+            })
+        })
     </script>
 </body>
 </html>
