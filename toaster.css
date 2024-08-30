@@ -80,6 +80,14 @@
     right: 0;
 }
 
+.toaster-position-container-left {
+    align-items: start;
+}
+
+.toaster-position-container-right {
+    align-items: end;
+}
+
 .toaster {
     position: relative;
     pointer-events: all;
@@ -109,10 +117,10 @@
 }
 
 .toaster-content {
-    width: full;
+    width: 100%;
     flex: 1;
     display: flex;
-    gap: 4px;
+    gap: 16px;
     justify-content: space-between;
     align-items: center;
 }
@@ -120,8 +128,8 @@
 .toaster-content-text {
     display: flex;
     flex-direction: column;
-    gap: 2.5px;
-    justify-content: start;
+    gap: 0px;
+    justify-content: center;
     align-items: center;
     overflow: hidden;
 }
@@ -181,6 +189,7 @@
     word-wrap: break-word;
     font-weight: 600;
     margin: 0;
+    padding: 0;
     width: 100%;
     text-align: left;
 }
@@ -193,6 +202,7 @@
     text-overflow: ellipsis;
     word-wrap: break-word;
     margin: 0;
+    padding: 0;
     width: 100%;
     text-align: left;
 }
