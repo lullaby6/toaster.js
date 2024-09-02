@@ -27,7 +27,9 @@ async function Toaster({
     duration = 3000,
     animationDuration = 300,
     showAnimationDuration = null,
+    showAnimationEasing = null,
     hideAnimationDuration = null,
+    hideAnimationEasing = null,
     animationEasing = 'ease-in-out',
     animationFade = true,
     showAnimationFade = true,
@@ -93,8 +95,6 @@ async function Toaster({
     promiseAnimationDuration = 300,
     promiseAnimationEasing = 'ease-in-out',
 
-    // promiseLoadingToaster = null,
-
     promiseThenCallback = null,
     promiseThenToast = null,
 
@@ -129,12 +129,10 @@ async function Toaster({
 }) {
     const toastByProps = toast ? true : false
 
-    let toastID = toastByProps
-        ? toast.getAttribute('data-toaster-id')
-        : (id || crypto.randomUUID())
+    id = toast ? toast.getAttribute('data-toaster-id') : (id || crypto.randomUUID())
 
-    if (!toastByProps && document.querySelector(`[data-toaster-id="${toastID}"]`)) {
-        return console.error(`Toaster ${toastID} already exists.`);
+    if (!toastByProps && document.querySelector(`[data-toaster-id="${id}"]`)) {
+        return console.error(`Toaster ${id} already exists.`);
     }
 
     if (delay && delay > 0) await new Promise((resolve) => setTimeout(resolve, delay))
@@ -145,7 +143,7 @@ async function Toaster({
     if (hideAnimationDuration < 0) hideAnimationDuration = 0
     if (delay < 0) delay = 0
     if (promiseTimeout < 0) promiseTimeout = 0
-    if (promiseAnimationDuration) promiseAnimationDuration = 0
+    if (promiseAnimationDuration < 0) promiseAnimationDuration = 0
 
     if (clearPreviousToasts) ToasterHideAll()
 
@@ -168,12 +166,6 @@ async function Toaster({
         }
     }
 
-    if (duration != 0 && duration < animationDuration) animationDuration = duration
-
-    if (showAnimationDuration === null) showAnimationDuration = animationDuration
-
-    if (hideAnimationDuration === null) hideAnimationDuration = animationDuration
-
     const icons = {
         default: defaultIcon,
         dark: darkIcon,
@@ -183,37 +175,6 @@ async function Toaster({
         error: errorIcon,
         loading: loadingIcon,
     }
-
-    const showAnimation = [{}, {}]
-    const hideAnimation = [{}, {}]
-
-    if (animationFade) {
-        if (showAnimationFade) {
-            showAnimation[0].opacity = 0
-            showAnimation[1].opacity = 1
-        }
-
-        if (hideAnimationFade) {
-            hideAnimation[0].opacity = 1
-            hideAnimation[1].opacity = 0
-        }
-    }
-
-    if (animationScale) {
-        if (showAnimationScale) {
-            showAnimation[0].scale = 0
-            showAnimation[1].scale = 1
-        }
-
-        if (hideAnimationScale) {
-            hideAnimation[0].scale = 1
-            hideAnimation[1].scale = 0
-        }
-    }
-
-    if (customShowAnimation) showAnimation = customShowAnimation
-
-    if (customHideAnimation) hideAnimation = customHideAnimation
 
     if (promiseCallback) {
         type = 'loading'
@@ -230,8 +191,8 @@ async function Toaster({
 
     div.innerHTML = `
         <div
-            class="toaster toaster-${type} toaster-${toastID} ${toastClassName}"
-            data-toaster-id="${toastID}"
+            class="toaster toaster-${type} toaster-${id} ${toastClassName}"
+            data-toaster-id="${id}"
             data-toaster-date="${Date.now()}"
             style="${fontFamily ? `font-family: ${fontFamily};"` : ''}; ${backgroundColor ? `background-color: ${backgroundColor};"` : ''}; ${showBorder ? '' : 'border: none;'}"
         >
@@ -265,10 +226,11 @@ async function Toaster({
             </div>
 
             ${(showCloseIcon && closeIcon) ? `
-                <div class="toaster-close-icon toaster-close-icon-${toastID} ${closeIconClassName} ${closeIconOnTopRight ? 'toaster-close-icon-top-right' : ''}" ${textColor ? `style="color: ${textColor};"` : ''}>
+                <div class="toaster-close-icon toaster-close-icon-${id} ${closeIconClassName} ${closeIconOnTopRight ? 'toaster-close-icon-top-right' : ''}" ${textColor ? `style="color: ${textColor};"` : ''}>
                     ${closeIcon}
                 </div>
             ` : ''}
+
             ${showProgressBar ? `
                 <span class='toaster-progress-bar ${progressBarOnTop ? 'toaster-progress-bar-top' : ''} ${progressBarClassName}'></span>
             ` : ''}
@@ -280,17 +242,57 @@ async function Toaster({
         document.querySelector(`[data-toaster-position-container="${position}"]`)[method](div)
     }
 
-    toast = document.querySelector(`.toaster-${toastID}`)
+    toast = document.querySelector(`.toaster-${id}`)
 
     if (!toastByProps) {
-        if (onLoad && typeof onLoad === 'function') onLoad(toast)
-    } else if (onChange && typeof onChange === 'function') onChange(toast)
+        if (onLoad) onLoad(toast)
+    } else if (onChange) onChange(toast)
 
-    if (!toastByProps && Object.keys(showAnimation[0]).length > 0 && Object.keys(showAnimation[1]).length > 0) {
-        toast.animate(showAnimation, {
-            duration: showAnimationDuration,
+    if (duration != 0 && duration < animationDuration) animationDuration = duration
+
+    const animations = {
+        show: {
+            animation: [{}, {}],
+            duration: showAnimationDuration || animationDuration,
+            easing: showAnimationEasing || animationEasing
+        },
+        hide: {
+            animation: [{}, {}],
+            duration: hideAnimationDuration || animationDuration,
+            easing: hideAnimationEasing || animationEasing
+        },
+    };
+
+    if (animationFade) {
+        if (showAnimationFade) {
+            animations.show.animation[0].opacity = 0;
+            animations.show.animation[1].opacity = 1;
+        }
+        if (hideAnimationFade) {
+            animations.hide.animation[0].opacity = 1;
+            animations.hide.animation[1].opacity = 0;
+        }
+    }
+
+    if (animationScale) {
+        if (showAnimationScale) {
+            animations.show.animation[0].scale = 0;
+            animations.show.animation[1].scale = 1;
+        }
+        if (hideAnimationScale) {
+            animations.hide.animation[0].scale = 1;
+            animations.hide.animation[1].scale = 0;
+        }
+    }
+
+    animations.show = customShowAnimation || animations.show;
+    animations.hide = customHideAnimation || animations.hide;
+
+    if (!toastByProps && Object.keys(animations.show.animation[0]).length > 0 && Object.keys(animations.show.animation[1]).length > 0) {
+        toast.animate(animations.show.animation, {
+            duration: animations.show.duration,
             fill: 'forwards',
-            easing: animationEasing
+            easing: animations.show.easing
         })
     }
 
@@ -310,27 +312,27 @@ async function Toaster({
             toast.ToasterInterval = null
         }
 
-        if (Object.keys(hideAnimation[0]).length > 0 && Object.keys(hideAnimation[1]).length > 0) {
-            toast.animate(hideAnimation, {
-                duration: hideAnimationDuration,
+        if (Object.keys(animations.hide.animation[0]).length > 0 && Object.keys(animations.hide.animation[1]).length > 0) {
+            toast.animate(animations.hide.animation, {
+                duration: animations.hide.duration,
                 fill: 'forwards',
-                easing: animationEasing
+                easing: animations.hide.easing
             })
 
             setTimeout(() => {
-                if (onHide && typeof onHide === 'function') onHide(toast)
+                if (onHide) onHide(toast)
 
                 toast.closest('.toaster-container').remove()
             }, hideAnimationDuration)
         } else {
-            if (onHide && typeof onHide === 'function') onHide(toast)
+            if (onHide) onHide(toast)
 
             toast.closest('.toaster-container').remove()
         }
     }
 
     if (showCloseIcon) {
-        const closeIcon = document.querySelector(`.toaster-close-icon-${toastID}`)
+        const closeIcon = document.querySelector(`.toaster-close-icon-${id}`)
         closeIcon.addEventListener('click', toast.ToasterHide)
 
         if (onlyShowCloseIconOnHover) {
@@ -387,10 +389,9 @@ async function Toaster({
                 if (showProgressBar) {
                     const progressBar = toast.querySelector(`.toaster-progress-bar`);
 
-                    const currentProgressPercentage = parseFloat(window.getComputedStyle(progressBar).width) / progressBar.parentElement.clientWidth * 100;
+                    const currentProgressPercentage = parseFloat(getComputedStyle(progressBar).width) / progressBar.parentElement.clientWidth * 100;
 
                     const remainingPercentage = (toast.ToasterTimeoutTimeLeft / duration) * 100;
-                    // const newProgressWidth = currentProgressPercentage + remainingPercentage * (Date.now() - toast.ToasterTimeoutResumeTime) / toast.ToasterTimeoutTimeLeft;
 
                     toast.ToasterInterval = setInterval(() => {
                         const elapsed = Date.now() - toast.ToasterTimeoutResumeTime;
@@ -405,13 +406,18 @@ async function Toaster({
 
     if (closeOnClick) toast.addEventListener('click', toast.ToasterHide)
 
-    if (onButtonClick && typeof onButtonClick === 'function') {
+    if (onButtonClick) {
         const button = toast.querySelector(`.toaster-button`)
 
         if (button) button.addEventListener('click', event => onButtonClick(event, toast, button))
     }
 
     if (promiseCallback) {
+        let newToast = {
+            ...arguments[0],
+            promiseCallback: null,
+        }
+
         try {
             let result = null
 
@@ -436,28 +442,12 @@ async function Toaster({
 
             if (promiseThenCallback) promiseThenToastCallbackResult = promiseThenCallback(result, toast, arguments[0])
 
-            if (promiseAnimation) {
-                div.animate(promiseAnimation, {
-                    duration: promiseAnimationDuration,
-                    fill: 'forwards',
-                    easing: promiseAnimationEasing,
-                })
-            }
-
-            const toastProps = {
-                ...arguments[0],
-                promiseCallback: null,
+            newToast = {
+                ...newToast,
                 type: 'success',
                 ...promiseThenToast,
                 ...promiseThenToastCallbackResult
             }
-
-            const toastID = toast.getAttribute('data-toaster-id')
-            const gettedToast = document.querySelector(`.toaster[data-toaster-id="${toastID}"]`)
-
-            if (gettedToast && gettedToast.getAttribute('data-toaster-hiding') != 'true') toastProps.toast = gettedToast
-
-            Toaster(toastProps)
         } catch (error) {
             if (error.message) error = error.message
 
@@ -465,36 +455,30 @@ async function Toaster({
 
             if (promiseCatchCallback) promiseCatchToastCallbackResult = promiseCatchCallback(error, toast, arguments[0])
 
-            if (promiseAnimation) {
-                div.animate(promiseAnimation, {
-                    duration: promiseAnimationDuration,
-                    fill: 'forwards',
-                    easing: promiseAnimationEasing,
-                })
-            }
-
-            const toastProps = {
-                ...arguments[0],
-                promiseCallback: null,
+            newToast = {
+                ...newToast,
                 type: 'error',
                 ...promiseCatchToast,
                 ...promiseCatchToastCallbackResult
             }
-
-            const toastID = toast.getAttribute('data-toaster-id')
-            const gettedToast = document.querySelector(`.toaster[data-toaster-id="${toastID}"]`)
-
-            if (gettedToast && gettedToast.getAttribute('data-toaster-hiding') != 'true') toastProps.toast = gettedToast
-
-            Toaster(toastProps)
         }
+
+        if (promiseAnimation) {
+            div.animate(promiseAnimation, {
+                duration: promiseAnimationDuration,
+                fill: 'forwards',
+                easing: promiseAnimationEasing,
+            })
+        }
+
+        newToast.toast = document.querySelector(`.toaster[data-toaster-id="${id}"]`)
+
+        Toaster(newToast)
     }
 }
 
 function ToasterHideAll() {
-    const toasts = document.querySelectorAll('.toaster')
-
-    toasts.forEach(toast => toast.ToasterHide())
+    document.querySelectorAll('.toaster').forEach(toast => toast.ToasterHide())
 }
 
 function ToasterLoadPositionContainers() {
@@ -510,10 +494,10 @@ function ToasterLoadPositionContainers() {
         div.classList.add('toaster-position-container')
 
         if (position.startsWith('top')) div.classList.add('toaster-position-container-top')
-        else if (position.startsWith('bottom')) div.classList.add('toaster-position-container-bottom')
+        else div.classList.add('toaster-position-container-bottom')
 
         if (position.endsWith('left')) div.classList.add('toaster-position-container-left')
-        else if (position.endsWith('right')) div.classList.add('toaster-position-container-right')
+        else div.classList.add('toaster-position-container-right')
 
         div.setAttribute('data-toaster-position-container', position)
 
@@ -521,4 +505,368 @@ function ToasterLoadPositionContainers() {
     })
 }
 
-window.addEventListener('DOMContentLoaded', ToasterLoadPositionContainers)
+let ToasterStyles = `
+    :root {
+        --toaster-info: #3b82f6;
+        --toaster-success: #22c55e;
+        --toaster-warning: #facc15;
+        --toaster-error: #ef4444;
+        --toaster-text: #fff;
+
+        --toaster-progress-bar: #fff;
+
+        --toaster-default-bg: #fff;
+        --toaster-default-text: #262626;
+        --toaster-default-border: #d4d4d4;
+        --toaster-default-progress-bar: #262626;
+
+        --toaster-dark-bg: #0a0a0a;
+        --toaster-dark-text: #fafafa;
+        --toaster-dark-border: #d4d4d4;
+    }
+
+    .toaster-position-container-main {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        pointer-events: none;
+        width: 100vw;
+        height: 100vh;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .toaster-position-container {
+        position: absolute;
+        z-index: 9999;
+        pointer-events: none;
+
+        padding: 16px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+
+        box-sizing: border-box;
+    }
+
+    .toaster-position-container[data-toaster-position-container="top-left"] {
+        top: 0;
+        left: 0;
+    }
+
+    .toaster-position-container[data-toaster-position-container="top"] {
+        top: 0;
+        left: 50%;
+        translate: -50% 0;
+    }
+
+    .toaster-position-container[data-toaster-position-container="top-right"] {
+        top: 0;
+        right: 0;
+    }
+
+    .toaster-position-container[data-toaster-position-container="bottom-left"] {
+        bottom: 0;
+        left: 0;
+    }
+
+    .toaster-position-container[data-toaster-position-container="bottom"] {
+        bottom: 0;
+        left: 50%;
+        translate: -50% 0;
+    }
+
+    .toaster-position-container[data-toaster-position-container="bottom-right"] {
+        bottom: 0;
+        right: 0;
+    }
+
+    .toaster-position-container-left {
+        align-items: start;
+    }
+
+    .toaster-position-container-right {
+        align-items: end;
+    }
+
+    .toaster {
+        position: relative;
+        pointer-events: all;
+        z-index: 9999;
+        translate: 0 0;
+        min-width: 300px;
+        overflow: hidden;
+        font-size: 16px;
+        padding: 12px 16px;
+        border-radius: 6px;
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        -ms-border-radius: 6px;
+        -o-border-radius: 6px;
+        color: var(--toaster-text);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        transition: all 0.2s ease-in-out;
+        -webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        -ms-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+    }
+
+    .toaster-content {
+        width: 100%;
+        flex: 1;
+        display: flex;
+        gap: 16px;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .toaster-content-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0px;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .toaster-button {
+        background: transparent;
+        border: solid 1px var(--toaster-text);
+        font-size: 16px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        -ms-border-radius: 6px;
+        -o-border-radius: 6px;
+        color: var(--toaster-text);
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        -webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        -ms-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2.5px;
+    }
+
+    .toaster-button:hover {
+        scale: 1.05;
+    }
+
+    .toaster-button:disabled {
+        opacity: 0.5;
+    }
+
+    .toaster-button-text {
+        margin: 0;
+    }
+
+    .toaster-button-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        margin-bottom: 1.5px;
+    }
+
+    .toaster-title {
+        font-size: 18px;
+        max-width: 250px;
+        max-height: 125px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        font-weight: 600;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        text-align: left;
+    }
+
+    .toaster-text {
+        font-size: 16px;
+        max-width: 250px;
+        max-height: 125px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        text-align: left;
+    }
+
+    .toaster-progress-bar {
+        background-color: var(--toaster-progress-bar);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 7.5%;
+        opacity: 0.375;
+        transition: all 100 ease-in-out;
+        -webkit-transition: all 100 ease-in-out;
+        -moz-transition: all 100 ease-in-out;
+        -ms-transition: all 100 ease-in-out;
+        -o-transition: all 100 ease-in-out;
+    }
+
+    .toaster-progress-bar-top {
+        top: 0;
+        bottom: auto;
+    }
+
+    .toaster-icon {
+        font-size: 35px;
+    }
+
+    .toaster-icon-small {
+        font-size: 25px;
+    }
+
+    .toaster-close-icon {
+        font-size: 20px;
+        cursor: pointer;
+        opacity: 0.5;
+        transition: all 0.2s ease-in-out;
+        -webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        -ms-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+    }
+
+    .toaster-close-icon:hover {
+        opacity: 1;
+        scale: 1.1;
+    }
+
+    .toaster-close-icon-top-right {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 2.5px 5px;
+    }
+
+    .toaster-default {
+        background-color: var(--toaster-default-bg);
+        color: var(--toaster-default-text);
+        border: 1px solid var(--toaster-default-border);
+    }
+
+    .toaster-default .toaster-button {
+        color: var(--toaster-default-text);
+        border: 1px solid var(--toaster-default-border);
+    }
+
+    .toaster-default .toaster-progress-bar {
+        opacity: 0.675;
+        background-color: var(--toaster-default-progress-bar);
+    }
+
+    .toaster-loading {
+        background-color: var(--toaster-default-bg);
+        color: var(--toaster-default-text);
+        border: 1px solid var(--toaster-default-border);
+    }
+
+    .toaster-loading .toaster-button {
+        color: var(--toaster-default-text);
+        border: 1px solid var(--toaster-default-border);
+    }
+
+    .toaster-loading .toaster-progress-bar {
+        opacity: 0.675;
+        background-color: var(--toaster-default-progress-bar);
+    }
+
+    @keyframes toaster-loading-animation {
+        from {
+            rotate: 0deg;
+        }
+        to {
+            rotate: 360deg;
+        }
+    }
+
+    .toaster-loading .toaster-icon svg {
+        animation: toaster-loading-animation 2s infinite linear;
+        -webkit-animation: toaster-loading-animation 2s infinite linear;
+        opacity: 0.5;
+    }
+
+    .toaster-dark {
+        background-color: var(--toaster-dark-bg);
+        color: var(--toaster-dark-text);
+        border: 1px solid var(--toaster-dark-border);
+    }
+
+    .toaster-info {
+        background-color: var(--toaster-info);
+    }
+
+    .toaster-success {
+        background-color: var(--toaster-success);
+    }
+
+    .toaster-warning {
+        background-color: var(--toaster-warning);
+    }
+
+    .toaster-error {
+        background-color: var(--toaster-error);
+    }
+
+    @media screen and (max-width: 480px){
+        .toaster-container {
+            width: 100%;
+        }
+
+        .toaster {
+            min-width: auto;
+        }
+
+        .toaster-position-container {
+            left: 0 !important;
+            right: auto !important;
+            translate: 0 0 !important;
+            width: 100vw;
+        }
+
+        .toaster-position-container-top {
+            top: 0 !important;
+            bottom: auto !important;
+        }
+
+        .toaster-position-container-bottom {
+            top: auto !important;
+            bottom: 0 !important;
+        }
+    }
+`
+
+function ToasterLoadStyles() {
+    const style = document.createElement('style')
+    style.innerHTML = ToasterStyles
+    document.head.appendChild(style)
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    ToasterLoadPositionContainers()
+    ToasterLoadStyles()
+})
