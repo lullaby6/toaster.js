@@ -323,7 +323,7 @@ async function Toaster({
                 if (onHide) onHide(toast)
 
                 toast.closest('.toaster-container').remove()
-            }, hideAnimationDuration)
+            }, animations.hide.duration)
         } else {
             if (onHide) onHide(toast)
 
