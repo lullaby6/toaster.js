@@ -571,6 +571,7 @@ let ToasterStyles = `
         pointer-events: none;
         width: 100vw;
         height: 100vh;
+        max-width: 100%;
 
         display: flex;
         justify-content: center;

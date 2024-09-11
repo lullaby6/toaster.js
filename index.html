@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./toaster.js"></script>
+</head>
+<body>
+    <div style="background-color: red; width: 100vw; height: 100vh;"></div>
+    <div style="background-color: blue; width: 100vw; height: 100vh;"></div>
+    <div style="background-color: red; width: 100vw; height: 100vh;"></div>
+
+
+    <button>Toast</button>
+    <script>
+        Toaster({
+                // type: 'error',
+                title: 'xd',
+                text: 'xd',
+                // rounded: true,
+                // showBorder: true,
+                // borderColor: 'blue',
+                // hidePreviousToast: true,
+            })
+        document.querySelector('button').addEventListener('click', () => {
+            Toaster({
+                type: 'error',
+                title: 'xd',
+                text: 'xd',
+                rounded: true,
+                showBorder: true,
+                borderColor: 'blue',
+                hidePreviousToast: true,
+            })
+        })
+    </script>
+</body>
+</html>
