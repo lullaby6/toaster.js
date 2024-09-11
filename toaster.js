@@ -1,9 +1,4 @@
-// Wait for previous to dismiss before showing new
-// Hide last
 // Custom Toast
-// Rounded
-// Border Color
-// Trigger Window Events
 // README API Rerefence
 // README Button
 // README Promises
@@ -20,6 +15,8 @@ async function Toaster({
 
     clearPreviousToasts = false,
     toastsLimit = null,
+    waitPreviousToast = false,
+    hidePreviousToast = false,
     onTop = true,
 
     delay = null,
@@ -58,6 +55,9 @@ async function Toaster({
     showProgressBar = false,
     progressBarOnTop = false,
 
+    rounded = false,
+    borderRadius = null,
+    borderColor = null,
     backgroundColor = null,
     textColor = null,
     fontFamily = null,
@@ -147,7 +147,7 @@ async function Toaster({
 
     if (clearPreviousToasts) ToasterHideAll()
 
-    if (toastsLimit) {
+    if (toastsLimit || waitPreviousToast || hidePreviousToast) {
         const toasts = Array.from(document.querySelectorAll('[data-toaster-id]'))
             .filter(toast => toast.getAttribute('data-toaster-hiding') !== 'true')
             .map(toast => ({
@@ -155,13 +155,26 @@ async function Toaster({
                 date: toast.getAttribute('data-toaster-date'),
             }))
             .sort((a, b) => a.date - b.date)
+
         const toastsLength = toasts.length + 1
 
-        if (toastsLength > toastsLimit) {
+        if (toastsLimit && toastsLength > toastsLimit) {
             const toastDiff = toastsLength - toastsLimit
 
             for (let i = 0; i < toastDiff; i++) {
                 document.querySelector(`[data-toaster-id="${toasts[i].id}"]`).ToasterHide()
+            }
+        }
+
+        if (toastsLength > 1 && (waitPreviousToast || hidePreviousToast)) {
+            const previousToast = document.querySelector(`[data-toaster-id="${toasts[toastsLength - 2].id}"]`)
+
+            console.log(previousToast);
+
+            if (previousToast) {
+                if (hidePreviousToast) previousToast.ToasterHide()
+
+                if (waitPreviousToast) await new Promise(resolve => previousToast.addEventListener('toaster.hide.end', resolve))
             }
         }
     }
@@ -191,10 +204,10 @@ async function Toaster({
 
     div.innerHTML = `
         <div
-            class="toaster toaster-${type} toaster-${id} ${toastClassName}"
+            class="toaster toaster-${type} toaster-${id} ${toastClassName} ${rounded ? 'toaster-rounded' : ''}"
             data-toaster-id="${id}"
             data-toaster-date="${Date.now()}"
-            style="${fontFamily ? `font-family: ${fontFamily};"` : ''}; ${backgroundColor ? `background-color: ${backgroundColor};"` : ''}; ${showBorder ? '' : 'border: none;'}"
+            style="${fontFamily ? `font-family: ${fontFamily};"` : ''}; ${backgroundColor ? `background-color: ${backgroundColor};"` : ''}; ${borderRadius ? `border-radius: ${borderRadius};"` : ''}; ${showBorder ? (borderColor ? `border: 1px solid ${borderColor};"` : '') : 'border: none;'}"
         >
             ${(showToastIcon && icons[type]) ? `
                 <div class="toaster-icon ${iconClassName} ${smallerToastIcon ? 'toaster-icon-small' : ''}" style="${textColor ? `color: ${textColor};` : ''}${iconFontSize ? `font-size: ${iconFontSize};` : ''}"}>
@@ -246,7 +259,15 @@ async function Toaster({
 
     if (!toastByProps) {
         if (onLoad) onLoad(toast)
-    } else if (onChange) onChange(toast)
+
+        toast.dispatchEvent(new Event('toaster.load'), { detail: { arguments: arguments[0] } })
+        window.dispatchEvent(new Event('toaster.load'), { detail: { toast, arguments: arguments[0] } })
+    } else {
+        if (onChange) onChange(toast)
+
+        toast.dispatchEvent(new Event('toaster.change'), { detail: { arguments: arguments[0] } })
+        window.dispatchEvent(new Event('toaster.change'), { detail: { toast, arguments: arguments[0] } })
+    }
 
     if (duration != 0 && duration < animationDuration) animationDuration = duration
 
@@ -300,6 +321,9 @@ async function Toaster({
         if (toast.ToasterHiding) return
         toast.ToasterHiding = true
 
+        toast.dispatchEvent(new Event('toaster.hide.start'), { detail: { arguments: arguments[0] } })
+        window.dispatchEvent(new Event('toaster.hide.start'), { detail: { toast, arguments: arguments[0] } })
+
         toast.setAttribute('data-toaster-hiding', 'true')
 
         if (toast.ToasterTimeout) {
@@ -322,10 +346,16 @@ async function Toaster({
             setTimeout(() => {
                 if (onHide) onHide(toast)
 
+                toast.dispatchEvent(new Event('toaster.hide.end'), { detail: { arguments: arguments[0] } })
+                window.dispatchEvent(new Event('toaster.hide.end'), { detail: { toast, arguments: arguments[0] } })
+
                 toast.closest('.toaster-container').remove()
             }, animations.hide.duration)
         } else {
             if (onHide) onHide(toast)
+
+            toast.dispatchEvent(new Event('toaster.hide.end'), { detail: { arguments: arguments[0] } })
+            window.dispatchEvent(new Event('toaster.hide.end'), { detail: { toast, arguments: arguments[0] } })
 
             toast.closest('.toaster-container').remove()
         }
@@ -621,6 +651,14 @@ let ToasterStyles = `
         -moz-transition: all 0.2s ease-in-out;
         -ms-transition: all 0.2s ease-in-out;
         -o-transition: all 0.2s ease-in-out;
+    }
+
+    .toaster.toaster-rounded {
+        border-radius: 60px;
+        -webkit-border-radius: 60px;
+        -moz-border-radius: 60px;
+        -ms-border-radius: 60px;
+        -o-border-radius: 60px;
     }
 
     .toaster-content {
