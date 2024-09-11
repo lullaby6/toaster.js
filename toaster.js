@@ -1,3 +1,7 @@
+// toaster.js
+// version: 1.0.0
+// repo: github.com/lullaby6/toaster.js
+
 // Custom Toast
 // README API Rerefence
 // README Button
@@ -127,6 +131,8 @@ async function Toaster({
         <svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-loader-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3a9 9 0 1 0 9 9" /></svg>
     `,
 }) {
+    if (!document.querySelector('.toaster-position-container-main')) await new Promise(resolve => window.addEventListener('toaster.load.position-containers', resolve))
+
     const toastByProps = toast ? true : false
 
     id = toast ? toast.getAttribute('data-toaster-id') : (id || crypto.randomUUID())
@@ -533,6 +539,8 @@ function ToasterLoadPositionContainers() {
 
         mainContainer.appendChild(div)
     })
+
+    window.dispatchEvent(new Event('toaster.load.position-containers'))
 }
 
 let ToasterStyles = `
@@ -905,9 +913,11 @@ function ToasterLoadStyles() {
     const style = document.createElement('style')
     style.innerHTML = ToasterStyles
     document.head.appendChild(style)
+
+    window.dispatchEvent(new Event('toaster.load.styles'))
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    ToasterLoadPositionContainers()
     ToasterLoadStyles()
+    ToasterLoadPositionContainers()
 })
