@@ -4,36 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./toaster.css">
     <script src="./toaster.js"></script>
 </head>
-<body>
-    <div style="background-color: red; width: 100vw; height: 100vh;"></div>
-    <div style="background-color: blue; width: 100vw; height: 100vh;"></div>
-    <div style="background-color: red; width: 100vw; height: 100vh;"></div>
-
-
-    <button>Toast</button>
+<body style="background-color: black;">
+    <button onclick="showToast()">showToast
+    </button>
     <script>
-        Toaster({
-                // type: 'error',
-                title: 'xd',
-                text: 'xd',
-                // rounded: true,
-                // showBorder: true,
-                // borderColor: 'blue',
-                // hidePreviousToast: true,
+        function showToast() {
+            new Toaster({
+                type: 'info',
+                title: 'hola',
+                text: 'hola',
+                border: true,
+                // closeOnClick: true,
+                duration: 3000,
+                closeButton: {
+                    topRight: true,
+                },
+                progressBar: {
+                    // position: 'top'
+                },
+                // hideAllPreviousToasts: true,
+                // delay: 1000,
+                animations: {
+                    // scale: true,
+                    // fade: false,
+                }
             })
-        document.querySelector('button').addEventListener('click', () => {
-            Toaster({
-                type: 'error',
-                title: 'xd',
-                text: 'xd',
-                rounded: true,
-                showBorder: true,
-                borderColor: 'blue',
-                hidePreviousToast: true,
-            })
-        })
+        }
+
     </script>
 </body>
 </html>
