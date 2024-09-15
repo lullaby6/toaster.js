@@ -1,43 +1,82 @@
 class Toaster {
-    constructor(options) {
-        this.id = options.id || crypto.randomUUID()
-        this.type = options.type || 'default'
-        this.title = options.title || null
-        this.text = options.text || null
-        this.position = options.position || 'top-right'
-        this.duration = options.duration || 3000
-        this.delay = options.delay || null
-        this.border = options.border || false
+    constructor({
+        id = crypto.randomUUID(),
+        type = 'default',
+        title = null,
+        text = null,
+        position = 'top-right',
+        duration = 3000,
+        delay = null,
+        border = false,
 
-        this.closeButton = options.closeButton || {}
-        this.progressBar = options.progressBar || {}
+        closeButton = null,
+        progressBar = null,
+
+        button = null,
+
+        closeOnClick = false,
+        hideAllPreviousToasts = false,
+        onTop = true,
+
+        className = {},
+        style = {},
+        attributes = {},
+
+        onLoad = null,
+        onShow = null,
+        onHide = null,
+        onChange = null,
+
+        icons = {},
+        animation = {},
+    } = {}) {
+        this.id = id
+        this.type = type
+        this.title = title
+        this.text = text
+        this.position = position
+        this.duration = duration
+        this.delay = delay
+        this.border = border
+
+        this.closeButton = closeButton
+        this.progressBar = progressBar
+
+        this.button = button
+
+        this.closeOnClick = closeOnClick
+        this.hideAllPreviousToasts = hideAllPreviousToasts
+        this.onTop = onTop
+
+        this.className = className
+        this.style = style
+        this.attributes = attributes
+
+        this.onLoad = onLoad
+        this.onShow = onShow
+        this.onHide = onHide
+        this.onChange = onChange
 
         this.icons = {
-            default: options.icons?.default || null,
-            dark: options.icons?.dark || null,
-            success: options.icons?.success || '<svg  xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-circle-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-1.293 5.953a1 1 0 0 0 -1.32 -.083l-.094 .083l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.403 1.403l.083 .094l2 2l.094 .083a1 1 0 0 0 1.226 0l.094 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" /></svg>',
-            info: options.icons?.info || '<svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-info-circle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 2c5.523 0 10 4.477 10 10a10 10 0 0 1 -19.995 .324l-.005 -.324l.004 -.28c.148 -5.393 4.566 -9.72 9.996 -9.72zm0 9h-1l-.117 .007a1 1 0 0 0 0 1.986l.117 .007v3l.007 .117a1 1 0 0 0 .876 .876l.117 .007h1l.117 -.007a1 1 0 0 0 .876 -.876l.007 -.117l-.007 -.117a1 1 0 0 0 -.764 -.857l-.112 -.02l-.117 -.006v-3l-.007 -.117a1 1 0 0 0 -.876 -.876l-.117 -.007zm.01 -3l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007z" /></svg>',
-            warning: options.icons?.warning || '<svg  xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-alert-triangle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 1.67c.955 0 1.845 .467 2.39 1.247l.105 .16l8.114 13.548a2.914 2.914 0 0 1 -2.307 4.363l-.195 .008h-16.225a2.914 2.914 0 0 1 -2.582 -4.2l.099 -.185l8.11 -13.538a2.914 2.914 0 0 1 2.491 -1.403zm.01 13.33l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 -7a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0 1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z" /></svg>',
-            error: options.icons?.error || '<svg  xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-exclamation-circle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 3.34a10 10 0 1 1 -15 8.66l.005 -.324a10 10 0 0 1 14.995 -8.336m-5 11.66a1 1 0 0 0 -1 1v.01a1 1 0 0 0 2 0v-.01a1 1 0 0 0 -1 -1m0 -7a1 1 0 0 0 -1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0 -1 -1" /></svg>',
-            button: options.icons?.button || '<svg  xmlns="http://www.w3.org/2000/svg"  width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-hand-click"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 13v-8.5a1.5 1.5 0 0 1 3 0v7.5" /><path d="M11 11.5v-2a1.5 1.5 0 0 1 3 0v2.5" /><path d="M14 10.5a1.5 1.5 0 0 1 3 0v1.5" /><path d="M17 11.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7l-.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47" /><path d="M5 3l-1 -1" /><path d="M4 7h-1" /><path d="M14 3l1 -1" /><path d="M15 6h1" /></svg>',
-            close: options.icons?.close || '<svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>',
-            loading: options.icons?.loading || '<svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-loader-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3a9 9 0 1 0 9 9" /></svg>',
+            default: null,
+            dark:null,
+            success: '<svg  xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-circle-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-1.293 5.953a1 1 0 0 0 -1.32 -.083l-.094 .083l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.403 1.403l.083 .094l2 2l.094 .083a1 1 0 0 0 1.226 0l.094 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" /></svg>',
+            info: '<svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-info-circle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 2c5.523 0 10 4.477 10 10a10 10 0 0 1 -19.995 .324l-.005 -.324l.004 -.28c.148 -5.393 4.566 -9.72 9.996 -9.72zm0 9h-1l-.117 .007a1 1 0 0 0 0 1.986l.117 .007v3l.007 .117a1 1 0 0 0 .876 .876l.117 .007h1l.117 -.007a1 1 0 0 0 .876 -.876l.007 -.117l-.007 -.117a1 1 0 0 0 -.764 -.857l-.112 -.02l-.117 -.006v-3l-.007 -.117a1 1 0 0 0 -.876 -.876l-.117 -.007zm.01 -3l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007z" /></svg>',
+            warning: '<svg  xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-alert-triangle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 1.67c.955 0 1.845 .467 2.39 1.247l.105 .16l8.114 13.548a2.914 2.914 0 0 1 -2.307 4.363l-.195 .008h-16.225a2.914 2.914 0 0 1 -2.582 -4.2l.099 -.185l8.11 -13.538a2.914 2.914 0 0 1 2.491 -1.403zm.01 13.33l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 -7a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0 1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z" /></svg>',
+            error: '<svg  xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-exclamation-circle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 3.34a10 10 0 1 1 -15 8.66l.005 -.324a10 10 0 0 1 14.995 -8.336m-5 11.66a1 1 0 0 0 -1 1v.01a1 1 0 0 0 2 0v-.01a1 1 0 0 0 -1 -1m0 -7a1 1 0 0 0 -1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0 -1 -1" /></svg>',
+            button: '<svg  xmlns="http://www.w3.org/2000/svg"  width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-hand-click"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 13v-8.5a1.5 1.5 0 0 1 3 0v7.5" /><path d="M11 11.5v-2a1.5 1.5 0 0 1 3 0v2.5" /><path d="M14 10.5a1.5 1.5 0 0 1 3 0v1.5" /><path d="M17 11.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7l-.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47" /><path d="M5 3l-1 -1" /><path d="M4 7h-1" /><path d="M14 3l1 -1" /><path d="M15 6h1" /></svg>',
+            close: '<svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>',
+            loading: '<svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-loader-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3a9 9 0 1 0 9 9" /></svg>',
+            ...icons
         }
 
-        this.animations = {
-            duration: options.animations?.duration ? options.animations.duration : 300,
-            easing: options.animations?.easing ? options.animations.easing : 'ease-in-out',
-
-            fade: (options.animations && 'fade' in options.animations) ? options.animations.fade : true,
-            scale: (options.animations && 'scale' in options.animations) ? options.animations.scale : false,
-        }
-
-        this.className = options.className || {}
-        this.style = options.style || {}
-        this.attributes = options.attributes || {}
-
-        this.closeOnClick = options.closeOnClick || false
-        this.hideAllPreviousToasts = options.hideAllPreviousToasts || false
+        this.animation = {
+            duration: 300,
+            easing: 'ease-in-out',
+            fade: true,
+            scale: false,
+            ...animation
+        };
 
         this.render()
     }
@@ -82,68 +121,144 @@ class Toaster {
     show() {
         const animation = [{}, {}]
 
-        if (this.animations.fade) {
+        if (this.animation.fade) {
             animation[0].opacity = 0
             animation[1].opacity = 1
         }
 
-        if (this.animations.scale) {
+        if (this.animation.scale) {
             animation[0].scale = 0
             animation[1].scale = 1
         }
 
-        this.$toast.animate(animation, {
-            duration: this.animations.duration,
-            easing: this.animations.easing,
+        this.showAnimation = this.$toast.animate(animation, {
+            duration: this.animation.duration,
+            easing: this.animation.easing,
             fill: 'forwards',
         })
+
+        this.showAnimation.onfinish = event => {
+            if (this.onShow) this.onShow(event)
+        }
     }
 
     hide() {
-        if (this.$toast.hasAttribute('data-toaster-hiding')) return
-        this.$toast.setAttribute('data-toaster-hiding', '')
+        if (this.$toast.dataset.toasterHiding === 'true') return
+        this.$toast.dataset.toasterHiding = 'true'
 
         const animation = [{}, {}]
 
-        if (this.animations.fade) {
+        if (this.animation.fade) {
             animation[0].opacity = 1
             animation[1].opacity = 0
         }
 
-        if (this.animations.scale) {
+        if (this.animation.scale) {
             animation[0].scale = 1
             animation[1].scale = 0
         }
 
-        this.toastHideAnimation = this.$toast.animate(animation, {
-            duration: this.animations.duration,
-            easing: this.animations.easing,
+        this.hideAnimation = this.$toast.animate(animation, {
+            duration: this.animation.duration,
+            easing: this.animation.easing,
             fill: 'forwards',
         })
 
-        this.toastHideAnimation.onfinish = () => this.$toast.remove()
+        this.hideAnimation.onfinish = event => {
+            if (this.onHide) this.onHide(event)
+
+            this.$toast.remove()
+        }
+    }
+
+    createToast() {
+        this.$toast = this.createElement('div')
+        if (this.onLoad) this.onLoad(this.$toast)
+
+        this.$toast.Toaster = this
+        this.$toast.classList.add('toaster', `toaster-${this.id}`, `toaster-${this.type}`)
+        this.$toast.dataset.toasterId = this.id
+        this.$toast.dataset.toasterDate = Date.now()
+
+        let method = 'prepend'
+        if (this.onTop === false) method = 'append'
+
+        document.querySelector(`[data-toaster-position="${this.position}"]`)[method](this.$toast)
+
+        if (this.border) this.$toast.classList.add('toaster-border')
+
+        if (this.closeOnClick) this.$toast.addEventListener('click', () => this.hide())
+    }
+
+    createIcon() {
+        this.$icon = this.createElement('div', 'icon')
+        this.$toast.append(this.$icon)
+        this.$icon.innerHTML = this.icons[this.type]
+    }
+
+    createTitle() {
+        this.$title = this.createElement('h4', 'title')
+        this.$title.textContent = this.title
+        this.$contentText.append(this.$title)
+    }
+
+    createText() {
+        this.$text = this.createElement('p', 'text')
+        this.$text.textContent = this.text
+        this.$contentText.append(this.$text)
+    }
+
+    createButton() {
+        this.$button = this.createElement('div', 'button')
+
+        if (this.button.text) this.$button.textContent = this.button.text
+
+        if (this.button.icon && this.icons['button']) {
+            this.$buttonIcon = this.createElement('div', 'buttonIcon')
+
+            if (this.button.icon === true) this.$buttonIcon.innerHTML = this.icons['button']
+            else this.$buttonIcon.innerHTML = this.button.icon
+
+            this.$button.prepend(this.$buttonIcon)
+        }
+
+        this.$content.append(this.$button)
+
+        if (this.button.onClick) this.$button.addEventListener('click', this.button.onClick)
+    }
+
+    createCloseButton() {
+        this.$closeButton = this.createElement('div', 'closeButton')
+        this.$closeButton.innerHTML = this.icons['close']
+
+        if (typeof this.closeButton == 'object') {
+            if (this.closeButton.icon) this.$closeButton.innerHTML = this.progressBar.icon
+            if (this.closeButton.topRight) this.$closeButton.classList.add('toaster-close-button-top-right')
+        }
+
+        this.$toast.append(this.$closeButton)
+
+        this.$closeButton.addEventListener('click', () => this.hide())
+    }
+
+    createProgressBar() {
+        this.$progressBar = this.createElement('span', 'progressBar')
+
+        if (typeof this.progressBar == 'object') if (this.progressBar.position === 'top') this.$progressBar.classList.add('toaster-progress-bar-top')
+
+        this.$toast.append(this.$progressBar)
     }
 
     async render() {
-        if (!document.querySelector('.toaster-position-container-main')) await new Promise(resolve => window.addEventListener('toaster.load.position-containers', resolve))
+        if (!document.querySelector('#toaster-positions')) await new Promise(resolve => window.addEventListener('toaster.init', resolve))
 
         if (this.delay && this.delay > 0) await new Promise(resolve => setTimeout(resolve, this.delay))
 
         if (this.hideAllPreviousToasts) document.querySelectorAll('.toaster').forEach(toast => toast.Toaster.hide())
 
-        this.$toast = this.createElement('div')
-        this.$toast.Toaster = this
-        this.$toast.classList.add('toaster', `toaster-${this.id}`, `toaster-${this.type}`)
-        this.$toast.setAttribute('data-toaster-id', this.id)
-        this.$toast.setAttribute('data-toaster-date', Date.now())
-        document.querySelector(`[data-toaster-position-container="${this.position}"]`).append(this.$toast)
-        if (this.border) this.$toast.classList.add('toaster-border')
+        this.createToast()
 
-        if (this.icons[this.type]) {
-            this.$icon = this.createElement('div', 'icon')
-            this.$toast.append(this.$icon)
-            this.$icon.innerHTML = this.icons[this.type]
-        }
+        if (this.icons[this.type]) this.createIcon()
 
         this.$content = this.createElement('div', 'content')
         this.$toast.append(this.$content)
@@ -153,41 +268,15 @@ class Toaster {
             this.$content.append(this.$contentText)
         }
 
-        if (this.title) {
-            this.$title = this.createElement('h4', 'title')
-            this.$contentText.append(this.$title)
-            this.$title.textContent = this.title
-        }
+        if (this.title && this.title.trim() !== '') this.createTitle()
 
-        if (this.text && this.text !== '') {
-            this.$text = this.createElement('p', 'text')
-            this.$contentText.append(this.$text)
-            this.$text.textContent = this.text
-        }
+        if (this.text && this.text.trim() !== '') this.createText()
 
-        if ((this.closeButton == true || typeof this.closeButton == 'object') && this.icons['close']) {
-            this.$closeButton = this.createElement('div', 'closeButton')
-            this.$closeButton.innerHTML = this.icons['close']
-            this.$toast.append(this.$closeButton)
+        if (this.button) this.createButton()
 
-            this.$closeButton.addEventListener('click', () => this.hide())
+        if (this.closeButton && this.icons['close']) this.createCloseButton()
 
-            if (typeof this.closeButton == 'object') {
-                if (this.closeButton.icon) this.$closeButton.innerHTML = this.progressBar.icon
-                if (this.closeButton.topRight) this.$closeButton.classList.add('toaster-close-button-top-right')
-            }
-        }
-
-        if (this.progressBar == true || typeof this.progressBar == 'object') {
-            this.$progressBar = this.createElement('span', 'progressBar')
-            this.$toast.append(this.$progressBar)
-
-            if (typeof this.progressBar == 'object') {
-                if (this.progressBar.position === 'top') this.$progressBar.classList.add('toaster-progress-bar-top')
-            }
-        }
-
-        if (this.closeOnClick) this.$toast.addEventListener('click', () => this.hide())
+        if (this.progressBar == true || typeof this.progressBar == 'object') this.createProgressBar()
 
         if (this.duration > 0) {
             this.durationTimeout = setTimeout(() => this.hide(), this.duration)
@@ -220,28 +309,30 @@ function ToasterHideAll() {
 }
 
 function ToasterInit() {
+    if (document.querySelector('#toaster-positions')) return
+
     const positions = ['top-left', 'top', 'top-right', 'bottom-left', 'bottom', 'bottom-right']
 
-    const mainContainer = document.createElement('div')
-    mainContainer.classList.add('toaster-position-container-main')
-    document.body.appendChild(mainContainer)
+    const $positions = document.createElement('div')
+    $positions.id = 'toaster-positions'
+    document.body.appendChild($positions)
 
     positions.forEach(position => {
-        const div = document.createElement('div')
-        div.classList.add('toaster-position-container')
+        const $position = document.createElement('div')
+        $position.id = `toaster-position-${position}`
+        $position.classList.add('toaster-position')
+        $position.dataset.toasterPosition = position
 
-        if (position.startsWith('top')) div.classList.add('toaster-position-container-top')
-        else div.classList.add('toaster-position-container-bottom')
+        if (position.startsWith('top')) $position.classList.add('toaster-position-top')
+        else $position.classList.add('toaster-position-bottom')
 
-        if (position.endsWith('left')) div.classList.add('toaster-position-container-left')
-        else div.classList.add('toaster-position-container-right')
+        if (position.endsWith('left')) $position.classList.add('toaster-position-left')
+        else $position.classList.add('toaster-position-right')
 
-        div.setAttribute('data-toaster-position-container', position)
-
-        mainContainer.appendChild(div)
+        $positions.appendChild($position)
     })
 
-    window.dispatchEvent(new Event('toaster.load.position-containers'))
+    window.dispatchEvent(new Event('toaster.init'))
 }
 
 window.addEventListener('DOMContentLoaded', ToasterInit)

@@ -17,7 +17,7 @@
     --toaster-dark-border: #d4d4d4;
 }
 
-.toaster-position-container-main {
+#toaster-positions {
     position: fixed;
     top: 0;
     left: 0;
@@ -32,7 +32,7 @@
     align-items: center;
 }
 
-.toaster-position-container {
+.toaster-position {
     position: absolute;
     z-index: 9999;
     pointer-events: none;
@@ -48,34 +48,34 @@
     box-sizing: border-box;
 }
 
-.toaster-position-container[data-toaster-position-container="top-left"] {
+#toaster-position-top-left {
     top: 0;
     left: 0;
 }
 
-.toaster-position-container[data-toaster-position-container="top"] {
+#toaster-position-top {
     top: 0;
     left: 50%;
     translate: -50% 0;
 }
 
-.toaster-position-container[data-toaster-position-container="top-right"] {
+#toaster-position-top-right {
     top: 0;
     right: 0;
 }
 
-.toaster-position-container[data-toaster-position-container="bottom-left"] {
+#toaster-position-bottom-left {
     bottom: 0;
     left: 0;
 }
 
-.toaster-position-container[data-toaster-position-container="bottom"] {
+#toaster-position-bottom {
     bottom: 0;
     left: 50%;
     translate: -50% 0;
 }
 
-.toaster-position-container[data-toaster-position-container="bottom-right"] {
+#toaster-position-bottom-right {
     bottom: 0;
     right: 0;
 }
@@ -214,10 +214,6 @@
     justify-content: center;
     align-items: center;
     font-size: 35px;
-}
-
-.toaster-icon-small {
-    font-size: 25px;
 }
 
 .toaster-close-button {

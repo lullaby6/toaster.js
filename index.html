@@ -14,13 +14,16 @@
         function showToast() {
             new Toaster({
                 type: 'info',
-                title: 'hola',
+                // title: 'hola'
+                // onTop: true,
                 text: 'hola',
                 border: true,
                 // closeOnClick: true,
                 duration: 3000,
-                closeButton: {
-                    topRight: true,
+                closeButton: true,
+                button: {
+                    text: 'xd', 
+                    // icon: true,
                 },
                 progressBar: {
                     // position: 'top'
@@ -30,6 +33,19 @@
                 animations: {
                     // scale: true,
                     // fade: false,
+                },
+                smallerIcon: true,
+                onLoad: e => {
+                    console.log(e);
+                },
+                onShow: e => {
+                    console.log(e);
+                },
+                onHide: e => {
+                    console.log(e);
+                },
+                onChange: e => {
+                    console.log(e);
                 }
             })
         }
