@@ -30,6 +30,9 @@ class Toaster {
         limit = null,
         waitLastToast = false,
 
+        onClick = null,
+        onMouseEnter = null,
+        onMouseLeave = null,
         closeOnClick = false,
         onTop = true,
 
@@ -66,6 +69,9 @@ class Toaster {
         this.limit = limit
         this.waitLastToast = waitLastToast
 
+        this.onClick = onClick
+        this.onMouseEnter = onMouseEnter
+        this.onMouseLeave = onMouseLeave
         this.closeOnClick = closeOnClick
         this.onTop = onTop
 
@@ -142,6 +148,7 @@ class Toaster {
     }
 
     show() {
+        window.dispatchEvent(new Event('toaster.show.start'), { detail: { toast: this.$toast } })
         this.$toast.dispatchEvent(new Event('toaster.show.start'))
 
         const animation = [{}, {}]
@@ -165,6 +172,7 @@ class Toaster {
         this.showAnimation.onfinish = event => {
             if (this.onShow) this.onShow(event)
 
+            window.dispatchEvent(new Event('toaster.show.end'), { detail: { toast: this.$toast } })
             this.$toast.dispatchEvent(new Event('toaster.show.end'))
         }
     }
@@ -173,6 +181,7 @@ class Toaster {
         if (this.$toast.dataset.toasterHiding === 'true') return
         this.$toast.dataset.toasterHiding = 'true'
 
+        window.dispatchEvent(new Event('toaster.hide.start'), { detail: { toast: this.$toast } })
         this.$toast.dispatchEvent(new Event('toaster.hide.start'))
 
         const animation = [{}, {}]
@@ -196,6 +205,7 @@ class Toaster {
         this.hideAnimation.onfinish = event => {
             if (this.onHide) this.onHide(event)
 
+            window.dispatchEvent(new Event('toaster.hide.end'), { detail: { toast: this.$toast } })
             this.$toast.dispatchEvent(new Event('toaster.hide.end'))
 
             this.$toast.remove()
@@ -228,8 +238,13 @@ class Toaster {
 
         if (this.closeOnClick) this.$toast.addEventListener('click', () => this.hide())
 
+        if (this.onClick) this.$toast.addEventListener('click', this.onClick)
+        if (this.onMouseEnter) this.$toast.addEventListener('mouseenter', this.onMouseEnter)
+        if (this.onMouseLeave) this.$toast.addEventListener('mouseleave', this.onMouseLeave)
+
         if (this.onLoad) this.onLoad(this.$toast)
 
+        window.dispatchEvent(new Event('toaster.load'), { detail: { toast: this.$toast } })
         this.$toast.dispatchEvent(new Event('toaster.load'))
     }
 
