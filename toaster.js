@@ -14,6 +14,7 @@
 class Toaster {
     constructor({
         id = crypto.randomUUID(),
+        html = null,
         type = 'default',
         title = null,
         text = null,
@@ -53,6 +54,7 @@ class Toaster {
         promise = null,
     } = {}) {
         this.id = id
+        this.html = html
         this.type = type
         this.title = title
         this.text = text
@@ -224,7 +226,7 @@ class Toaster {
     }
 
     createToast() {
-        this.$toast = this.createElement('div')
+        this.$toast = this.createElement('div', 'toast')
 
         this.$toast.Toaster = this
         this.$toast.classList.add('toaster', `toaster-${this.id}`, `toaster-${this.type}`)
@@ -357,6 +359,27 @@ class Toaster {
 
         this.createToast()
 
+        if (this.duration > 0) {
+            this.durationTimeout = setTimeout(() => this.hide(), this.duration)
+
+            this.durationTimeoutStartTime = Date.now();
+            this.durationTimeoutResumeTime = Date.now();
+            this.durationTimeoutTimeLeft = this.duration
+
+            if (this.progressBar && this.$progressBar) {
+                this.durationInterval = setInterval(() => {
+                    const durationPercentage = ((Date.now() - this.durationTimeoutStartTime) * 100) / this.duration
+
+                    this.$progressBar.style.width = `${durationPercentage}%`
+                }, 1)
+            }
+        }
+
+        if (this.html) {
+            this.$toast.innerHTML = this.html
+            return this.$toast
+        }
+
         if (this.icon && this.icons[this.type]) this.createIcon()
 
         this.$content = this.createElement('div', 'content')
@@ -376,22 +399,6 @@ class Toaster {
         if (this.closeButton && this.icons['close']) this.createCloseButton()
 
         if (this.progressBar == true || typeof this.progressBar == 'object') this.createProgressBar()
-
-        if (this.duration > 0) {
-            this.durationTimeout = setTimeout(() => this.hide(), this.duration)
-
-            this.durationTimeoutStartTime = Date.now();
-            this.durationTimeoutResumeTime = Date.now();
-            this.durationTimeoutTimeLeft = this.duration
-
-            if (this.progressBar) {
-                this.durationInterval = setInterval(() => {
-                    const durationPercentage = ((Date.now() - this.durationTimeoutStartTime) * 100) / this.duration
-
-                    this.$progressBar.style.width = `${durationPercentage}%`
-                }, 1)
-            }
-        }
 
         this.show()
 
