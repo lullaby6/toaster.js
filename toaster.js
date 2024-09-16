@@ -10,86 +10,58 @@
 // closeOnDrag
 
 class Toaster {
-    constructor({
-        id = crypto.randomUUID(),
-        html = null,
-        type = 'default',
-        title = null,
-        text = null,
-        position = 'top-right',
-        duration = 3000,
-        delay = null,
-        border = false,
+    constructor(options) {
+        this.options = {
+            id: crypto.randomUUID(),
+            html: null,
+            type: 'default',
+            title: null,
+            text: null,
+            position: 'top-right',
+            duration: 3000,
+            delay: null,
+            border: false,
 
-        icon = true,
-        closeButton = null,
-        progressBar = null,
+            icon: true,
+            closeButton: null,
+            progressBar: null,
 
-        button = null,
+            button: null,
 
-        hidePreviousToasts = false,
-        hideLastToast = false,
-        limit = null,
-        waitLastToast = false,
+            hidePreviousToasts: false,
+            hideLastToast: false,
+            limit: null,
+            waitLastToast: false,
 
-        onClick = null,
-        onMouseEnter = null,
-        onMouseLeave = null,
-        closeOnClick = false,
-        onTop = true,
+            onClick: null,
+            onMouseEnter: null,
+            onMouseLeave: null,
+            closeOnClick: false,
+            onTop: true,
 
-        className = {},
-        style = {},
-        attributes = {},
+            className: {},
+            style: {},
+            attributes: {},
 
-        onLoad = null,
-        onShow = null,
-        onHide = null,
-        onChange = null,
+            onLoad: null,
+            onShow: null,
+            onHide: null,
+            onChange: null,
 
-        icons = {},
-        animation = {},
-        promise = null,
-    } = {}) {
-        this.id = id
-        this.html = html
-        this.type = type
-        this.title = title
-        this.text = text
-        this.position = position
-        this.duration = duration
-        this.delay = delay
-        this.border = border
+            icons: {},
+            animation: {},
+            promise: null,
 
-        this.icon = icon
-        this.closeButton = closeButton
-        this.progressBar = progressBar
+            ...options
+        }
 
-        this.button = button
-
-        this.hidePreviousToasts = hidePreviousToasts
-        this.hideLastToast = hideLastToast
-        this.limit = limit
-        this.waitLastToast = waitLastToast
-
-        this.onClick = onClick
-        this.onMouseEnter = onMouseEnter
-        this.onMouseLeave = onMouseLeave
-        this.closeOnClick = closeOnClick
-        this.onTop = onTop
-
-        this.className = className
-        this.style = style
-        this.attributes = attributes
-
-        this.onLoad = onLoad
-        this.onShow = onShow
-        this.onHide = onHide
-        this.onChange = onChange
+        for (const [key, value] of Object.entries(this.options)) {
+            this[key] = value
+        }
 
         this.icons = {
             default: null,
-            dark:null,
+            dark: null,
             success: '<svg  xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-circle-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-1.293 5.953a1 1 0 0 0 -1.32 -.083l-.094 .083l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.403 1.403l.083 .094l2 2l.094 .083a1 1 0 0 0 1.226 0l.094 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" /></svg>',
             info: '<svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-info-circle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 2c5.523 0 10 4.477 10 10a10 10 0 0 1 -19.995 .324l-.005 -.324l.004 -.28c.148 -5.393 4.566 -9.72 9.996 -9.72zm0 9h-1l-.117 .007a1 1 0 0 0 0 1.986l.117 .007v3l.007 .117a1 1 0 0 0 .876 .876l.117 .007h1l.117 -.007a1 1 0 0 0 .876 -.876l.007 -.117l-.007 -.117a1 1 0 0 0 -.764 -.857l-.112 -.02l-.117 -.006v-3l-.007 -.117a1 1 0 0 0 -.876 -.876l-.117 -.007zm.01 -3l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007z" /></svg>',
             warning: '<svg  xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-alert-triangle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 1.67c.955 0 1.845 .467 2.39 1.247l.105 .16l8.114 13.548a2.914 2.914 0 0 1 -2.307 4.363l-.195 .008h-16.225a2.914 2.914 0 0 1 -2.582 -4.2l.099 -.185l8.11 -13.538a2.914 2.914 0 0 1 2.491 -1.403zm.01 13.33l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 -7a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0 1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z" /></svg>',
@@ -97,7 +69,7 @@ class Toaster {
             button: '<svg  xmlns="http://www.w3.org/2000/svg"  width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-hand-click"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 13v-8.5a1.5 1.5 0 0 1 3 0v7.5" /><path d="M11 11.5v-2a1.5 1.5 0 0 1 3 0v2.5" /><path d="M14 10.5a1.5 1.5 0 0 1 3 0v1.5" /><path d="M17 11.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7l-.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47" /><path d="M5 3l-1 -1" /><path d="M4 7h-1" /><path d="M14 3l1 -1" /><path d="M15 6h1" /></svg>',
             close: '<svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>',
             loading: '<svg xmlns="http://www.w3.org/2000/svg" width="1em"  height="1em"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-loader-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3a9 9 0 1 0 9 9" /></svg>',
-            ...icons
+            ...options.icons
         }
 
         this.animation = {
@@ -105,10 +77,8 @@ class Toaster {
             easing: 'ease-in-out',
             fade: true,
             scale: false,
-            ...animation
+            ...options.animation
         };
-
-        this.promise = promise
 
         this.render()
     }
@@ -322,6 +292,22 @@ class Toaster {
         if (typeof this.progressBar == 'object') if (this.progressBar.position === 'top') this.$progressBar.classList.add('toaster-progress-bar-top')
 
         this.$toast.append(this.$progressBar)
+
+        if (this.duration > 0) {
+            this.durationTimeout = setTimeout(() => this.hide(), this.duration)
+
+            this.durationTimeoutStartTime = Date.now();
+            this.durationTimeoutResumeTime = Date.now();
+            this.durationTimeoutTimeLeft = this.duration
+
+            if (this.progressBar && this.$progressBar) {
+                this.durationInterval = setInterval(() => {
+                    const durationPercentage = ((Date.now() - this.durationTimeoutStartTime) * 100) / this.duration
+
+                    this.$progressBar.style.width = `${durationPercentage}%`
+                }, 1)
+            }
+        }
     }
 
     setLimit() {
@@ -361,24 +347,13 @@ class Toaster {
 
         this.createToast()
 
-        if (this.duration > 0) {
-            this.durationTimeout = setTimeout(() => this.hide(), this.duration)
-
-            this.durationTimeoutStartTime = Date.now();
-            this.durationTimeoutResumeTime = Date.now();
-            this.durationTimeoutTimeLeft = this.duration
-
-            if (this.progressBar && this.$progressBar) {
-                this.durationInterval = setInterval(() => {
-                    const durationPercentage = ((Date.now() - this.durationTimeoutStartTime) * 100) / this.duration
-
-                    this.$progressBar.style.width = `${durationPercentage}%`
-                }, 1)
-            }
-        }
+        if (this.duration > 0) this.durationTimeout = setTimeout(() => this.hide(), this.duration)
 
         if (this.html) {
             this.$toast.innerHTML = this.html
+
+            this.show()
+
             return this.$toast
         }
 
@@ -387,7 +362,7 @@ class Toaster {
         this.$content = this.createElement('div', 'content')
         this.$toast.append(this.$content)
 
-        if (this.title || this.text) {
+        if ((this.title && this.title.trim() !== '') || (this.text && this.text.trim() !== '')) {
             this.$contentText = this.createElement('div', 'contentText')
             this.$content.append(this.$contentText)
         }
@@ -400,7 +375,7 @@ class Toaster {
 
         if (this.closeButton && this.icons['close']) this.createCloseButton()
 
-        if (this.progressBar == true || typeof this.progressBar == 'object') this.createProgressBar()
+        if (this.progressBar === true || typeof this.progressBar === 'object') this.createProgressBar()
 
         this.show()
 
