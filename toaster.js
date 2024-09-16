@@ -14,8 +14,12 @@ class Toaster {
 
         button = null,
 
+        hidePreviousToasts = false,
+        hideLastToast = false,
+        limit = null,
+        waitLastToast = false,
+
         closeOnClick = false,
-        hideAllPreviousToasts = false,
         onTop = true,
 
         className = {},
@@ -29,6 +33,7 @@ class Toaster {
 
         icons = {},
         animation = {},
+        promise = null,
     } = {}) {
         this.id = id
         this.type = type
@@ -44,8 +49,12 @@ class Toaster {
 
         this.button = button
 
+        this.hidePreviousToasts = hidePreviousToasts
+        this.hideLastToast = hideLastToast
+        this.limit = limit
+        this.waitLastToast = waitLastToast
+
         this.closeOnClick = closeOnClick
-        this.hideAllPreviousToasts = hideAllPreviousToasts
         this.onTop = onTop
 
         this.className = className
@@ -77,6 +86,8 @@ class Toaster {
             scale: false,
             ...animation
         };
+
+        this.promise = promise
 
         this.render()
     }
@@ -119,6 +130,8 @@ class Toaster {
     }
 
     show() {
+        this.$toast.dispatchEvent(new Event('toaster.show.start'))
+
         const animation = [{}, {}]
 
         if (this.animation.fade) {
@@ -139,12 +152,16 @@ class Toaster {
 
         this.showAnimation.onfinish = event => {
             if (this.onShow) this.onShow(event)
+
+            this.$toast.dispatchEvent(new Event('toaster.show.end'))
         }
     }
 
     hide() {
         if (this.$toast.dataset.toasterHiding === 'true') return
         this.$toast.dataset.toasterHiding = 'true'
+
+        this.$toast.dispatchEvent(new Event('toaster.hide.start'))
 
         const animation = [{}, {}]
 
@@ -167,17 +184,27 @@ class Toaster {
         this.hideAnimation.onfinish = event => {
             if (this.onHide) this.onHide(event)
 
+            this.$toast.dispatchEvent(new Event('toaster.hide.end'))
+
             this.$toast.remove()
         }
     }
 
+    getIndex() {
+        this.index = 0
+
+        document.querySelectorAll('.toaster').forEach(toast => {
+            if (toast.dataset.toasterIndex >= this.index) this.index = parseInt(toast.dataset.toasterIndex) + 1
+        })
+    }
+
     createToast() {
         this.$toast = this.createElement('div')
-        if (this.onLoad) this.onLoad(this.$toast)
 
         this.$toast.Toaster = this
         this.$toast.classList.add('toaster', `toaster-${this.id}`, `toaster-${this.type}`)
         this.$toast.dataset.toasterId = this.id
+        this.$toast.dataset.toasterIndex = this.index
         this.$toast.dataset.toasterDate = Date.now()
 
         let method = 'prepend'
@@ -188,6 +215,10 @@ class Toaster {
         if (this.border) this.$toast.classList.add('toaster-border')
 
         if (this.closeOnClick) this.$toast.addEventListener('click', () => this.hide())
+
+        if (this.onLoad) this.onLoad(this.$toast)
+
+        this.$toast.dispatchEvent(new Event('toaster.load'))
     }
 
     createIcon() {
@@ -249,12 +280,38 @@ class Toaster {
         this.$toast.append(this.$progressBar)
     }
 
+    setLimit() {
+        const toasts = Array.from(document.querySelectorAll('.toaster'))
+            .filter(toast => toast.dataset.toasterHiding !== 'true')
+            .sort((a, b) => a.dataset.toasterIndex - b.dataset.toasterIndex)
+
+        const length = toasts.length + 1
+
+        if (length > this.limit) {
+            toasts.length = length - this.limit
+
+            toasts.forEach(toast => toast.Toaster.hide())
+        }
+    }
+
     async render() {
         if (!document.querySelector('#toaster-positions')) await new Promise(resolve => window.addEventListener('toaster.init', resolve))
 
         if (this.delay && this.delay > 0) await new Promise(resolve => setTimeout(resolve, this.delay))
 
-        if (this.hideAllPreviousToasts) document.querySelectorAll('.toaster').forEach(toast => toast.Toaster.hide())
+        if (this.hidePreviousToasts) document.querySelectorAll('.toaster').forEach(toast => toast.Toaster.hide())
+
+        this.getIndex()
+
+        const lastToast = document.querySelector(`.toaster[data-toaster-index="${this.index - 1}"]`)
+
+        if (lastToast) {
+            if (this.hideLastToast) lastToast.Toaster.hide()
+
+            if (this.waitLastToast) await new Promise(resolve => lastToast.addEventListener('toaster.hide.end', resolve))
+        }
+
+        if (this.limit !== null) this.setLimit()
 
         this.createToast()
 
