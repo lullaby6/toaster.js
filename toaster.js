@@ -4,8 +4,6 @@
 
 // todo:
 // pauseDurationOnHover
-// customToast
-// customButton
 // customAnimations
 // promise
 // themes
@@ -283,6 +281,10 @@ class Toaster {
             else this.$buttonIcon.innerHTML = this.button.icon
 
             this.$button.prepend(this.$buttonIcon)
+        }
+
+        if (this.button.html) {
+            this.$button.innerHTML = this.button.html
         }
 
         this.$content.append(this.$button)
