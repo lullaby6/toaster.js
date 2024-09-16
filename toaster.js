@@ -1,3 +1,13 @@
+// toaster.js
+// version: 1.0.0
+// repo: github.com/lullaby6/toaster.js
+
+// pauseDurationOnHover
+// customToast
+// customButton
+// customAnimations
+// promise
+
 class Toaster {
     constructor({
         id = crypto.randomUUID(),
@@ -9,6 +19,7 @@ class Toaster {
         delay = null,
         border = false,
 
+        icon = true,
         closeButton = null,
         progressBar = null,
 
@@ -44,6 +55,7 @@ class Toaster {
         this.delay = delay
         this.border = border
 
+        this.icon = icon
         this.closeButton = closeButton
         this.progressBar = progressBar
 
@@ -315,7 +327,7 @@ class Toaster {
 
         this.createToast()
 
-        if (this.icons[this.type]) this.createIcon()
+        if (this.icon && this.icons[this.type]) this.createIcon()
 
         this.$content = this.createElement('div', 'content')
         this.$toast.append(this.$content)
