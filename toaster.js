@@ -2,11 +2,14 @@
 // version: 1.0.0
 // repo: github.com/lullaby6/toaster.js
 
+// todo:
 // pauseDurationOnHover
 // customToast
 // customButton
 // customAnimations
 // promise
+// themes
+// closeOnDrag
 
 class Toaster {
     constructor({
@@ -292,6 +295,16 @@ class Toaster {
         if (typeof this.closeButton == 'object') {
             if (this.closeButton.icon) this.$closeButton.innerHTML = this.progressBar.icon
             if (this.closeButton.topRight) this.$closeButton.classList.add('toaster-close-button-top-right')
+
+            if (this.closeButton.onlyShowOnHover) {
+                this.$closeButton.style.opacity = 0
+
+                this.$toast.addEventListener('mouseenter', () => this.$closeButton.style.opacity = 0.5)
+
+                this.$toast.addEventListener('mouseleave', () => this.$closeButton.style.opacity = 0)
+
+                this.$closeButton.addEventListener('mouseover', () =>this.$closeButton.style.opacity = 1)
+            }
         }
 
         this.$toast.append(this.$closeButton)
@@ -322,6 +335,8 @@ class Toaster {
     }
 
     async render() {
+        if (document.querySelector(`.toaster[data-toaster-id="${this.id}"]`)) return
+
         if (!document.querySelector('#toaster-positions')) await new Promise(resolve => window.addEventListener('toaster.init', resolve))
 
         if (this.delay && this.delay > 0) await new Promise(resolve => setTimeout(resolve, this.delay))
