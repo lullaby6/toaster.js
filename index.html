@@ -13,11 +13,16 @@
     <script>
         function showToast() {
             new Toaster({
+                // id: 1,
                 // type: 'info',
                 title: 'Loading',
                 text: 'Please wait...',
                 closeButton: true,
                 progressBar: true,
+                closeOnDrag: {
+                    percent: 0.5
+                },
+                duration: 0,
                 promise: {
                     callback: () => new Promise((resolve, reject) =>
                         setTimeout(() => {

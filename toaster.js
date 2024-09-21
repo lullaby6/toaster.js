@@ -7,7 +7,6 @@
 // promise timeout
 // customAnimations
 // themes
-// closeOnDrag
 
 class Toaster {
     constructor(options) {
@@ -38,6 +37,7 @@ class Toaster {
             onMouseEnter: null,
             onMouseLeave: null,
             closeOnClick: false,
+            closeOnDrag: false,
             onTop: true,
 
             className: {},
@@ -203,6 +203,49 @@ class Toaster {
         }
     }
 
+    closeOnDragStart(x) {
+        this.closeOnDragging = true
+        this.closeOnDragStartX = x - this.$toast.getBoundingClientRect().left
+    }
+
+    closeOnDragCancel() {
+        if (this.$toast && this.closeOnDragging) {
+            this.closeOnDragging = false
+
+            this.$toast.animate([{
+                translate: '0 0',
+                opacity: 1
+            }], {
+                duration: 100,
+                fill: 'forwards',
+                easing: 'ease-in-out',
+            })
+        }
+    }
+
+    closeOnDragMove(x) {
+        if (this.$toast && this.closeOnDragging) {
+            x = x - this.$toast.getBoundingClientRect().left  - this.closeOnDragStartX
+            const width = this.$toast.getBoundingClientRect().width;
+
+            const dragPercent = this.closeOnDrag.percent || 0.5
+            const threshold = width * dragPercent;
+
+            const opacity = Math.max(1 - Math.abs(x) / threshold, 0);
+
+            this.$toast.animate([{ translate: `${x}px 0`, opacity }], {
+                duration: 100,
+                fill: 'forwards',
+                easing: 'ease-in-out',
+            })
+
+            if (Math.abs(x) >= threshold) {
+                this.animation.duration = 0
+                this.hide()
+            };
+        }
+    }
+
     createToast() {
         this.$toast = this.createElement('div', 'toast')
 
@@ -220,6 +263,23 @@ class Toaster {
         if (this.onLoad) this.onLoad(this.$toast)
 
         if (this.closeOnClick) this.$toast.addEventListener('click', () => this.hide())
+        if (this.closeOnDrag) {
+            this.closeOnDragging = false
+
+            this.$toast.addEventListener('mousedown', event => this.closeOnDragStart(event.clientX))
+
+            this.$toast.addEventListener('touchstart', event => this.closeOnDragStart(event.touches[0].clientX))
+
+            window.addEventListener('mouseup', () => this.closeOnDragCancel())
+
+            window.addEventListener('touchend', () => this.closeOnDragCancel())
+
+            window.addEventListener('touchcancel', () => this.closeOnDragCancel())
+
+            window.addEventListener('touchmove', event => this.closeOnDragMove(event.touches[0].clientX))
+
+            window.addEventListener('mousemove', event => this.closeOnDragMove(event.clientX))
+        }
 
         if (this.onClick) this.$toast.addEventListener('click', event => this.onClick(event, this))
         if (this.onMouseEnter) this.$toast.addEventListener('mouseenter', event => this.onMouseEnter(event, this))
@@ -492,6 +552,8 @@ class Toaster {
 }
 
 function ToasterHide(toast) {
+    if (typeof toast === 'string') toast = document.querySelector(`.toaster[data-toaster-id="${toast}"]`)
+
     toast.Toaster.hide()
 }
 
