@@ -13,40 +13,49 @@
     <script>
         function showToast() {
             new Toaster({
-                type: 'info',
-                // title: 'hola'
-                // onTop: true,
-                text: 'hola',
-                border: true,
-                // closeOnClick: true,
-                duration: 3000,
+                // type: 'info',
+                title: 'Loading',
+                text: 'Please wait...',
                 closeButton: true,
-                button: {
-                    text: 'xd',
-                    // icon: true,
-                },
                 progressBar: true,
-                // hideAllPreviousToasts: true,
-                // delay: 1000,
-                animations: {
-                    // scale: true,
-                    // fade: false,
-                },
+                promise: {
+                    callback: () => new Promise((resolve, reject) =>
+                        setTimeout(() => {
+                            const randomBoolean = Math.random() < 0.5;
 
-                // hideLastToast: true,
-                // waitLastToast: true,
-                // limit: 3,
-                onLoad: e => {
-                    console.log(e.dataset.toasterIndex);
-                },
-                onShow: e => {
-                    // console.log(e);
-                },
-                onHide: e => {
-                    // console.log(e);
-                },
-                onChange: e => {
-                    // console.log(e);
+                            if (randomBoolean) {
+                                resolve('The promise was resolved')
+                            } else {
+                                reject('The promise was rejected')
+                            }
+                        }, 1000)
+                    ),
+                    then: {
+                        options: {
+                            title: 'Success'
+                        },
+                        callback: (result, toast) => {
+                            return {
+                                text: result
+                            }
+                        }
+                    },
+                    catch: {
+                        options: {
+                            title: 'Error',
+                            button: {
+                                text: 'Retry',
+                                onClick: (event, toast) => {
+                                    toast.retryPromise();
+                                }
+                            },
+                        },
+                        callback: (error, toast) => {
+                            return {
+                                text: error
+                            }
+                        },
+                    }
                 }
             })
         }

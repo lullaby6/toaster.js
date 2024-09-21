@@ -4,8 +4,8 @@
 
 // todo:
 // pauseDurationOnHover
+// promise timeout
 // customAnimations
-// promise
 // themes
 // closeOnDrag
 
@@ -13,6 +13,7 @@ class Toaster {
     constructor(options) {
         this.options = {
             id: crypto.randomUUID(),
+            toast: null,
             html: null,
             type: 'default',
             title: null,
@@ -80,7 +81,7 @@ class Toaster {
             ...options.animation
         };
 
-        this.render()
+        this.load()
     }
 
     camelCase(str) {
@@ -121,7 +122,7 @@ class Toaster {
     }
 
     show() {
-        window.dispatchEvent(new Event('toaster.show.start'), { detail: { toast: this.$toast } })
+        window.dispatchEvent(new Event('toaster.show.start'), { detail: this })
         this.$toast.dispatchEvent(new Event('toaster.show.start'))
 
         const animation = [{}, {}]
@@ -145,16 +146,18 @@ class Toaster {
         this.showAnimation.onfinish = event => {
             if (this.onShow) this.onShow(event)
 
-            window.dispatchEvent(new Event('toaster.show.end'), { detail: { toast: this.$toast } })
+            window.dispatchEvent(new Event('toaster.show.end'), { detail: this })
             this.$toast.dispatchEvent(new Event('toaster.show.end'))
         }
     }
 
     hide() {
+        if (!this.$toast) return
+
         if (this.$toast.dataset.toasterHiding === 'true') return
         this.$toast.dataset.toasterHiding = 'true'
 
-        window.dispatchEvent(new Event('toaster.hide.start'), { detail: { toast: this.$toast } })
+        window.dispatchEvent(new Event('toaster.hide.start'), { detail: this })
         this.$toast.dispatchEvent(new Event('toaster.hide.start'))
 
         const animation = [{}, {}]
@@ -178,26 +181,33 @@ class Toaster {
         this.hideAnimation.onfinish = event => {
             if (this.onHide) this.onHide(event)
 
-            window.dispatchEvent(new Event('toaster.hide.end'), { detail: { toast: this.$toast } })
+            window.dispatchEvent(new Event('toaster.hide.end'), { detail: this })
             this.$toast.dispatchEvent(new Event('toaster.hide.end'))
 
             this.$toast.remove()
+
+            this.$toast = undefined
         }
     }
 
-    getIndex() {
-        this.index = 0
+    stopHide() {
+        if (this.hideAnimation) {
+            this.$toast.dataset.toasterHiding = 'false'
+            delete this.$toast.dataset.toasterHiding
 
-        document.querySelectorAll('.toaster').forEach(toast => {
-            if (toast.dataset.toasterIndex >= this.index) this.index = parseInt(toast.dataset.toasterIndex) + 1
-        })
+            this.hideAnimation.cancel()
+            this.hideAnimation = null
+
+            window.dispatchEvent(new Event('toaster.hide.stop'), { detail: this })
+            this.$toast.dispatchEvent(new Event('toaster.hide.stop'))
+        }
     }
 
     createToast() {
         this.$toast = this.createElement('div', 'toast')
 
         this.$toast.Toaster = this
-        this.$toast.classList.add('toaster', `toaster-${this.id}`, `toaster-${this.type}`)
+        this.$toast.classList.add('toaster', `toaster-${this.id}`)
         this.$toast.dataset.toasterId = this.id
         this.$toast.dataset.toasterIndex = this.index
         this.$toast.dataset.toasterDate = Date.now()
@@ -207,18 +217,24 @@ class Toaster {
 
         document.querySelector(`[data-toaster-position="${this.position}"]`)[method](this.$toast)
 
-        if (this.border) this.$toast.classList.add('toaster-border')
+        if (this.onLoad) this.onLoad(this.$toast)
 
         if (this.closeOnClick) this.$toast.addEventListener('click', () => this.hide())
 
-        if (this.onClick) this.$toast.addEventListener('click', this.onClick)
-        if (this.onMouseEnter) this.$toast.addEventListener('mouseenter', this.onMouseEnter)
-        if (this.onMouseLeave) this.$toast.addEventListener('mouseleave', this.onMouseLeave)
+        if (this.onClick) this.$toast.addEventListener('click', event => this.onClick(event, this))
+        if (this.onMouseEnter) this.$toast.addEventListener('mouseenter', event => this.onMouseEnter(event, this))
+        if (this.onMouseLeave) this.$toast.addEventListener('mouseleave', event => this.onMouseLeave(event, this))
 
-        if (this.onLoad) this.onLoad(this.$toast)
-
-        window.dispatchEvent(new Event('toaster.load'), { detail: { toast: this.$toast } })
+        window.dispatchEvent(new Event('toaster.load'), { detail: this })
         this.$toast.dispatchEvent(new Event('toaster.load'))
+    }
+
+    loadToast() {
+        this.$toast.innerHTML = ''
+
+        this.$toast.classList.add(`toaster-${this.type}`)
+
+        if (this.border) this.$toast.classList.add('toaster-border')
     }
 
     createIcon() {
@@ -259,26 +275,24 @@ class Toaster {
 
         this.$content.append(this.$button)
 
-        if (this.button.onClick) this.$button.addEventListener('click', this.button.onClick)
+        if (this.button.onClick) this.$button.addEventListener('click', event => this.button.onClick(event, this))
     }
 
     createCloseButton() {
         this.$closeButton = this.createElement('div', 'closeButton')
         this.$closeButton.innerHTML = this.icons['close']
 
-        if (typeof this.closeButton == 'object') {
-            if (this.closeButton.icon) this.$closeButton.innerHTML = this.progressBar.icon
-            if (this.closeButton.topRight) this.$closeButton.classList.add('toaster-close-button-top-right')
+        if (this.closeButton.icon) this.$closeButton.innerHTML = this.progressBar.icon
+        if (this.closeButton.topRight) this.$closeButton.classList.add('toaster-close-button-top-right')
 
-            if (this.closeButton.onlyShowOnHover) {
-                this.$closeButton.style.opacity = 0
+        if (this.closeButton.onlyShowOnHover) {
+            this.$closeButton.style.opacity = 0
 
-                this.$toast.addEventListener('mouseenter', () => this.$closeButton.style.opacity = 0.5)
+            this.$toast.addEventListener('mouseenter', () => this.$closeButton.style.opacity = 0.5)
 
-                this.$toast.addEventListener('mouseleave', () => this.$closeButton.style.opacity = 0)
+            this.$toast.addEventListener('mouseleave', () => this.$closeButton.style.opacity = 0)
 
-                this.$closeButton.addEventListener('mouseover', () =>this.$closeButton.style.opacity = 1)
-            }
+            this.$closeButton.addEventListener('mouseover', () =>this.$closeButton.style.opacity = 1)
         }
 
         this.$toast.append(this.$closeButton)
@@ -289,7 +303,7 @@ class Toaster {
     createProgressBar() {
         this.$progressBar = this.createElement('span', 'progressBar')
 
-        if (typeof this.progressBar == 'object') if (this.progressBar.position === 'top') this.$progressBar.classList.add('toaster-progress-bar-top')
+        if (this.progressBar.onTop) this.$progressBar.classList.add('toaster-progress-bar-top')
 
         this.$toast.append(this.$progressBar)
 
@@ -310,6 +324,16 @@ class Toaster {
         }
     }
 
+    getIndex() {
+        let index = 0
+
+        document.querySelectorAll('.toaster').forEach(toast => {
+            if (toast.dataset.toasterIndex >= index) index = parseInt(toast.dataset.toasterIndex) + 1
+        })
+
+        return index
+    }
+
     setLimit() {
         const toasts = Array.from(document.querySelectorAll('.toaster'))
             .filter(toast => toast.dataset.toasterHiding !== 'true')
@@ -324,8 +348,82 @@ class Toaster {
         }
     }
 
-    async render() {
-        if (document.querySelector(`.toaster[data-toaster-id="${this.id}"]`)) return
+    async handlePromise() {
+        this.duration = 0
+        this.type = 'loading'
+
+        let type = 'default'
+        let resultOptions = {}
+        let promiseOptions = {}
+
+        try {
+            const result = await this.promise.callback()
+
+            type = 'success'
+
+            if (this.promise.then) {
+                if (this.promise.then.callback) resultOptions = await this.promise.then.callback(result, this)
+
+                if (this.promise.then.options) promiseOptions = this.promise.then.options
+            }
+        } catch (error) {
+            type = 'error'
+
+            if (this.promise.catch) {
+                if (this.promise.catch.callback) resultOptions = await this.promise.then.callback(error, this)
+
+                if (this.promise.catch.options) promiseOptions = this.promise.catch.options
+            }
+        }
+
+        this.update({
+            ...promiseOptions,
+            ...resultOptions,
+            type,
+            duration: this.options.duration,
+            promise: null
+        })
+    }
+
+    retryPromise() {
+        if (this.options.promise) {
+            this.$toast.classList.remove(`toaster-${this.type}`)
+
+            this.promise = this.options.promise
+
+            this.handlePromise()
+
+            const retryOptions = {
+                ...this.options
+            }
+
+            delete retryOptions.icons
+            delete retryOptions.animation
+            delete retryOptions.duration
+            delete retryOptions.type
+
+            this.update(retryOptions)
+        }
+    }
+
+    update(options) {
+        if (this.$toast) {
+            this.stopHide()
+
+            if (options.type) this.$toast.classList.remove(`toaster-${this.type}`)
+
+            if (options.duration) clearTimeout(this.durationTimeout)
+        }
+
+        for (const [key, value] of Object.entries(options)) {
+            this[key] = value
+        }
+
+        this.render()
+    }
+
+    async load() {
+        if (!this.$toast && document.querySelector(`.toaster[data-toaster-id="${this.id}"]`)) return
 
         if (!document.querySelector('#toaster-positions')) await new Promise(resolve => window.addEventListener('toaster.init', resolve))
 
@@ -333,7 +431,7 @@ class Toaster {
 
         if (this.hidePreviousToasts) document.querySelectorAll('.toaster').forEach(toast => toast.Toaster.hide())
 
-        this.getIndex()
+        this.index = this.getIndex()
 
         const lastToast = document.querySelector(`.toaster[data-toaster-index="${this.index - 1}"]`)
 
@@ -343,43 +441,53 @@ class Toaster {
             if (this.waitLastToast) await new Promise(resolve => lastToast.addEventListener('toaster.hide.end', resolve))
         }
 
-        if (this.limit !== null) this.setLimit()
+        if (this.limit) this.setLimit()
 
-        this.createToast()
+        if (this.promise && this.promise.callback) this.handlePromise()
 
-        if (this.duration > 0) this.durationTimeout = setTimeout(() => this.hide(), this.duration)
+        this.render()
 
-        if (this.html) {
-            this.$toast.innerHTML = this.html
+        this.show()
+    }
 
-            this.show()
-
-            return this.$toast
+    render() {
+        if (this.$toast === undefined) this.createToast()
+        else if (this.onChange) {
+            this.onChange(this.$toast)
+            window.dispatchEvent(new Event('toaster.change'), { detail: this })
+            this.$toast.dispatchEvent(new Event('toaster.change'))
         }
+        this.loadToast()
+
+        window.dispatchEvent(new Event('toaster.render'), { detail: this })
+        this.$toast.dispatchEvent(new Event('toaster.render'))
+
+        if (this.html) return this.$toast.innerHTML = this.html
 
         if (this.icon && this.icons[this.type]) this.createIcon()
 
         this.$content = this.createElement('div', 'content')
         this.$toast.append(this.$content)
 
-        if ((this.title && this.title.trim() !== '') || (this.text && this.text.trim() !== '')) {
+        if (this.title || this.text) {
             this.$contentText = this.createElement('div', 'contentText')
             this.$content.append(this.$contentText)
         }
 
-        if (this.title && this.title.trim() !== '') this.createTitle()
+        if (this.title) this.createTitle()
 
-        if (this.text && this.text.trim() !== '') this.createText()
+        if (this.text) this.createText()
 
         if (this.button) this.createButton()
 
         if (this.closeButton && this.icons['close']) this.createCloseButton()
 
-        if (this.progressBar === true || typeof this.progressBar === 'object') this.createProgressBar()
+        if (this.progressBar) this.createProgressBar()
 
-        this.show()
-
-        return this.$toast
+        if (this.duration > 0) {
+            clearTimeout(this.durationTimeout)
+            this.durationTimeout = setTimeout(() => this.hide(), this.duration)
+        }
     }
 }
 
