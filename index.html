@@ -24,7 +24,7 @@
                 },
                 duration: 2000,
                 pauseDurationOnHover: true,
-                promisea: {
+                promise: {
                     callback: () => new Promise((resolve, reject) =>
                         setTimeout(() => {
                             const randomBoolean = Math.random() < 0.5;
@@ -36,6 +36,9 @@
                             }
                         }, 1000)
                     ),
+                    timeout: {
+                        time: 1250,
+                    },
                     then: {
                         options: {
                             title: 'Success'

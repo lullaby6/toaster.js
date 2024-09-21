@@ -3,7 +3,6 @@
 // repo: github.com/lullaby6/toaster.js
 
 // todo:
-// promise timeout
 // customAnimations
 // themes
 
@@ -419,7 +418,28 @@ class Toaster {
         let promiseOptions = {}
 
         try {
-            const result = await this.promise.callback()
+            let result = null
+
+            if (this.promise.timeout && this.promise.timeout.time) {
+                const timeoutPromise = new Promise((_, reject) =>
+                    this.promiseTimeout = setTimeout(() => {
+                        if (this.promise && this.promise.timeout) {
+                            if (this.promise.timeout.callback) this.promise.timeout.callback(this)
+
+                            reject(new Error(this.promise.timeout.text || `Timed out after ${this.promise.timeout.time}ms`))
+                        }
+                    }, this.promise.timeout.time)
+                );
+
+                result = await Promise.race([
+                    this.promise.callback(),
+                    timeoutPromise
+                ]);
+            } else {
+                result = await this.promise.callback()
+            }
+
+            clearTimeout(this.promiseTimeout)
 
             type = 'success'
 
