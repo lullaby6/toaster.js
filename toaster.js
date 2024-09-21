@@ -3,7 +3,6 @@
 // repo: github.com/lullaby6/toaster.js
 
 // todo:
-// pauseDurationOnHover
 // promise timeout
 // customAnimations
 // themes
@@ -19,6 +18,7 @@ class Toaster {
             text: null,
             position: 'top-right',
             duration: 3000,
+            pauseDurationOnHover: false,
             delay: null,
             border: false,
 
@@ -262,7 +262,7 @@ class Toaster {
 
         if (this.onLoad) this.onLoad(this.$toast)
 
-        if (this.closeOnClick) this.$toast.addEventListener('click', () => this.hide())
+        if (this.closeOnClick) this.$toast.addEventListener('click', this.hide.bind(this))
         if (this.closeOnDrag) {
             this.closeOnDragging = false
 
@@ -270,11 +270,11 @@ class Toaster {
 
             this.$toast.addEventListener('touchstart', event => this.closeOnDragStart(event.touches[0].clientX))
 
-            window.addEventListener('mouseup', () => this.closeOnDragCancel())
+            window.addEventListener('mouseup', this.closeOnDragCancel.bind(this))
 
-            window.addEventListener('touchend', () => this.closeOnDragCancel())
+            window.addEventListener('touchend', this.closeOnDragCancel.bind(this))
 
-            window.addEventListener('touchcancel', () => this.closeOnDragCancel())
+            window.addEventListener('touchcancel', this.closeOnDragCancel.bind(this))
 
             window.addEventListener('touchmove', event => this.closeOnDragMove(event.touches[0].clientX))
 
@@ -348,8 +348,10 @@ class Toaster {
         if (this.closeButton.onlyShowOnHover) {
             this.$closeButton.style.opacity = 0
 
+            this.$toast.removeEventListener('mouseenter', () => this.$closeButton.style.opacity = 0.5)
             this.$toast.addEventListener('mouseenter', () => this.$closeButton.style.opacity = 0.5)
 
+            this.$toast.removeEventListener('mouseleave', () => this.$closeButton.style.opacity = 0)
             this.$toast.addEventListener('mouseleave', () => this.$closeButton.style.opacity = 0)
 
             this.$closeButton.addEventListener('mouseover', () =>this.$closeButton.style.opacity = 1)
@@ -357,7 +359,7 @@ class Toaster {
 
         this.$toast.append(this.$closeButton)
 
-        this.$closeButton.addEventListener('click', () => this.hide())
+        this.$closeButton.addEventListener('click', this.hide.bind(this))
     }
 
     createProgressBar() {
@@ -510,6 +512,55 @@ class Toaster {
         this.show()
     }
 
+    handleDurationMouseEnter() {
+        this.stopHide()
+
+        clearTimeout(this.durationTimeout)
+        this.durationTimeout = null
+
+        clearInterval(this.durationInterval)
+        this.durationInterval = null
+
+        this.durationTimeLeft -= Date.now() - this.durationResumeTime;
+    }
+
+    hamdleDurationMouseLeave() {
+        this.durationResumeTime = Date.now();
+        this.durationTimeout = setTimeout(this.hide.bind(this), this.durationTimeLeft);
+
+        if (this.progressBar) {
+            const currentProgressPercentage = parseFloat(window.getComputedStyle(this.$progressBar).width) / this.$progressBar.parentElement.clientWidth * 100;
+
+            const remainingPercentage = (this.durationTimeLeft / this.duration) * 100;
+
+            this.durationInterval = setInterval(() => {
+                const elapsed = Date.now() - this.durationResumeTime;
+                const percentage = (elapsed / this.durationTimeLeft) * remainingPercentage;
+
+                this.$progressBar.style.width = `${currentProgressPercentage + percentage}%`;
+            }, 1);
+        }
+    }
+
+    handleDuration() {
+        if (this.duration > 0) {
+            clearTimeout(this.durationTimeout)
+            this.durationTimeout = null
+            this.durationTimeout = setTimeout(this.hide.bind(this), this.duration)
+
+            if (this.pauseDurationOnHover) {
+                this.durationResumeTime = Date.now();
+                this.durationTimeLeft = this.duration
+
+                this.$toast.removeEventListener('mouseenter', this.handleDurationMouseEnter.bind(this));
+                this.$toast.addEventListener('mouseenter', this.handleDurationMouseEnter.bind(this));
+
+                this.$toast.removeEventListener('mouseleave', this.hamdleDurationMouseLeave.bind(this));
+                this.$toast.addEventListener('mouseleave', this.hamdleDurationMouseLeave.bind(this));
+            }
+        }
+    }
+
     render() {
         if (this.$toast === undefined) this.createToast()
         else if (this.onChange) {
@@ -544,10 +595,7 @@ class Toaster {
 
         if (this.progressBar) this.createProgressBar()
 
-        if (this.duration > 0) {
-            clearTimeout(this.durationTimeout)
-            this.durationTimeout = setTimeout(() => this.hide(), this.duration)
-        }
+        this.handleDuration()
     }
 }
 

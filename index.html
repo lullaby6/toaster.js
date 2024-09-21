@@ -22,8 +22,9 @@
                 closeOnDrag: {
                     percent: 0.5
                 },
-                duration: 0,
-                promise: {
+                duration: 2000,
+                pauseDurationOnHover: true,
+                promisea: {
                     callback: () => new Promise((resolve, reject) =>
                         setTimeout(() => {
                             const randomBoolean = Math.random() < 0.5;
