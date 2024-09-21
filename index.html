@@ -22,9 +22,34 @@
                 closeOnDrag: {
                     percent: 0.5
                 },
-                duration: 2000,
+                duration: 0,
                 pauseDurationOnHover: true,
-                promise: {
+                animation: {
+                    show: {
+                        duration: 2000,
+                        custom: [
+                            {
+                                opacity: 0,
+                                translate: '50% 0'
+                            }, {
+                                opacity: 1,
+                                translate: '0 0'
+                            }
+                        ],
+                    },
+                    hide: {
+                        custom: [
+                            {
+                                opacity: 1,
+                                translate: '0 0'
+                            }, {
+                                opacity: 0,
+                                translate: '0 -50%'
+                            }
+                        ]
+                    }
+                },
+                promisea: {
                     callback: () => new Promise((resolve, reject) =>
                         setTimeout(() => {
                             const randomBoolean = Math.random() < 0.5;

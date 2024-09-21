@@ -3,7 +3,6 @@
 // repo: github.com/lullaby6/toaster.js
 
 // todo:
-// customAnimations
 // themes
 
 class Toaster {
@@ -77,6 +76,8 @@ class Toaster {
             easing: 'ease-in-out',
             fade: true,
             scale: false,
+            show: null,
+            hide: null,
             ...options.animation
         };
 
@@ -124,21 +125,33 @@ class Toaster {
         window.dispatchEvent(new Event('toaster.show.start'), { detail: this })
         this.$toast.dispatchEvent(new Event('toaster.show.start'))
 
-        const animation = [{}, {}]
+        let animation = [{}, {}]
+        let duration = this.animation.duration
+        let easing = this.animation.easing
 
-        if (this.animation.fade) {
-            animation[0].opacity = 0
-            animation[1].opacity = 1
+        if (this.animation.show) {
+            if (this.animation.show.custom) animation = this.animation.show.custom
+
+            if (this.animation.show.duration) duration = this.animation.show.duration
+
+            if (this.animation.show.easing) easing = this.animation.hide.easing
+        } else {
+            if (this.animation.fade) {
+                animation[0].opacity = 0
+                animation[1].opacity = 1
+            }
+
+            if (this.animation.scale) {
+                animation[0].scale = 0
+                animation[1].scale = 1
+            }
         }
 
-        if (this.animation.scale) {
-            animation[0].scale = 0
-            animation[1].scale = 1
-        }
+        if (this.duration > 0 && duration > this.duration) duration = this.duration
 
         this.showAnimation = this.$toast.animate(animation, {
-            duration: this.animation.duration,
-            easing: this.animation.easing,
+            duration: duration,
+            easing: easing,
             fill: 'forwards',
         })
 
@@ -159,21 +172,33 @@ class Toaster {
         window.dispatchEvent(new Event('toaster.hide.start'), { detail: this })
         this.$toast.dispatchEvent(new Event('toaster.hide.start'))
 
-        const animation = [{}, {}]
+        let animation = [{}, {}]
+        let duration = this.animation.duration
+        let easing = this.animation.easing
 
-        if (this.animation.fade) {
-            animation[0].opacity = 1
-            animation[1].opacity = 0
+        if (this.animation.hide) {
+            if (this.animation.hide.custom) animation = this.animation.hide.custom
+
+            if (this.animation.hide.duration) duration = this.animation.hide.duration
+
+            if (this.animation.hide.easing) easing = this.animation.hide.easing
+        } else {
+            if (this.animation.fade) {
+                animation[0].opacity = 1
+                animation[1].opacity = 0
+            }
+
+            if (this.animation.scale) {
+                animation[0].scale = 1
+                animation[1].scale = 0
+            }
         }
 
-        if (this.animation.scale) {
-            animation[0].scale = 1
-            animation[1].scale = 0
-        }
+        if (this.duration > 0 && duration > this.duration) duration = this.duration
 
         this.hideAnimation = this.$toast.animate(animation, {
-            duration: this.animation.duration,
-            easing: this.animation.easing,
+            duration: duration,
+            easing: easing,
             fill: 'forwards',
         })
 
