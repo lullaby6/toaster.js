@@ -11,33 +11,40 @@ A simple and lightweight JavaScript library for creating customizable toast noti
 ### CDN
 
 ```html
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/lullaby6/toaster.js/toaster.css'>
 <script src='https://cdn.jsdelivr.net/gh/lullaby6/toaster.js/toaster.js'></script>
 ```
 
 ## Usage
 
-Call the function `Toaster` to invoke a toast
+Instance the class `Toaster` to invoke a toast
 
 ```js
-Toaster({
+new Toaster({
     text: "Hello World!"
 });
 ```
 
-Another example:
+### Examples:
 
 ```js
-Toaster({
+new Toaster({
     type: 'success',
     title: 'Success',
     text: 'Operation completed successfully!',
     position: 'top-right',
     duration: 5000,
-    closeOnClick: true,
-    animationFade: true,
-    animationScale: true,
     pauseDurationOnHover: true,
-    showProgressBar: true
+    closeOnClick: true,
+    closeOnDrag: true,
+    closeButton: {
+        onlyShowOnHover: true
+    },
+    animation: {
+        fade: true
+        scale: true
+    }
+    progressBar: true
 });
 ```
 
@@ -69,22 +76,24 @@ Toaster({
 You can provide custom icons for different toast types:
 
 ```js
-Toaster({
+new Toaster({
     type: 'success',
     text: 'Custom icon example',
-    successIcon: '<svg>...</svg>'
+    icons: {
+        success: '<svg>...</svg>'
+    }
 })
 ```
 
 ### Icons option keys:
-- `closeIcon`
-- `defaultIcon`
-- `darkIcon`
-- `infoIcon`
-- `successIcon`
-- `warningIcon`
-- `errorIcon`
-- `loadingIcon`
+- `close`
+- `default`
+- `dark`
+- `info`
+- `success`
+- `warning`
+- `error`
+- `loading`
 
 ## Custom Animations
 
@@ -92,21 +101,33 @@ The library supports both fade and scale animations. You can customize these or 
 
 
 ```js
-Toaster({
+new Toaster({
     text: 'Custom animation example',
-    customShowAnimation: [{
-        opacity: 0,
-        translateY: '-20px'
-    }, {
-        opacity: 1,
-        translateY: '0px'
-    }],
-    customHideAnimation: [{
-        opacity: 1,
-        translateY: '0px'
-    }, {
-        opacity: 0,
-        translateY: '20px'
-    }]
+    position: 'top-right',
+    animation: {
+        show: {
+            custom: [
+                {
+                    opacity: 0,
+                    translate: '50% 0'
+                }, {
+                    opacity: 1,
+                    translate: '0 0'
+                }
+            ],
+        },
+        hide: {
+            duration: 100,
+            custom: [
+                {
+                    opacity: 1,
+                    translate: '0 0'
+                }, {
+                    opacity: 0,
+                    translate: '0 -50%'
+                }
+            ]
+        }
+    }
 });
 ```
