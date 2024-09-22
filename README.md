@@ -8,6 +8,8 @@ A simple and lightweight JavaScript library for creating customizable toast noti
 
 ## Installation
 
+Include this tags in your html head
+
 ### CDN
 
 ```html
