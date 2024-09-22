@@ -23,7 +23,7 @@ Instance the class `Toaster` to invoke a toast
 
 ```js
 new Toaster({
-    text: "Hello World!"
+	text: "Hello World!"
 });
 ```
 
@@ -31,22 +31,22 @@ new Toaster({
 
 ```js
 new Toaster({
-    type: 'success',
-    title: 'Success',
-    text: 'Operation completed successfully!',
-    position: 'bottom-right',
-    duration: 5000,
-    pauseDurationOnHover: true,
-    closeOnClick: true,
-    closeOnDrag: true,
-    progressBar: true,
-    closeButton: {
-        onlyShowOnHover: true
-    },
-    animation: {
-        fade: true,
-        scale: true
-    }
+	type: 'success',
+	title: 'Success',
+	text: 'Operation completed successfully!',
+	position: 'bottom-right',
+	duration: 5000,
+	pauseDurationOnHover: true,
+	closeOnClick: true,
+	closeOnDrag: true,
+	progressBar: true,
+	closeButton: {
+		onlyShowOnHover: true
+	},
+	animation: {
+		fade: true,
+		scale: true
+	}
 });
 ```
 
@@ -56,11 +56,11 @@ You can provide custom icons for different toast types:
 
 ```js
 new Toaster({
-    type: 'success',
-    text: 'Custom icon example',
-    icons: {
-        success: '<svg>...</svg>'
-    }
+	type: 'success',
+	text: 'Custom icon example',
+	icons: {
+		success: '<svg>...</svg>'
+	}
 })
 ```
 
@@ -80,13 +80,13 @@ The library supports both fade and scale animations. You can customize these or 
 
 ```js
 new Toaster({
-    text: 'Animation',
-    animation: {
-        duration: 1000,
-        easing: 'ease-out',
-        fade: true,
-        scale: true
-    }
+	text: 'Animation',
+	animation: {
+		duration: 1000,
+		easing: 'ease-out',
+		fade: true,
+		scale: true
+	}
 });
 ```
 
@@ -94,32 +94,32 @@ new Toaster({
 
 ```js
 new Toaster({
-    text: 'Custom animation example',
-    position: 'top-right',
-    animation: {
-        show: {
-            custom: [
-                {
-                    opacity: 0,
-                    translate: '50% 0'
-                }, {
-                    opacity: 1,
-                    translate: '0 0'
-                }
-            ],
-        },
-        hide: {
-            duration: 100,
-            custom: [
-                {
-                    opacity: 1,
-                    translate: '0 0'
-                }, {
-                    opacity: 0,
-                    translate: '0 -50%'
-                }
-            ]
-        }
-    }
+	text: 'Custom animation example',
+	position: 'top-right',
+	animation: {
+		show: {
+			custom: [
+				{
+					opacity: 0,
+					translate: '50% 0'
+				}, {
+					opacity: 1,
+					translate: '0 0'
+				}
+			],
+		},
+		hide: {
+			duration: 100,
+			custom: [
+				{
+					opacity: 1,
+					translate: '0 0'
+				}, {
+					opacity: 0,
+					translate: '0 -50%'
+				}
+			]
+		}
+	}
 });
 ```
