@@ -39,7 +39,7 @@ new Toaster({
     pauseDurationOnHover: true,
     closeOnClick: true,
     closeOnDrag: true,
-    progressBar: true
+    progressBar: true,
     closeButton: {
         onlyShowOnHover: true
     },
@@ -83,7 +83,7 @@ new Toaster({
     text: 'Animation',
     animation: {
         duration: 1000,
-        easing: 'ease-out'
+        easing: 'ease-out',
         fade: true,
         scale: true
     }
